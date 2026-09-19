@@ -3,345 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistical Miracles & Probability Illusions</title>
+    <title>Paradox Sandbox</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Plotly.js -->
     <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
     <style>
-        /* Custom Toggle Switch Styles */
-        .toggle-checkbox:checked {
-            right: 0;
-            border-color: #68D391;
+        input[type=range] {
+            accent-color: #2563eb;
+            width: 100%;
+            max-width: 300px;
         }
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #68D391;
+        .plot-container {
+            width: 100%;
+            height: 400px;
         }
-        .toggle-checkbox:checked + .toggle-label:after {
-            transform: translateX(100%);
-        }
-        
-        /* Smooth transitions for mobile menu */
-        #sidebar { transition: transform 0.3s ease-in-out; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden flex h-screen">
+<body class="bg-gray-50 text-gray-800 font-sans h-screen flex flex-col md:flex-row overflow-hidden">
 
-    <!-- Mobile Header & Dropdown -->
-    <div class="md:hidden fixed top-0 left-0 w-full bg-slate-900 text-white z-50 flex items-center justify-between p-4 shadow-md">
-        <span class="font-bold text-lg tracking-tight truncate mr-4">Paradox Sandbox</span>
-        <select id="mobile-nav-select" class="bg-slate-800 text-white border border-slate-700 rounded p-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[60%] cursor-pointer">
-            <option value="group1">Group 1: Belief Revision</option>
-            <option value="group2">Group 2: The Egocentric Blind Spot</option>
-            <option value="group3">Group 3: Hidden Structures</option>
-        </select>
+    <!-- Mobile Header (Visible only on small screens) -->
+    <header class="md:hidden flex items-center justify-between p-4 bg-slate-900 border-b border-slate-800 z-40 relative">
+        <div class="flex flex-col">
+            <span class="text-xl font-bold text-white leading-tight">Paradox Sandbox</span>
+            <span class="text-[10px] tracking-widest text-slate-400 font-semibold uppercase mt-1">Interactive Explorations</span>
+        </div>
+        <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white focus:outline-none">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Full-Screen Mobile Menu Overlay -->
+    <div id="mobile-menu-overlay" class="fixed inset-0 z-50 bg-slate-900 hidden flex-col justify-center px-4 space-y-4 opacity-0 transition-opacity duration-300">
+        <button id="mobile-close-btn" class="absolute top-6 right-6 p-2 text-slate-300 hover:text-white focus:outline-none">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <div class="w-full max-w-sm mx-auto space-y-2">
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 transition-colors bg-slate-800 border-blue-500 rounded-r-lg" data-target="group1">
+                <div class="text-sm font-semibold text-blue-400 mb-1">Group 1</div>
+                <div class="text-xl text-white group-title">Belief Revision & Coincidence</div>
+            </a>
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 border-transparent hover:bg-slate-800/50 transition-colors rounded-r-lg" data-target="group2">
+                <div class="text-sm font-semibold text-emerald-400 mb-1">Group 2</div>
+                <div class="text-xl text-slate-300 group-title">The Egocentric Blind Spot</div>
+            </a>
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 border-transparent hover:bg-slate-800/50 transition-colors rounded-r-lg" data-target="group3">
+                <div class="text-sm font-semibold text-purple-400 mb-1">Group 3</div>
+                <div class="text-xl text-slate-300 group-title">Hidden Structures in Chaos</div>
+            </a>
+        </div>
     </div>
 
-    <!-- Sidebar Navigation -->
-    <nav id="sidebar" class="hidden md:flex inset-y-0 left-0 w-72 bg-slate-900 text-slate-300 z-40 flex-col h-full shadow-2xl flex-shrink-0">
-        <div class="p-6 border-b border-slate-800 hidden md:block">
-            <h1 class="text-2xl font-bold text-white tracking-tight">Paradox Sandbox</h1>
-            <p class="text-xs text-slate-400 mt-2 uppercase tracking-widest font-semibold">Interactive Explorations</p>
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-72 bg-slate-900 border-r border-slate-800 h-full flex-shrink-0">
+        <div class="px-6 py-8 border-b border-slate-800/50">
+            <h1 class="text-3xl font-bold text-white mb-2 tracking-tight">Paradox Sandbox</h1>
+            <div class="text-xs tracking-[0.2em] text-slate-400 font-semibold uppercase">Interactive Explorations</div>
         </div>
-        <div class="flex-1 overflow-y-auto py-4">
-            <ul class="space-y-1">
-                <li>
-                    <button onclick="navTo('group1')" id="nav-group1" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors border-l-4 border-blue-500 bg-slate-800 text-white">
-                        <span class="block text-xs font-semibold text-blue-400 mb-1">Group 1</span>
-                        Belief Revision & Coincidence
-                    </button>
-                </li>
-                <li>
-                    <button onclick="navTo('group2')" id="nav-group2" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors border-l-4 border-transparent">
-                        <span class="block text-xs font-semibold text-emerald-400 mb-1">Group 2</span>
-                        The Egocentric Blind Spot
-                    </button>
-                </li>
-                <li>
-                    <button onclick="navTo('group3')" id="nav-group3" class="nav-btn w-full text-left px-6 py-3 hover:bg-slate-800 hover:text-white transition-colors border-l-4 border-transparent">
-                        <span class="block text-xs font-semibold text-purple-400 mb-1">Group 3</span>
-                        Hidden Structures in Chaos
-                    </button>
-                </li>
-            </ul>
-        </div>
-    </nav>
+        <nav class="flex-1 overflow-y-auto py-4">
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 transition-colors bg-slate-800 border-blue-500" data-target="group1">
+                <div class="text-sm font-semibold text-blue-400 mb-1">Group 1</div>
+                <div class="text-[17px] text-white group-title leading-snug">Belief Revision & Coincidence</div>
+            </a>
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 border-transparent hover:bg-slate-800/50 transition-colors" data-target="group2">
+                <div class="text-sm font-semibold text-emerald-400 mb-1">Group 2</div>
+                <div class="text-[17px] text-slate-300 group-title leading-snug">The Egocentric Blind Spot</div>
+            </a>
+            <a href="#" class="nav-link block px-6 py-4 border-l-4 border-transparent hover:bg-slate-800/50 transition-colors" data-target="group3">
+                <div class="text-sm font-semibold text-purple-400 mb-1">Group 3</div>
+                <div class="text-[17px] text-slate-300 group-title leading-snug">Hidden Structures in Chaos</div>
+            </a>
+        </nav>
+    </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 overflow-y-auto bg-slate-50 relative pt-16 md:pt-0">
-        <div class="max-w-5xl mx-auto p-4 md:p-8">
-
-            <!-- ================= GROUP 1 ================= -->
-            <div id="page-group1" class="page-section">
-                <header class="mb-8">
-                    <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Belief Revision & Coincidence</h2>
-                    <p class="text-slate-600 text-lg">Exploring how human intuition fails to grasp the implications of massive scales and vast opportunities.</p>
-                </header>
-
-                <!-- 1. Law of Truly Large Numbers -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">1. The Law of Truly Large Numbers</h3>
-                    <p class="text-slate-600 mb-6">Watch how highly improbable events become inevitable as the number of opportunities (trials) increases.</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid gap-4 md:grid-cols-2">
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Odds (1 in X): <span id="odds-val" class="text-blue-600 font-mono">10,000</span>
-                            </label>
-                            <input type="range" id="odds-slider" min="1000" max="100000" step="1000" value="10000" class="w-full accent-blue-600">
-                        </div>
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Number of Trials: <span id="trials-val" class="text-blue-600 font-mono">50,000</span>
-                            </label>
-                            <input type="range" id="trials-slider" min="1000" max="200000" step="1000" value="50000" class="w-full accent-blue-600">
-                        </div>
+    <main class="flex-1 h-full overflow-y-auto p-4 md:p-8 bg-gray-50">
+        <div class="max-w-4xl mx-auto">
+            
+            <!-- GROUP 1: Belief Revision -->
+            <div id="group1" class="paradox-group block space-y-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Belief Revision & Coincidence</h2>
+                    <p class="text-gray-600 text-lg">Exploring how our intuition about probability fails at scale.</p>
+                </div>
+                
+                <!-- 1. Littlewood's Law -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">1. Littlewood's Law of Miracles</h3>
+                    <p class="text-gray-600 mb-4">If a "miracle" is a 1-in-a-million event, how often should you experience one if you encounter 1 event per second?</p>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <label class="font-medium text-gray-700">Days Awake:</label>
+                        <input type="range" id="lw-slider" min="1" max="60" step="1" value="35">
+                        <span class="font-bold text-blue-600 w-8" id="lw-val">35</span>
                     </div>
-                    <div id="plot1" class="w-full h-80"></div>
-                    <div id="ln-result" class="mt-4 text-center p-4 bg-blue-50 text-blue-900 rounded-lg text-lg"></div>
+                    <div id="plot1" class="plot-container"></div>
                 </div>
 
-                <!-- 2. Littlewood's Law -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">2. Littlewood's Law Calculator</h3>
-                    <p class="text-slate-600 mb-6">Calculate how many days it takes for a one-in-a-million event to happen based on your daily awareness rate.</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid gap-6 md:grid-cols-3">
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Miracle (1 in X): <span id="lw-odds-val" class="text-blue-600 font-mono">1,000,000</span>
-                            </label>
-                            <input type="range" id="lw-odds-slider" min="100000" max="5000000" step="100000" value="1000000" class="w-full accent-blue-600">
-                        </div>
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Events/Sec: <span id="lw-events-val" class="text-blue-600 font-mono">1.0</span>
-                            </label>
-                            <input type="range" id="lw-events-slider" min="0.1" max="5" step="0.1" value="1" class="w-full accent-blue-600">
-                        </div>
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Active Hours/Day: <span id="lw-hours-val" class="text-blue-600 font-mono">8</span>
-                            </label>
-                            <input type="range" id="lw-hours-slider" min="1" max="24" step="1" value="8" class="w-full accent-blue-600">
-                        </div>
-                    </div>
-                    <div id="plot2" class="w-full h-64"></div>
-                    <div id="lw-result" class="mt-4 text-center p-4 bg-emerald-50 text-emerald-900 rounded-lg text-lg"></div>
+                <!-- 2. Law of Truly Large Numbers -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">2. Law of Truly Large Numbers</h3>
+                    <p class="text-gray-600 mb-4">Given a large enough sample size, any outrageous thing is likely to happen.</p>
+                    <div id="plot2" class="plot-container"></div>
                 </div>
             </div>
 
-            <!-- ================= GROUP 2 ================= -->
-            <div id="page-group2" class="page-section hidden">
-                <header class="mb-8">
-                    <h2 class="text-3xl font-extrabold text-slate-900 mb-2">The Egocentric Blind Spot</h2>
-                    <p class="text-slate-600 text-lg">Paradoxes that trick us by making us focus on our personal perspective rather than the entire network.</p>
-                </header>
-
-                <!-- 3. The Birthday Paradox -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">3. The Birthday Paradox</h3>
-                    <p class="text-slate-600 mb-6">How many people need to be in a room for it to be mathematically likely (>50%) that two share a birthday? Toggle the switch to see the difference between "Any Match" and matching "YOUR Match".</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 flex flex-col md:flex-row md:items-center gap-6 justify-between">
-                        <div class="flex-1">
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                People in the Room: <span id="bp-val" class="text-emerald-600 font-mono text-lg">23</span>
-                            </label>
-                            <input type="range" id="bp-slider" min="1" max="300" step="1" value="23" class="w-full accent-emerald-600">
-                        </div>
-                        <div class="flex items-center space-x-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                            <span class="text-sm font-semibold text-slate-700">Compare "My Specific Birthday"</span>
-                            <div class="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                                <input type="checkbox" name="toggle" id="bp-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 border-slate-300 appearance-none cursor-pointer transition-colors duration-200 ease-in-out"/>
-                                <label for="bp-toggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200 ease-in-out"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="plot3" class="w-full h-96"></div>
-                    <div id="bp-result" class="mt-4 text-center p-4 bg-emerald-50 text-emerald-900 rounded-lg text-lg"></div>
+            <!-- GROUP 2: Egocentric Blind Spot -->
+            <div id="group2" class="paradox-group hidden space-y-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">The Egocentric Blind Spot</h2>
+                    <p class="text-gray-600 text-lg">Paradoxes where projecting our personal perspective tricks the math.</p>
                 </div>
 
-                <!-- 4. The Friendship Paradox -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">4. The Friendship Paradox</h3>
-                    <p class="text-slate-600 mb-6">Adjust your own immediate friend group size. Notice how the mathematical average of your friends' friend count almost always exceeds your own, driven by highly connected central nodes.</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 max-w-md mx-auto">
-                        <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                            Your Friend Count: <span id="fp-val" class="text-orange-500 font-mono text-lg">5</span>
-                        </label>
-                        <input type="range" id="fp-slider" min="1" max="25" step="1" value="5" class="w-full accent-orange-500">
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <div id="plot4a" class="w-full h-80"></div>
-                            <div id="fp-result" class="mt-4 text-center p-4 bg-orange-50 text-orange-900 rounded-lg text-sm"></div>
+                <!-- 3. Birthday Paradox -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">3. The Birthday Paradox</h3>
+                    <p class="text-gray-600 mb-4">How many people need to be in a room for a >50% chance of a shared birthday?</p>
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center space-x-4">
+                            <label class="font-medium text-gray-700 w-40">People in Room:</label>
+                            <input type="range" id="bp-slider" min="1" max="300" step="1" value="23">
+                            <span class="font-bold text-blue-600 w-12" id="bp-val">23</span>
                         </div>
-                        <div>
-                            <div id="plot4b" class="w-full h-80 bg-slate-50 rounded-xl border border-slate-200"></div>
-                            <p class="text-center text-xs text-slate-500 mt-2">Node-Link Diagram (Larger nodes = More connections)</p>
+                        <div class="flex items-center space-x-4">
+                            <label class="font-medium text-gray-700 w-40">Show "My Birthday":</label>
+                            <input type="checkbox" id="bp-toggle" class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                            <span class="text-sm text-gray-500">Compare against a fixed target date</span>
                         </div>
                     </div>
+                    <div id="plot3" class="plot-container"></div>
+                    <div class="mt-4 p-4 bg-gray-50 rounded-lg text-gray-700 text-lg border border-gray-100" id="bp-result"></div>
+                </div>
+
+                <!-- 4. Friendship Paradox -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">4. The Friendship Paradox</h3>
+                    <p class="text-gray-600 mb-4">Why your friends probably have more friends than you do.</p>
+                    <div id="plot4" class="plot-container"></div>
                 </div>
             </div>
 
-            <!-- ================= GROUP 3 ================= -->
-            <div id="page-group3" class="page-section hidden">
-                <header class="mb-8">
-                    <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Hidden Structures in Chaos</h2>
-                    <p class="text-slate-600 text-lg">Investigating statistical laws that govern seemingly random or chaotic datasets.</p>
-                </header>
+            <!-- GROUP 3: Hidden Structures -->
+            <div id="group3" class="paradox-group hidden space-y-8">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Hidden Structures in Chaos</h2>
+                    <p class="text-gray-600 text-lg">Counterintuitive patterns found in naturally occurring data and sampling.</p>
+                </div>
 
                 <!-- 5. Benford's Law -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">5. Benford's Law (The First-Digit Anomaly)</h3>
-                    <p class="text-slate-600 mb-6">In naturally occurring datasets, the number 1 appears as the leading digit ~30% of the time. Human intuition expects an even ~11.1% spread.</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 flex flex-wrap gap-4 justify-center">
-                        <button id="btn-natural" class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-purple-600">
-                            Natural (Logarithmic) Data
-                        </button>
-                        <button id="btn-human" class="px-6 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
-                            Human (Random) Guessing
-                        </button>
-                    </div>
-                    <div id="plot5" class="w-full h-80"></div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">5. Benford's Law</h3>
+                    <p class="text-gray-600 mb-4">In many naturally occurring collections of numbers, the leading digit is likely to be small.</p>
+                    <div id="plot5" class="plot-container"></div>
                 </div>
 
-                <!-- 6. The Inspection Paradox -->
-                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
-                    <h3 class="text-xl font-bold text-slate-800 mb-2">6. The Inspection Paradox (Bus Stop Bias)</h3>
-                    <p class="text-slate-600 mb-6">Buses arrive every 10 minutes on average. Adjust the "Chaos" slider to make buses bunch up. Click "Spawn Passenger" to see why you always land in the longest waits.</p>
-                    
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid md:grid-cols-2 gap-6 items-center">
-                        <div>
-                            <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                                Schedule Chaos (Variance): <span id="ip-chaos-val" class="text-purple-600 font-mono">6</span>
-                            </label>
-                            <input type="range" id="ip-chaos-slider" min="0" max="8" step="1" value="6" class="w-full accent-purple-600">
-                        </div>
-                        <div class="text-right">
-                            <button id="btn-passenger" class="w-full md:w-auto px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-semibold transition-colors shadow-sm">
-                                Spawn Random Passenger
-                            </button>
-                        </div>
-                    </div>
-                    <div id="plot6" class="w-full h-64"></div>
-                    <div id="ip-result" class="mt-4 text-center p-4 bg-purple-50 text-purple-900 rounded-lg text-lg font-semibold"></div>
+                <!-- 6. Inspection Paradox -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">6. The Inspection Paradox</h3>
+                    <p class="text-gray-600 mb-4">Why class sizes, bus wait times, and gym crowds always feel worse than the average.</p>
+                    <div id="plot6" class="plot-container"></div>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <footer class="mt-12 text-center text-slate-500 text-sm pb-8">
-                Created as an interactive sandbox for statistical paradoxes. Code released under the MIT License.
-            </footer>
 
         </div>
     </main>
 
+    <!-- Application Script -->
     <script>
-        // ==========================================
-        // APP ROUTING & UI LOGIC (Simulating Astro Pages)
-        // ==========================================
-        const formatNum = (num) => num.toLocaleString(undefined, { maximumFractionDigits: 1 });
+        // --- Navigation Logic ---
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileCloseBtn = document.getElementById('mobile-close-btn');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const groups = document.querySelectorAll('.paradox-group');
+
+        function openMobileMenu() {
+            mobileMenuOverlay.classList.remove('hidden');
+            mobileMenuOverlay.classList.add('flex');
+            setTimeout(() => {
+                mobileMenuOverlay.classList.remove('opacity-0');
+                mobileMenuOverlay.classList.add('opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeMobileMenu() {
+            mobileMenuOverlay.classList.remove('opacity-100');
+            mobileMenuOverlay.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileMenuOverlay.classList.add('hidden');
+                mobileMenuOverlay.classList.remove('flex');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        mobileCloseBtn.addEventListener('click', closeMobileMenu);
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = e.currentTarget.getAttribute('data-target');
+                
+                // Show selected group
+                groups.forEach(group => {
+                    if(group.id === target) group.classList.remove('hidden');
+                    else group.classList.add('hidden');
+                });
+
+                // Sync active styling across all navs (mobile and desktop)
+                navLinks.forEach(nav => {
+                    const titleElement = nav.querySelector('.group-title');
+                    if(nav.getAttribute('data-target') === target) {
+                        nav.classList.add('bg-slate-800', 'border-blue-500');
+                        nav.classList.remove('border-transparent', 'hover:bg-slate-800/50');
+                        titleElement.classList.add('text-white');
+                        titleElement.classList.remove('text-slate-300');
+                    } else {
+                        nav.classList.remove('bg-slate-800', 'border-blue-500');
+                        nav.classList.add('border-transparent', 'hover:bg-slate-800/50');
+                        titleElement.classList.remove('text-white');
+                        titleElement.classList.add('text-slate-300');
+                    }
+                });
+                
+                // Redraw plots in the newly visible container to fix Plotly dimensions
+                window.dispatchEvent(new Event('resize'));
+
+                // Close mobile menu if open
+                if (!mobileMenuOverlay.classList.contains('hidden')) {
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // --- Plotly Config ---
         const plotlyConfig = { responsive: true, displayModeBar: false };
-        let currentTab = 'group1';
+        const layoutBase = {
+            margin: { l: 40, r: 20, t: 30, b: 40 },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { family: 'ui-sans-serif, system-ui, sans-serif', color: '#374151' }
+        };
 
-        // Mobile Dropdown Event Listener
-        const mobileNavSelect = document.getElementById('mobile-nav-select');
-        if (mobileNavSelect) {
-            mobileNavSelect.addEventListener('change', (e) => {
-                navTo(e.target.value);
-            });
-        }
-
-        function navTo(groupId) {
-            // Hide all pages
-            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
-            // Reset nav styles
-            document.querySelectorAll('.nav-btn').forEach(el => {
-                el.classList.remove('bg-slate-800', 'text-white', 'border-blue-500', 'border-emerald-500', 'border-purple-500');
-                el.classList.add('border-transparent');
-            });
-
-            // Show selected page
-            document.getElementById('page-' + groupId).classList.remove('hidden');
-            
-            // Highlight selected nav
-            const activeNav = document.getElementById('nav-' + groupId);
-            if (activeNav) {
-                activeNav.classList.add('bg-slate-800', 'text-white');
-                if(groupId === 'group1') activeNav.classList.add('border-blue-500');
-                if(groupId === 'group2') activeNav.classList.add('border-emerald-500');
-                if(groupId === 'group3') activeNav.classList.add('border-purple-500');
-            }
-
-            // Sync mobile dropdown in case nav was triggered via desktop sidebar
-            if (mobileNavSelect && mobileNavSelect.value !== groupId) {
-                mobileNavSelect.value = groupId;
-            }
-
-            // Force Plotly to recalculate dimensions since the div was previously display:none
-            currentTab = groupId;
-            redrawActivePlots();
-        }
-
-        function redrawActivePlots() {
-            if(currentTab === 'group1') { drawLargeNumbers(); drawLittlewood(); }
-            if(currentTab === 'group2') { drawBirthday(); drawFriendship(); }
-            if(currentTab === 'group3') { drawBenford('natural'); drawInspection(null); }
-        }
-
-        // ==========================================
-        // WIDGET LOGIC: GROUP 1
-        // ==========================================
-        function drawLargeNumbers() {
-            const odds = parseInt(document.getElementById('odds-slider').value);
-            const maxTrials = parseInt(document.getElementById('trials-slider').value);
-            document.getElementById('odds-val').innerText = formatNum(odds);
-            document.getElementById('trials-val').innerText = formatNum(maxTrials);
-
-            let xValues = [], yValues = [];
-            for(let i = 0; i <= 100; i++) {
-                let t = i * (maxTrials / 100);
-                xValues.push(t);
-                yValues.push((1 - Math.pow(1 - (1/odds), t)) * 100);
-            }
-            const finalProb = yValues[100];
-            document.getElementById('ln-result').innerHTML = `Probability of event happening at least once: <strong>${finalProb.toFixed(2)}%</strong>`;
-            
-            Plotly.react('plot1', [{ x: xValues, y: yValues, type: 'scatter', mode: 'lines', line: { color: '#2563eb', width: 3 }, fill: 'tozeroy', fillcolor: 'rgba(37, 99, 235, 0.1)' }], 
-            { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', xaxis: { title: 'Number of Trials', gridcolor: '#e2e8f0' }, yaxis: { title: 'Probability (%)', range: [0, 105], gridcolor: '#e2e8f0' }, margin: { l: 50, r: 20, t: 20, b: 50 } }, plotlyConfig);
-        }
-        document.getElementById('odds-slider').addEventListener('input', drawLargeNumbers);
-        document.getElementById('trials-slider').addEventListener('input', drawLargeNumbers);
-
+        // --- 1. Littlewood's Law ---
         function drawLittlewood() {
-            const odds = parseInt(document.getElementById('lw-odds-slider').value);
-            const eps = parseFloat(document.getElementById('lw-events-slider').value);
-            const hrs = parseInt(document.getElementById('lw-hours-slider').value);
-            document.getElementById('lw-odds-val').innerText = formatNum(odds);
-            document.getElementById('lw-events-val').innerText = eps.toFixed(1);
-            document.getElementById('lw-hours-val').innerText = hrs;
+            const days = parseInt(document.getElementById('lw-slider').value);
+            document.getElementById('lw-val').innerText = days;
             
-            const daily = eps * 3600 * hrs;
-            const days = odds / daily;
-            document.getElementById('lw-result').innerHTML = `You process <strong>${formatNum(daily)}</strong> events a day.<br>You will experience a miracle every <strong>${days.toFixed(1)} days</strong>.`;
+            const eventsPerDay = 8 * 60 * 60; // 8 hours of alertness in seconds
+            let xVals = [], yVals = [];
+            for (let i = 1; i <= 60; i++) {
+                xVals.push(i);
+                let totalEvents = i * eventsPerDay;
+                let prob = (1 - Math.pow((999999/1000000), totalEvents)) * 100;
+                yVals.push(prob);
+            }
             
-            Plotly.react('plot2', [{ type: "indicator", mode: "gauge+number", value: days, number: { suffix: " days", font: {color: '#0f172a'} }, gauge: { axis: { range: [null, 365], tickwidth: 1, tickcolor: "darkblue" }, bar: { color: "#10b981" }, bgcolor: "white", borderwidth: 2, bordercolor: "transparent", steps: [{ range: [0, 30], color: "#d1fae5" }, { range: [30, 90], color: "#fef3c7" }, { range: [90, 365], color: "#fee2e2" }] } }], 
-            { paper_bgcolor: 'rgba(0,0,0,0)', margin: { t: 30, b: 20, l: 30, r: 30 } }, plotlyConfig);
+            let data = [
+                { x: xVals, y: yVals, type: 'scatter', mode: 'lines', line: { color: '#2563eb', width: 3 }, name: 'Probability' },
+                { x: [days], y: [yVals[days-1]], type: 'scatter', mode: 'markers', marker: { size: 10, color: '#ef4444' }, name: 'Current Day' }
+            ];
+            
+            let layout = { ...layoutBase, 
+                xaxis: { title: 'Days (8 alert hours/day)' }, 
+                yaxis: { title: 'Probability of a "Miracle" (%)', range: [0, 105] },
+                showlegend: false 
+            };
+            Plotly.react('plot1', data, layout, plotlyConfig);
         }
-        document.getElementById('lw-odds-slider').addEventListener('input', drawLittlewood);
-        document.getElementById('lw-events-slider').addEventListener('input', drawLittlewood);
-        document.getElementById('lw-hours-slider').addEventListener('input', drawLittlewood);
+        document.getElementById('lw-slider').addEventListener('input', drawLittlewood);
 
-        // ==========================================
-        // WIDGET LOGIC: GROUP 2
-        // ==========================================
+        // --- 2. Law of Truly Large Numbers ---
+        function drawLargeNumbers() {
+            let xVals = [10, 100, 1000, 10000, 100000];
+            let yVals = xVals.map(x => (1 - Math.pow(0.999, x)) * 100); 
+            
+            let data = [{ x: xVals, y: yVals, type: 'bar', marker: { color: '#3b82f6' } }];
+            let layout = { ...layoutBase, 
+                xaxis: { type: 'log', title: 'Sample Size (Log Scale)' }, 
+                yaxis: { title: 'Probability of Event (%)', range: [0, 105] } 
+            };
+            Plotly.react('plot2', data, layout, plotlyConfig);
+        }
+
+        // --- 3. The Birthday Paradox ---
         function drawBirthday() {
-            if(currentTab !== 'group2') return;
             const n = parseInt(document.getElementById('bp-slider').value);
             const showMyBirthday = document.getElementById('bp-toggle').checked;
             document.getElementById('bp-val').innerText = n;
@@ -353,6 +305,7 @@
                 pAny *= (365 - (i - 1)) / 365;
                 xVals.push(i);
                 yValsAny.push((1 - pAny) * 100);
+                
                 let pMine = 1 - Math.pow(364/365, i - 1);
                 yValsMine.push(pMine * 100);
             }
@@ -361,146 +314,100 @@
             let currentProbMine = yValsMine[n-1];
             
             let plotData = [
-                { x: xVals, y: yValsAny, type: 'scatter', mode: 'lines', name: 'Any Shared Birthday', line: { color: '#059669', width: 3 } },
-                { x: [n], y: [currentProbAny], type: 'scatter', mode: 'markers', name: 'Any Match', marker: { size: 12, color: '#059669' } }
+                { x: xVals, y: yValsAny, type: 'scatter', mode: 'lines', name: 'Any Match', line: { color: '#8b5cf6', width: 3 } },
+                { x: [n], y: [currentProbAny], type: 'scatter', mode: 'markers', showlegend: false, marker: { size: 12, color: '#8b5cf6' } }
             ];
 
             let resultHTML = `With <strong>${n}</strong> people, the chance of <em>any</em> shared birthday is <strong>${currentProbAny.toFixed(1)}%</strong>.`;
 
             if (showMyBirthday) {
-                plotData.push({ x: xVals, y: yValsMine, type: 'scatter', mode: 'lines', name: 'Matches YOUR Birthday', line: { color: '#ea580c', width: 3, dash: 'dot' } });
-                plotData.push({ x: [n], y: [currentProbMine], type: 'scatter', mode: 'markers', name: 'Your Match', marker: { size: 12, color: '#ea580c' } });
-                resultHTML += `<br>The chance someone shares <em>your exact</em> birthday is only <strong class="text-orange-600">${currentProbMine.toFixed(1)}%</strong>.`;
+                plotData.push({ x: xVals, y: yValsMine, type: 'scatter', mode: 'lines', name: 'Your Match', line: { color: '#f97316', width: 3, dash: 'dot' } });
+                plotData.push({ x: [n], y: [currentProbMine], type: 'scatter', mode: 'markers', showlegend: false, marker: { size: 12, color: '#f97316' } });
+                resultHTML += `<br>The chance someone shares <em>your exact</em> birthday is only <strong>${currentProbMine.toFixed(1)}%</strong>.`;
             }
             
             document.getElementById('bp-result').innerHTML = resultHTML;
             
-            Plotly.react('plot3', plotData, { 
-                paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
-                showlegend: showMyBirthday, legend: { orientation: 'h', y: -0.2 },
-                shapes: [{ type: 'line', x0: 0, x1: 300, y0: 50, y1: 50, line: { color: '#94a3b8', dash: 'dash' } }], 
-                xaxis: { title: 'People in Room', range: [0, 305], gridcolor: '#e2e8f0' }, 
-                yaxis: { title: 'Probability (%)', range: [0, 105], gridcolor: '#e2e8f0' }, 
-                margin: { l: 50, r: 20, t: 10, b: showMyBirthday ? 40 : 50 } 
-            }, plotlyConfig);
+            let layout = { ...layoutBase,
+                showlegend: showMyBirthday,
+                legend: { orientation: 'h', y: -0.2 },
+                shapes: [{ type: 'line', x0: 0, x1: 300, y0: 50, y1: 50, line: { color: '#9ca3af', dash: 'dash' } }], 
+                xaxis: { title: 'People in Room', range: [0, 305] }, 
+                yaxis: { title: 'Probability (%)', range: [0, 105] },
+                margin: { l: 40, r: 20, t: 10, b: showMyBirthday ? 60 : 40 }
+            };
+            Plotly.react('plot3', plotData, layout, plotlyConfig);
         }
         document.getElementById('bp-slider').addEventListener('input', drawBirthday);
         document.getElementById('bp-toggle').addEventListener('change', drawBirthday);
 
+        // --- 4. Friendship Paradox ---
         function drawFriendship() {
-            if(currentTab !== 'group2') return;
-            const myFriendsCount = parseInt(document.getElementById('fp-slider').value);
-            document.getElementById('fp-val').innerText = myFriendsCount;
-
-            let friendDegrees = [];
-            let totalFriendsDegree = 0;
-
-            for (let i = 1; i <= myFriendsCount; i++) {
-                let degree = Math.max(1, Math.round(myFriendsCount * (0.6 + (i % 3) * 0.5 + Math.sin(i) * 0.4)));
-                friendDegrees.unshift(degree);
-                totalFriendsDegree += degree;
-            }
-
-            const avgFriendsOfFriends = totalFriendsDegree / myFriendsCount;
-
-            // Bar Chart
-            const trace1 = { x: ['You', "Friends' Average"], y: [myFriendsCount, avgFriendsOfFriends], type: 'bar', marker: { color: ['#3b82f6', '#f97316'], borderRadius: 4 } };
-            Plotly.react('plot4a', [trace1], { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', title: {text: 'Connections Comparison', font: {size: 14}}, yaxis: { title: 'Connections', gridcolor: '#e2e8f0' }, margin: { l: 40, r: 20, t: 40, b: 30 } }, plotlyConfig);
-
-            // Network Diagram
-            let nodeX = [0], nodeY = [0], nodeText = ['You'], nodeColor = ['#3b82f6'], nodeSize = [24];
-            let edgeX = [], edgeY = [];
-            const radius = 2.5;
-
-            for (let i = 0; i < myFriendsCount; i++) {
-                const angle = (2 * Math.PI * i) / myFriendsCount;
-                const fx = radius * Math.cos(angle);
-                const fy = radius * Math.sin(angle);
-                nodeX.push(fx); nodeY.push(fy);
-                nodeText.push(`Friend ${i+1} (${friendDegrees[i]} friends)`);
-                nodeColor.push(friendDegrees[i] > myFriendsCount ? '#f97316' : '#94a3b8');
-                nodeSize.push(12 + Math.min(friendDegrees[i], 15));
-                edgeX.push(0, fx, null); edgeY.push(0, fy, null);
-            }
-
-            const edgeTrace = { x: edgeX, y: edgeY, mode: 'lines', line: { width: 1.5, color: '#cbd5e1' }, hoverinfo: 'none', type: 'scatter' };
-            const nodeTrace = { 
-                x: nodeX, y: nodeY, mode: 'markers+text', 
-                text: nodeX.map((_, i) => i === 0 ? 'You' : `F${i}`), 
-                textposition: 'top center', hoverinfo: 'text', hovertext: nodeText,
-                marker: { size: nodeSize, color: nodeColor, line: { width: 2, color: '#ffffff' } }, type: 'scatter' 
+            let data = [{
+                x: [1, 2, 2, 3, 3, 4], 
+                y: [2, 1, 3, 2, 4, 3],
+                mode: 'markers+text',
+                text: ['A (1 friend)', 'B (3 friends)', 'C (3 friends)', 'D (3 friends)', 'E (3 friends)', 'F (1 friend)'],
+                textposition: 'bottom center',
+                marker: { size: 30, color: ['#cbd5e1', '#3b82f6', '#3b82f6', '#3b82f6', '#3b82f6', '#cbd5e1'] },
+                type: 'scatter'
+            }];
+            let layout = { ...layoutBase, 
+                xaxis: { showgrid: false, zeroline: false, showticklabels: false },
+                yaxis: { showgrid: false, zeroline: false, showticklabels: false },
+                annotations: [{ text: "Average friends of individuals = 2.3<br>Average friends of their friends = 2.7", showarrow: false, y: 4.5 }]
             };
-
-            Plotly.react('plot4b', [edgeTrace, nodeTrace], { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', showlegend: false, xaxis: { showgrid: false, zeroline: false, showticklabels: false }, yaxis: { showgrid: false, zeroline: false, showticklabels: false }, margin: { l: 10, r: 10, t: 10, b: 10 } }, plotlyConfig);
-
-            document.getElementById('fp-result').innerHTML = `You have <strong>${myFriendsCount}</strong> friends. The mathematical average of your friends' connections is <strong>${avgFriendsOfFriends.toFixed(1)}</strong>.`;
+            Plotly.react('plot4', data, layout, plotlyConfig);
         }
-        document.getElementById('fp-slider').addEventListener('input', drawFriendship);
 
-        // ==========================================
-        // WIDGET LOGIC: GROUP 3
-        // ==========================================
-        let currentBenfordType = 'natural';
-        function drawBenford(type) {
-            if(type) currentBenfordType = type;
-            if(currentTab !== 'group3') return;
+        // --- 5. Benford's Law ---
+        function drawBenford() {
+            let digits = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            let expected = digits.map(d => Math.log10(1 + 1/d) * 100);
             
-            const digits = [1,2,3,4,5,6,7,8,9];
-            let yVals = [];
-            if (currentBenfordType === 'natural') {
-                yVals = digits.map(d => Math.log10(1 + 1/d) * 100);
-            } else {
-                yVals = digits.map(() => (100 / 9) + (Math.random()*4 - 2)); 
-            }
-            
-            Plotly.react('plot5', [{ x: digits, y: yVals, type: 'bar', marker: { color: currentBenfordType==='natural' ? '#9333ea' : '#f43f5e', borderRadius: 4 } }], 
-            { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', xaxis: { title: 'Leading Digit', tickmode: 'linear' }, yaxis: { title: 'Frequency (%)', range: [0, 35], gridcolor: '#e2e8f0' }, margin: { l: 50, r: 20, t: 20, b: 40 } }, plotlyConfig);
+            let data = [{ x: digits, y: expected, type: 'bar', marker: { color: '#10b981' } }];
+            let layout = { ...layoutBase, 
+                xaxis: { title: 'Leading Digit', tickvals: digits }, 
+                yaxis: { title: 'Expected Frequency (%)' } 
+            };
+            Plotly.react('plot5', data, layout, plotlyConfig);
         }
-        document.getElementById('btn-natural').addEventListener('click', () => drawBenford('natural'));
-        document.getElementById('btn-human').addEventListener('click', () => drawBenford('human'));
 
-        let busTimes = [];
-        function drawInspection(passengerTime = null) {
-            if(currentTab !== 'group3') return;
-            const chaos = parseInt(document.getElementById('ip-chaos-slider').value);
-            document.getElementById('ip-chaos-val').innerText = chaos === 0 ? "Perfect" : `Lvl ${chaos}`;
+        // --- 6. Inspection Paradox ---
+        function drawInspection() {
+            let classSizes = ['Class A (10)', 'Class B (10)', 'Class C (10)', 'Class D (70)'];
+            let actualAverage = [25, 25, 25, 25]; 
+            let experiencedAverage = [10, 10, 10, 70];
             
-            busTimes = [0];
-            for(let i=1; i<=10; i++) {
-                let gap = 10;
-                if (i % 2 === 0) gap = 10 + chaos;
-                else gap = 10 - chaos;
-                busTimes.push(busTimes[i-1] + gap);
-            }
-
-            const traceBuses = { x: busTimes, y: Array(11).fill(1), mode: 'markers', name: 'Bus Arrival', marker: { symbol: 'square', size: 16, color: '#f59e0b', line: {color: '#78350f', width: 2} } };
-            let data = [traceBuses];
-
-            if (passengerTime !== null) {
-                data.push({ x: [passengerTime], y: [1], mode: 'markers', name: 'You Arrive', marker: { symbol: 'star', size: 22, color: '#e11d48' } });
-                
-                let nextBus = busTimes.find(t => t >= passengerTime);
-                let prevBus = busTimes.slice().reverse().find(t => t <= passengerTime);
-                let gapLandedIn = nextBus - prevBus;
-                let waitTime = nextBus - passengerTime;
-                
-                document.getElementById('ip-result').innerHTML = `You landed in a <strong>${gapLandedIn} minute</strong> gap.<br>Your wait time: <strong class="text-rose-600">${waitTime.toFixed(1)} mins</strong>.`;
-            } else {
-                document.getElementById('ip-result').innerHTML = "Average gap is 10 min. Click to see your actual wait.";
-            }
-
-            Plotly.react('plot6', data, { paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)', xaxis: { title: 'Minutes Timeline', range: [0, 105], gridcolor: '#e2e8f0' }, yaxis: { visible: false, range: [0, 2] }, legend: { orientation: 'h', y: -0.2 }, margin: { l: 20, r: 20, t: 20, b: 40 }, showlegend: true }, plotlyConfig);
+            let data = [
+                { x: classSizes, y: actualAverage, type: 'scatter', mode: 'lines+markers', name: 'Actual School Average (25)', line: {color: '#94a3b8'} },
+                { x: classSizes, y: experiencedAverage, type: 'bar', name: 'Student Experienced Size', marker: {color: '#f43f5e'} }
+            ];
+            
+            let layout = { ...layoutBase, 
+                yaxis: { title: 'Number of Students' },
+                showlegend: true, legend: { orientation: 'h', y: -0.2 }
+            };
+            Plotly.react('plot6', data, layout, plotlyConfig);
         }
-        
-        document.getElementById('ip-chaos-slider').addEventListener('input', () => drawInspection(null));
-        document.getElementById('btn-passenger').addEventListener('click', () => {
-            const pTime = 5 + Math.random() * 90;
-            drawInspection(pTime);
+
+        // Initialize all charts
+        drawLittlewood();
+        drawLargeNumbers();
+        drawBirthday();
+        drawFriendship();
+        drawBenford();
+        drawInspection();
+
+        // Handle window resizing to redraw Plotly charts correctly
+        window.addEventListener('resize', () => {
+            drawLittlewood();
+            drawLargeNumbers();
+            drawBirthday();
+            drawFriendship();
+            drawBenford();
+            drawInspection();
         });
-
-        // Initialize first render
-        redrawActivePlots();
-
     </script>
 </body>
 </html>
