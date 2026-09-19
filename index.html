@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Math of Miracles & Paradoxes</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 { color: #2c3e50; }
+        .widget-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .controls-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #e9ecef;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .control-group label {
+            flex: 0 0 250px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        .control-group input[type="range"] {
+            flex-grow: 1;
+            margin: 0 15px;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        .control-group .value-display {
+            flex: 0 0 100px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #007bff;
+            font-weight: bold;
+        }
+        button.action-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        button.action-btn:hover { background: #0056b3; }
+        .plot-container { width: 100%; height: 400px; }
+        .dynamic-text {
+            text-align: center;
+            font-size: 1.1em;
+            margin-top: 15px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            color: #0d47a1;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .widget-card { padding: 15px; }
+            .control-group label { flex: 1 1 100%; margin-bottom: 8px; }
+            .control-group input[type="range"] { flex: 1 1 60%; margin: 0 10px 0 0; }
+            .control-group .value-display { flex: 1 1 20%; text-align: right; }
+            button.action-btn { flex: 1 1 100%; margin: 5px 0; }
+            .dynamic-text { font-size: 0.95em; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Mathematics of Miracles & Paradoxes</h1>
+
+    <!-- 1. Law of Truly Large Numbers -->
+    <div class="widget-card">
+        <h2>1. The Law of Truly Large Numbers</h2>
+        <p>Watch how highly improbable events become inevitable as the number of opportunities (trials) increases.</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>Odds (1 in X):</label>
+                <input type="range" id="odds-slider" min="1000" max="100000" step="1000" value="10000">
+                <span class="value-display" id="odds-val">10,000</span>
+            </div>
+            <div class="control-group">
+                <label>Number of Trials:</label>
+                <input type="range" id="trials-slider" min="1000" max="200000" step="1000" value="50000">
+                <span class="value-display" id="trials-val">50,000</span>
+            </div>
+        </div>
+        <div id="plot1" class="plot-container"></div>
+        <div class="dynamic-text" id="ln-result"></div>
+    </div>
+
+    <!-- 2. Littlewood's Law -->
+    <div class="widget-card">
+        <h2>2. Littlewood's Law Calculator</h2>
+        <p>Calculate how many days it takes for a one-in-a-million event to happen based on your daily awareness.</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>Definition of a Miracle (1 in X):</label>
+                <input type="range" id="lw-odds-slider" min="100000" max="5000000" step="100000" value="1000000">
+                <span class="value-display" id="lw-odds-val">1,000,000</span>
+            </div>
+            <div class="control-group">
+                <label>Events Processed (per second):</label>
+                <input type="range" id="lw-events-slider" min="0.1" max="5" step="0.1" value="1">
+                <span class="value-display" id="lw-events-val">1.0</span>
+            </div>
+            <div class="control-group">
+                <label>Active Hours (per day):</label>
+                <input type="range" id="lw-hours-slider" min="1" max="24" step="1" value="8">
+                <span class="value-display" id="lw-hours-val">8</span>
+            </div>
+        </div>
+        <div id="plot2" class="plot-container" style="height: 300px;"></div>
+        <div class="dynamic-text" id="lw-result"></div>
+    </div>
+
+	<!-- 3. The Birthday Paradox -->
+    <div class="widget-card">
+        <h2>3. The Birthday Paradox</h2>
+        <p>How many people need to be in a room for it to be mathematically likely (>50%) that two share a birthday?</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>People in the Room:</label>
+                <input type="range" id="bp-slider" min="1" max="300" step="1" value="23">
+                <span class="value-display" id="bp-val">23</span>
+            </div>
+            <div class="control-group" style="margin-top: 15px;">
+                <label style="flex: 0 0 250px;">Show "My Specific Birthday":</label>
+                <input type="checkbox" id="bp-toggle" style="width: 20px; height: 20px; cursor: pointer;">
+            </div>
+        </div>
+        <div id="plot3" class="plot-container"></div>
+        <div class="dynamic-text" id="bp-result"></div>
+    </div>
+
+    <!-- 4. The Friendship Paradox -->
+    <div class="widget-card">
+        <h2>4. The Friendship Paradox</h2>
+        <p>Adjust your own immediate friend group size. Notice how the mathematical average of your friends' friend count almost always exceeds your own!</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>Your Friend Count:</label>
+                <input type="range" id="fp-slider" min="1" max="25" step="1" value="5">
+                <span class="value-display" id="fp-val">5</span>
+            </div>
+        </div>
+        <div id="plot4a" class="plot-container" style="height: 300px;"></div>
+        <div id="plot4b" class="plot-container" style="height: 400px; margin-top: 20px;"></div>
+        <div class="dynamic-text" id="fp-result"></div>
+    </div>
+
+    <!-- 5. Benford's Law -->
+    <div class="widget-card">
+        <h2>5. Benford's Law (The First-Digit Anomaly)</h2>
+        <p>In naturally occurring datasets, the number 1 appears as the leading digit 30% of the time. Human intuition expects an even 11.1% spread.</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>Dataset Type:</label>
+                <button class="action-btn" id="btn-natural">Natural (Logarithmic)</button>
+                <button class="action-btn" id="btn-human" style="background:#dc3545;">Human (Random)</button>
+            </div>
+        </div>
+        <div id="plot5" class="plot-container"></div>
+    </div>
+
+    <!-- 6. The Inspection Paradox -->
+    <div class="widget-card">
+        <h2>6. The Inspection Paradox (Bus Stop Bias)</h2>
+        <p>Buses arrive every 10 minutes on average. Adjust the "Chaos" slider to make buses bunch up. Click "Spawn Passenger" to see why you always land in the longest waits.</p>
+        <div class="controls-container">
+            <div class="control-group">
+                <label>Schedule Chaos (Variance):</label>
+                <input type="range" id="ip-chaos-slider" min="0" max="8" step="1" value="6">
+                <span class="value-display" id="ip-chaos-val">High</span>
+            </div>
+            <div class="control-group">
+                <label>Test Your Luck:</label>
+                <button class="action-btn" id="btn-passenger">Spawn Random Passenger</button>
+            </div>
+        </div>
+        <div id="plot6" class="plot-container" style="height: 300px;"></div>
+        <div class="dynamic-text" id="ip-result">
+            Average gap is 10 min. Click to see your actual wait.
+        </div>
+    </div>
+
+    <script>
+        const formatNum = (num) => num.toLocaleString(undefined, { maximumFractionDigits: 1 });
+        const plotlyConfig = { responsive: true, displayModeBar: false };
+
+        // --- 1. Large Numbers ---
+        function drawLargeNumbers() {
+            const odds = parseInt(document.getElementById('odds-slider').value);
+            const maxTrials = parseInt(document.getElementById('trials-slider').value);
+            document.getElementById('odds-val').innerText = formatNum(odds);
+            document.getElementById('trials-val').innerText = formatNum(maxTrials);
+
+            let xValues = [], yValues = [];
+            for(let i = 0; i <= 100; i++) {
+                let t = i * (maxTrials / 100);
+                xValues.push(t);
+                yValues.push((1 - Math.pow(1 - (1/odds), t)) * 100);
+            }
+            const finalProb = yValues[100];
+            document.getElementById('ln-result').innerHTML = `Probability of event happening at least once: <strong>${finalProb.toFixed(2)}%</strong>`;
+
+            Plotly.react('plot1', [{ x: xValues, y: yValues, type: 'scatter', mode: 'lines', line: { color: '#007bff', width: 3 }, fill: 'tozeroy' }], { title: 'Cumulative Probability', xaxis: { title: 'Number of Trials' }, yaxis: { title: 'Probability (%)', range: [0, 105] }, margin: { l: 40, r: 20, t: 40, b: 50 } }, plotlyConfig);
+        }
+        document.getElementById('odds-slider').addEventListener('input', drawLargeNumbers);
+        document.getElementById('trials-slider').addEventListener('input', drawLargeNumbers);
+        drawLargeNumbers();
+
+        // --- 2. Littlewood ---
+        function drawLittlewood() {
+            const odds = parseInt(document.getElementById('lw-odds-slider').value);
+            const eps = parseFloat(document.getElementById('lw-events-slider').value);
+            const hrs = parseInt(document.getElementById('lw-hours-slider').value);
+            document.getElementById('lw-odds-val').innerText = formatNum(odds);
+            document.getElementById('lw-events-val').innerText = eps.toFixed(1);
+            document.getElementById('lw-hours-val').innerText = hrs;
+
+            const daily = eps * 3600 * hrs;
+            const days = odds / daily;
+            document.getElementById('lw-result').innerHTML = `You process <strong>${formatNum(daily)}</strong> events a day.<br>You will experience a miracle every <strong>${days.toFixed(1)} days</strong>.`;
+
+            Plotly.react('plot2', [{ type: "indicator", mode: "gauge+number", value: days, title: { text: "Days Between Miracles" }, number: { suffix: " days" }, gauge: { axis: { range: [null, 365] }, bar: { color: "#28a745" }, steps: [{ range: [0, 30], color: "rgba(40,167,69,0.2)" }, { range: [30, 90], color: "rgba(255,193,7,0.2)" }, { range: [90, 365], color: "rgba(220,53,69,0.2)" }] } }], { margin: { t: 50, b: 20, l: 30, r: 30 } }, plotlyConfig);
+        }
+        document.getElementById('lw-odds-slider').addEventListener('input', drawLittlewood);
+        document.getElementById('lw-events-slider').addEventListener('input', drawLittlewood);
+        document.getElementById('lw-hours-slider').addEventListener('input', drawLittlewood);
+        drawLittlewood();
+
+        // --- 3. Birthday Paradox ---
+        function drawBirthday() {
+            const n = parseInt(document.getElementById('bp-slider').value);
+            const showMyBirthday = document.getElementById('bp-toggle').checked;
+            document.getElementById('bp-val').innerText = n;
+
+            let xVals = [], yValsAny = [], yValsMine = [];
+            let pAny = 1;
+
+            // Calculate both curves up to 300 people
+            for(let i = 1; i <= 300; i++) {
+                // The standard paradox (Any match)
+                pAny *= (365 - (i - 1)) / 365;
+                xVals.push(i);
+                yValsAny.push((1 - pAny) * 100);
+
+                // The "My Birthday" illusion (Fixed target)
+                // If there are i people, there are i-1 *other* people to compare to you
+                let pMine = 1 - Math.pow(364/365, i - 1);
+                yValsMine.push(pMine * 100);
+            }
+
+            let currentProbAny = yValsAny[n-1];
+            let currentProbMine = yValsMine[n-1];
+
+            // Build the standard chart data
+            let plotData = [
+                { x: xVals, y: yValsAny, type: 'scatter', mode: 'lines', name: 'Any Shared Birthday', line: { color: '#6f42c1', width: 3 } },
+                { x: [n], y: [currentProbAny], type: 'scatter', mode: 'markers', name: 'Any Match', marker: { size: 12, color: '#6f42c1' } }
+            ];
+
+            let resultHTML = `With <strong>${n}</strong> people, the chance of <em>any</em> shared birthday is <strong>${currentProbAny.toFixed(1)}%</strong>.`;
+
+            // Inject the second curve if the toggle is checked
+            if (showMyBirthday) {
+                plotData.push({ x: xVals, y: yValsMine, type: 'scatter', mode: 'lines', name: 'Matches YOUR Birthday', line: { color: '#fd7e14', width: 3, dash: 'dot' } });
+                plotData.push({ x: [n], y: [currentProbMine], type: 'scatter', mode: 'markers', name: 'Your Match', marker: { size: 12, color: '#fd7e14' } });
+
+                resultHTML += `<br>The chance someone shares <em>your exact</em> birthday is only <strong>${currentProbMine.toFixed(1)}%</strong>.`;
+            }
+
+            document.getElementById('bp-result').innerHTML = resultHTML;
+
+            Plotly.react('plot3', plotData, {
+                showlegend: showMyBirthday,
+                legend: { orientation: 'h', y: -0.2 },
+                shapes: [{ type: 'line', x0: 0, x1: 300, y0: 50, y1: 50, line: { color: 'gray', dash: 'dash' } }],
+                xaxis: { title: 'People in Room', range: [0, 305] },
+                yaxis: { title: 'Probability (%)', range: [0, 105] },
+                margin: { l: 40, r: 20, t: 10, b: showMyBirthday ? 40 : 50 }
+            }, plotlyConfig);
+        }
+
+        // Listeners for both the slider and the checkbox
+        document.getElementById('bp-slider').addEventListener('input', drawBirthday);
+        document.getElementById('bp-toggle').addEventListener('change', drawBirthday);
+        drawBirthday();
+
+        // --- 4. Friendship Paradox ---
+        function drawFriendship() {
+            const myFriendsCount = parseInt(document.getElementById('fp-slider').value);
+            document.getElementById('fp-val').innerText = myFriendsCount;
+
+            // Generate deterministic friend connection degrees where popular friends inflate the average
+            let friendNames = [];
+            let friendDegrees = [];
+            let totalFriendsDegree = 0;
+
+            for (let i = 1; i <= myFriendsCount; i++) {
+                // Give friends varying degrees, weighted heavier toward higher degrees to simulate reality
+                let degree = Math.max(1, Math.round(myFriendsCount * (0.6 + (i % 3) * 0.5 + Math.sin(i) * 0.4)));
+                friendNames.unshift(`Friend ${i}`);
+                friendDegrees.unshift(degree);
+                totalFriendsDegree += degree;
+            }
+
+            const avgFriendsOfFriends = totalFriendsDegree / myFriendsCount;
+
+            // 4a. Bar Chart Comparison
+            const trace1 = { x: ['You', "Your Friends' Average"], y: [myFriendsCount, avgFriendsOfFriends], type: 'bar', marker: { color: ['#17a2b8', '#fd7e14'] } };
+            Plotly.react('plot4a', [trace1], { title: 'Your Friend Count vs. Your Friends’ Average', yaxis: { title: 'Number of Connections' }, margin: { l: 40, r: 20, t: 40, b: 30 } }, plotlyConfig);
+
+            // 4b. Network Graph (Node-Link Diagram)
+            // Center node: You (0,0)
+            let nodeX = [0];
+            let nodeY = [0];
+            let nodeText = ['You'];
+            let nodeColor = ['#dc3545'];
+            let nodeSize = [24];
+
+            let edgeX = [];
+            let edgeY = [];
+
+            // Position your friends in a circle around you
+            const radius = 2.5;
+            for (let i = 0; i < myFriendsCount; i++) {
+                const angle = (2 * Math.PI * i) / myFriendsCount;
+                const fx = radius * Math.cos(angle);
+                const fy = radius * Math.sin(angle);
+
+                nodeX.push(fx);
+                nodeY.push(fy);
+                nodeText.push(`Friend ${i+1} (${friendDegrees[i]} friends)`);
+                // Color socialites (higher connections) differently from hermits
+                nodeColor.push(friendDegrees[i] > myFriendsCount ? '#fd7e14' : '#17a2b8');
+                nodeSize.push(12 + Math.min(friendDegrees[i], 15));
+
+                // Edge from You to Friend
+                edgeX.push(0, fx, null);
+                edgeY.push(0, fy, null);
+            }
+
+            const edgeTrace = {
+                x: edgeX, y: edgeY,
+                mode: 'lines',
+                line: { width: 1.5, color: '#adb5bd' },
+                hoverinfo: 'none',
+                type: 'scatter'
+            };
+
+            const nodeTrace = {
+                x: nodeX, y: nodeY,
+                mode: 'markers+text',
+                text: nodeX.map((_, i) => i === 0 ? 'You' : `F${i}`),
+                textposition: 'top center',
+                hoverinfo: 'text',
+                hovertext: nodeText,
+                marker: {
+                    size: nodeSize,
+                    color: nodeColor,
+                    line: { width: 2, color: '#ffffff' }
+                },
+                type: 'scatter'
+            };
+
+            Plotly.react('plot4b', [edgeTrace, nodeTrace], {
+                title: 'Your Ego-Network (Larger nodes = More popular friends)',
+                showlegend: false,
+                xaxis: { showgrid: false, zeroline: false, showticklabels: false },
+                yaxis: { showgrid: false, zeroline: false, showticklabels: false },
+                margin: { l: 20, r: 20, t: 40, b: 20 }
+            }, plotlyConfig);
+
+            document.getElementById('fp-result').innerHTML = `With <strong>${myFriendsCount}</strong> friends, the mathematical average of your friends' connections is <strong>${avgFriendsOfFriends.toFixed(1)}</strong>. Your friends are systematically more popular than you!`;
+        }
+
+        document.getElementById('fp-slider').addEventListener('input', drawFriendship);
+        drawFriendship();
+
+        // --- 5. Benford's Law ---
+        function drawBenford(type) {
+            const digits = [1,2,3,4,5,6,7,8,9];
+            let yVals = [];
+            if (type === 'natural') {
+                yVals = digits.map(d => Math.log10(1 + 1/d) * 100);
+            } else {
+                yVals = digits.map(() => (100 / 9) + (Math.random()*4 - 2));
+            }
+
+            Plotly.react('plot5', [{ x: digits, y: yVals, type: 'bar', marker: { color: type==='natural' ? '#28a745' : '#dc3545' } }], { xaxis: { title: 'Leading Digit', tickmode: 'linear' }, yaxis: { title: 'Frequency (%)', range: [0, 35] }, margin: { l: 40, r: 20, t: 20, b: 40 } }, plotlyConfig);
+        }
+        document.getElementById('btn-natural').addEventListener('click', () => drawBenford('natural'));
+        document.getElementById('btn-human').addEventListener('click', () => drawBenford('human'));
+        drawBenford('natural');
+
+        // --- 6. Inspection Paradox ---
+        let busTimes = [];
+        function drawInspection(passengerTime = null) {
+            const chaos = parseInt(document.getElementById('ip-chaos-slider').value);
+            document.getElementById('ip-chaos-val').innerText = chaos === 0 ? "Perfectly Even" : `Chaos Level ${chaos}`;
+
+            busTimes = [0];
+            for(let i=1; i<=10; i++) {
+                let gap = 10;
+                if (i % 2 === 0) gap = 10 + chaos;
+                else gap = 10 - chaos;
+                busTimes.push(busTimes[i-1] + gap);
+            }
+
+            const traceBuses = { x: busTimes, y: Array(11).fill(1), mode: 'markers', name: 'Bus Arrival', marker: { symbol: 'square', size: 15, color: '#ffc107', line: {color: 'black', width: 2} } };
+            let data = [traceBuses];
+
+            if (passengerTime !== null) {
+                data.push({ x: [passengerTime], y: [1], mode: 'markers', name: 'You Arrive', marker: { symbol: 'star', size: 20, color: '#dc3545' } });
+
+                let nextBus = busTimes.find(t => t >= passengerTime);
+                let prevBus = busTimes.slice().reverse().find(t => t <= passengerTime);
+                let gapLandedIn = nextBus - prevBus;
+                let waitTime = nextBus - passengerTime;
+
+                document.getElementById('ip-result').innerHTML = `You landed in a <strong>${gapLandedIn} minute</strong> gap.<br>Your actual wait time: <strong>${waitTime.toFixed(1)} minutes</strong>.`;
+            } else {
+                document.getElementById('ip-result').innerHTML = "Average gap is 10 min. Click to see your actual wait.";
+            }
+
+            Plotly.react('plot6', data, { xaxis: { title: 'Minutes', range: [0, 105] }, yaxis: { visible: false, range: [0, 2] }, legend: { orientation: 'h', y: -0.2 }, margin: { l: 20, r: 20, t: 20, b: 40 }, showlegend: true }, plotlyConfig);
+        }
+
+        document.getElementById('ip-chaos-slider').addEventListener('input', () => drawInspection(null));
+        document.getElementById('btn-passenger').addEventListener('click', () => {
+            const pTime = 5 + Math.random() * 90;
+            drawInspection(pTime);
+        });
+        drawInspection(null);
+
+    </script>
+</body>
+</html>
