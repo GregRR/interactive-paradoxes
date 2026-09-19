@@ -1,0 +1,15 @@
+/* Site-wide custom styles. Tailwind utility classes are loaded separately in index.html. */
+/* Custom Toggle Switch Styles */
+.toggle-checkbox:checked {
+    right: 0;
+    border-color: #68D391;
+}
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #68D391;
+}
+.toggle-checkbox:checked + .toggle-label:after {
+    transform: translateX(100%);
+}
+
+/* Smooth transitions for mobile menu */
+#sidebar { transition: transform 0.3s ease-in-out; }
