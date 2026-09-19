@@ -22,6 +22,7 @@ pnpm-debug.log*
 .AppleDouble
 .LSOverride
 ._*
+*~
 
 # Editor / IDE files
 .vscode/
