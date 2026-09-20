@@ -106,3 +106,52 @@ the visitor can see, rather than as a branching diagram.
 
 **Scenario framing:** the DNA/forensic scenario uses fully illustrative numbers and does not
 reference any real legal case, defendant, or crime, to keep the focus on the underlying math.
+
+## The Monty Hall Problem (Part 1: Play the Game)
+
+**Visualization on the site:** a playable simulation with three door images (custom artwork), not
+a static explanation or a pre-computed chart. The player goes through the full game loop -- pick a
+door, the host reveals a goat behind one of the other two, stay or switch, see the result -- and can
+replay it repeatedly. A "show me the stats" toggle overlays 33.3%/66.7% probability labels on the
+doors, visually groups the two non-picked doors with a connecting bar, and adds an explanatory
+sentence stating that the 66.7% held by the "other two doors" doesn't split evenly once one of them
+is revealed to be a goat -- it transfers entirely to the one remaining unopened door, which is the
+mechanism visitors need to see to understand *why* switching wins.
+
+**Why a playable game with a cumulative tally, not a static explanation:**
+
+- Saenen, L., Heyvaert, M., Van Dooren, W., Schaeken, W., & Onghena, P. (2018). Why Humans Fail in
+  Solving the Monty Hall Dilemma: A Systematic Review. *Psychologica Belgica*, 58(1), 1-9.
+  https://doi.org/10.5334/pb.274 -- a review of 26 empirical studies (2000-2018) on why people get
+  this wrong and what helps. Key findings that shaped this exhibit:
+  - Repeated play with feedback increases switching rates over trials, but "100% switching
+    behaviour was never observed" -- so the exhibit is designed for many replays (a persistent
+    "Play Again" flow), not a one-shot demonstration.
+  - A "persistent dissociation" was found between improved switching *behavior* and improved
+    *understanding* of why switching works -- playing alone teaches the habit, not the reasoning.
+    This is why the exhibit has a separate stats mode with explicit text about the host's knowledge
+    constraining which door gets opened, rather than relying on the tally to teach the mechanism by
+    itself.
+  - Conditional frequency feedback (wins reported as a fraction of attempts for each strategy, e.g.
+    "switched: 7/10") produced the strongest measured effect on switching, per Saenen et al.
+    (2015b) as cited in this review -- stronger than a bare cumulative win count. The scoreboard in
+    this exhibit always shows wins-out-of-attempts per strategy for this reason.
+  - Howard et al. (2007), also cited in this review, found that labeling a revealed non-winning
+    door as "empty" rather than removing it from the display increased switching -- seeing that
+    there's nothing left to reconsider about that door helps. This exhibit keeps the revealed goat
+    door visible (not removed or hidden) for the same reason.
+  - A common failure mode identified across studies is not recognizing that the host's choice is
+    constrained by knowing where the prize is (he never opens the prize, never opens the player's
+    door) -- players instead treat the reveal as if it came from a random process. The stats-mode
+    message addresses this directly by stating why the odds don't reset to 50/50.
+
+**Design decisions driven by this research:** the exhibit is built for repeated play (unlimited
+replays, a persistent tally) rather than a single walkthrough; results are always shown as
+wins-out-of-attempts per strategy, never as a bare count; the revealed goat door stays visible and
+grouped with the remaining door rather than disappearing; and stats mode pairs the numeric
+grouping (33.3%/66.7%) with an explicit sentence about *why* the odds don't reset, since the
+research found behavior and understanding don't automatically improve together.
+
+**Door artwork:** original digital illustrations (closed door, door revealing a goat, door
+revealing a bag of money), cropped to a consistent frame across all three states so swapping the
+image doesn't shift the door's size or position on screen.

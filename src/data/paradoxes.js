@@ -103,6 +103,21 @@ export const groups = [
                 usesPlotly: false
             }
         ]
+    },
+    {
+        number: 4,
+        title: 'Information & Conditional Probability',
+        description: 'How new information from a knowledgeable source should change the odds you assign to what you already picked.',
+        labelColor: 'text-amber-400',
+        activeBorder: 'border-amber-500',
+        paradoxes: [
+            {
+                slug: 'monty-hall-problem',
+                title: 'The Monty Hall Problem',
+                summary: 'Switching your choice after a host reveals a losing door doubles your odds of winning, even though it feels like it shouldn’t matter.',
+                usesPlotly: false
+            }
+        ]
     }
 ];
 
