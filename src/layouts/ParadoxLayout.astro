@@ -1,0 +1,38 @@
+---
+/**
+ * Wrapper for a single paradox's page. Supplies everything that is the same on
+ * every paradox page, so a page file only contains its own exhibit markup:
+ *
+ *   - the topic group's title and description as an <h2> at the top of the page
+ *   - the paradox's name as the page's one <h1>, inside the white exhibit card
+ *   - the <title> and meta description, and the sidebar highlight
+ *
+ * Props:
+ *   slug  The paradox's slug from src/data/paradoxes.js.
+ *
+ * The default slot is the exhibit itself: explanation text, controls, chart,
+ * result box, and "further reading" link.
+ */
+import BaseLayout from './BaseLayout.astro';
+import { findParadox } from '../data/paradoxes.js';
+
+const { slug } = Astro.props;
+const { group, paradox } = findParadox(slug);
+---
+
+<BaseLayout
+    title={`${paradox.title} | Interactive Paradoxes`}
+    description={paradox.summary}
+    plotly={paradox.usesPlotly}
+    currentSlug={slug}
+>
+    <header class="mb-8">
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">{group.title}</h2>
+        <p class="text-slate-600 text-lg">{group.description}</p>
+    </header>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
+        <h1 class="text-xl font-bold text-slate-800 mb-2">{paradox.title}</h1>
+        <slot />
+    </div>
+</BaseLayout>

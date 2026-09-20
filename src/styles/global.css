@@ -1,4 +1,6 @@
-/* Site-wide custom styles. Tailwind utility classes are loaded separately in index.html. */
+/* Site-wide styles. Tailwind v4 is loaded through the Vite plugin (see astro.config.mjs). */
+@import "tailwindcss";
+
 /* Custom Toggle Switch Styles */
 .toggle-checkbox:checked {
     right: 0;

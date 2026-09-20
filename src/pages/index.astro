@@ -1,0 +1,42 @@
+---
+/**
+ * Landing page (/). Lists every paradox under its topic group, using the same
+ * card styling as the exhibit pages. This is the only page whose <h1> is the
+ * site name; on every other page the <h1> is the paradox's name.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { groups, paradoxPath } from '../data/paradoxes.js';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout
+    title="Interactive Paradoxes | Statistical Miracles & Probability Illusions"
+    description="Interactive visualizations of statistical paradoxes and probability illusions. Change the numbers and see why intuition and math disagree."
+>
+    <header class="mb-8">
+        <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Interactive Paradoxes</h1>
+        <p class="text-slate-600 text-lg">
+            An interactive sandbox for statistical paradoxes and probability illusions. Each exhibit lets you
+            change the numbers and see for yourself why intuition and math disagree.
+        </p>
+    </header>
+
+    {groups.map((group) => (
+        <section class="mb-10">
+            <h2 class="text-2xl font-bold text-slate-900 mb-1">{group.title}</h2>
+            <p class="text-slate-600 mb-4">{group.description}</p>
+            <div class="grid gap-4 md:grid-cols-2">
+                {group.paradoxes.map((paradox) => (
+                    <a
+                        href={paradoxPath(paradox.slug, base)}
+                        class="block bg-white rounded-2xl shadow-sm border border-slate-200 p-6 hover:border-slate-300 transition-colors"
+                    >
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">{paradox.title}</h3>
+                        <p class="text-slate-600">{paradox.summary}</p>
+                    </a>
+                ))}
+            </div>
+        </section>
+    ))}
+</BaseLayout>

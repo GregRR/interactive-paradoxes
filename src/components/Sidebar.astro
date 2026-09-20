@@ -1,0 +1,56 @@
+---
+/**
+ * Sidebar navigation. Topic groups are visual organization only (plain text,
+ * not links); every paradox is its own link. On narrow screens the sidebar is
+ * an off-canvas panel toggled by the hamburger button (see scripts/mobile-menu.js).
+ *
+ * Props:
+ *   currentSlug  slug of the paradox being viewed, so its link is highlighted.
+ *                Omit on the landing page.
+ */
+import { groups, paradoxPath, withBase } from '../data/paradoxes.js';
+
+const { currentSlug } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!-- Sidebar Navigation -->
+<nav id="sidebar" aria-label="Paradoxes" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 w-full md:w-72 bg-slate-900 text-slate-300 z-[60] flex flex-col h-full shadow-2xl flex-shrink-0">
+    <div class="p-6 border-b border-slate-800 hidden md:block">
+        {/* Not a heading: each page's <h1> is the paradox name (or the site name on the landing page). */}
+        <a href={base} class="block text-2xl font-bold text-white tracking-tight">Interactive Paradox</a>
+        <p class="text-xs text-slate-400 mt-2 uppercase tracking-widest font-semibold">Explorations in Probability</p>
+    </div>
+    <div class="flex-1 overflow-y-auto py-4">
+        <ul class="space-y-4">
+            {groups.map((group) => (
+                <li role="group" aria-labelledby={`nav-group-${group.number}`}>
+                    {/* Group heading: visual organization only, deliberately not a link or a heading element. */}
+                    <p id={`nav-group-${group.number}`} class="px-6 py-2">
+                        <span class={`block text-xs font-semibold mb-1 ${group.labelColor}`}>Group {group.number}</span>
+                        <span class="block font-semibold text-slate-200">{group.title}</span>
+                    </p>
+                    <ul class="space-y-1">
+                        {group.paradoxes.map((paradox) => {
+                            const isCurrent = paradox.slug === currentSlug;
+                            return (
+                                <li>
+                                    <a
+                                        href={paradoxPath(paradox.slug, base)}
+                                        aria-current={isCurrent ? 'page' : undefined}
+                                        class:list={[
+                                            'block pl-8 pr-6 py-2 text-sm hover:bg-slate-800 hover:text-white transition-colors border-l-4',
+                                            isCurrent ? ['bg-slate-800 text-white', group.activeBorder] : 'border-transparent'
+                                        ]}
+                                    >
+                                        {paradox.title}
+                                    </a>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </li>
+            ))}
+        </ul>
+    </div>
+</nav>

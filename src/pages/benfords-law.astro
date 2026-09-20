@@ -1,0 +1,28 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+---
+
+<ParadoxLayout slug="benfords-law">
+    <p class="text-slate-600 mb-6">Benford’s Law says that in many real-world datasets, numbers are much more likely to begin with smaller digits
+    than larger ones. About 30% begin with 1, while fewer than 5% begin with 9. Human intuition expects a more even ~11.1%
+    spread. Benford's law happens because many real-world quantities grow or vary over wide ranges, so they spend more time
+    starting with smaller digits before reaching the larger ones.</p>
+
+    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 flex flex-wrap gap-4 justify-center">
+        <button id="btn-natural" class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-purple-600">
+            Natural (Logarithmic) Data
+        </button>
+        <button id="btn-human" class="px-6 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
+            The Human Intuition
+        </button>
+    </div>
+    <div id="plot5" class="w-full h-80"></div>
+    <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+			Further reading:
+       	<a href="https://en.wikipedia.org/wiki/Benford%27s_law" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Benford's Law on Wikipedia</a>.
+		</p>
+</ParadoxLayout>
+
+<script>
+    import '../scripts/paradoxes/benfords-law.js';
+</script>
