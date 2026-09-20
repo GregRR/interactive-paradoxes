@@ -130,7 +130,126 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
 
     <p class="text-xs text-slate-500 mt-4">
         This is the classic version of the problem: the host always opens a door you didn't pick,
-        always reveals a goat, and never opens the door hiding the money. Further reading:
+        always reveals a goat, and never opens the door hiding the money.
+    </p>
+
+    <hr class="my-8 border-slate-200" />
+
+    <!-- ======================================================================
+         Part 2: 100-Trial Simulator
+         Runs many independent rounds under "always stay" and "always switch" side
+         by side, so a visitor can watch each strategy's win rate converge toward
+         its true long-run value (1/3 vs. 2/3) instead of relying on a handful of
+         personally-played rounds, which is far too small a sample to feel
+         conclusive on its own.
+         ====================================================================== -->
+    <h3 class="text-lg font-bold text-slate-800 mb-2">Now Try 100 Trials at Once</h3>
+    <p class="text-slate-600 mb-4">
+        One round only tells you what happened once. Below, a hundred independent games run
+        side by side — half playing "always stay," half playing "always switch" — so you can
+        watch both win rates settle in around their true long-run values instead of taking a
+        single result (or your memory of a few rounds) as the whole story.
+    </p>
+
+    <!-- Grids are capped at max-w-[220px] (roughly 10 cells at ~20px each) rather than
+         stretching to the card's full width -- letting them go w-full made each cell scale
+         up to 40-50px, which reads as a handful of large tiles rather than "100 small trial
+         outcomes" and burned far more vertical space than the grid needed. The mockup this
+         was ported from keeps each grid to a compact, fixed-feeling size regardless of how
+         wide the surrounding card is; capping max-width (rather than setting a fixed width
+         outright) keeps it responsive on narrow phone screens while staying small on desktop. -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- STAY BOARD -->
+        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4">
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <h4 class="text-sm font-bold text-teal-700 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-teal-600"></span> Stay Strategy
+                    </h4>
+                    <span class="text-xs text-slate-500">Never switch doors</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-xl font-black text-teal-700"><span id="mhs-stay-wins">0</span></span>
+                    <span class="text-xs text-slate-500">/ <span id="mhs-total-trials">100</span> (<span id="mhs-stay-pct">0.0</span>%)</span>
+                </div>
+            </div>
+            <canvas id="mhs-stay-canvas" class="block mx-auto w-full max-w-[220px] border border-slate-200 rounded-lg bg-white" style="aspect-ratio: 1 / 1;"></canvas>
+        </div>
+
+        <!-- SWITCH BOARD -->
+        <div class="bg-slate-50 border border-rose-100 rounded-xl p-4">
+            <div class="flex justify-between items-center mb-3">
+                <div>
+                    <h4 class="text-sm font-bold text-rose-700 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-rose-600"></span> Switch Strategy
+                    </h4>
+                    <span class="text-xs text-slate-500">Always switch doors</span>
+                </div>
+                <div class="text-right">
+                    <span class="text-xl font-black text-rose-700"><span id="mhs-switch-wins">0</span></span>
+                    <span class="text-xs text-slate-500">/ <span id="mhs-total-trials-2">100</span> (<span id="mhs-switch-pct">0.0</span>%)</span>
+                </div>
+            </div>
+            <canvas id="mhs-switch-canvas" class="block mx-auto w-full max-w-[220px] border border-slate-200 rounded-lg bg-white" style="aspect-ratio: 1 / 1;"></canvas>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap gap-4 justify-center mt-3 text-xs text-slate-500">
+        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm inline-block bg-emerald-500"></span>Won</div>
+        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm inline-block bg-slate-200"></span>Lost</div>
+        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-sm inline-block bg-slate-100 border border-slate-200"></span>Not yet run</div>
+    </div>
+
+    <!-- Current trial status: what just happened, in plain language, not just the grid colors. -->
+    <div class="bg-slate-50 border border-slate-100 rounded-xl p-3 mt-4 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm">
+        <div id="mhs-status-text" class="text-slate-600 italic">
+            Ready to run. Press "Step" or "Run All" below.
+        </div>
+        <div class="flex gap-4 text-slate-500 font-medium shrink-0 text-xs">
+            <div>Stay door: <span id="mhs-status-stay" class="text-slate-700 font-bold">—</span></div>
+            <div>Switch door: <span id="mhs-status-switch" class="text-slate-700 font-bold">—</span></div>
+        </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 mt-3 flex items-center gap-3">
+        <span class="text-xs font-semibold text-slate-600 shrink-0">
+            Trial <span id="mhs-trial-num" class="text-amber-600 font-bold">0</span> / <span id="mhs-total-trials-3">100</span>
+        </span>
+        <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+            <div id="mhs-progress-bar" class="bg-amber-500 h-full w-0 transition-all duration-100"></div>
+        </div>
+    </div>
+
+    <!-- Step / Run All / Reset -->
+    <div class="flex items-center justify-center gap-3 mt-4">
+        <button
+            id="mhs-step-btn"
+            type="button"
+            class="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            Step
+        </button>
+        <button
+            id="mhs-run-btn"
+            type="button"
+            class="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-colors bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            Run All 100 Trials
+        </button>
+        <button
+            id="mhs-reset-btn"
+            type="button"
+            class="px-4 py-2.5 rounded-lg text-sm font-semibold text-slate-500 underline hover:text-slate-700"
+        >
+            Reset
+        </button>
+    </div>
+
+    <p class="text-xs text-slate-500 mt-6">
+        Inspired by the Monty Hall simulation on
+        <a href="https://www.youtube.com/watch?v=WhSjcF-qjXs" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">MythBusters</a>.
+        Further reading:
         <a href="https://en.wikipedia.org/wiki/Monty_Hall_problem" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Monty Hall Problem on Wikipedia</a>.
     </p>
 </ParadoxLayout>
@@ -164,4 +283,5 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
 
 <script>
     import '../scripts/paradoxes/monty-hall-problem.js';
+    import '../scripts/paradoxes/monty-hall-simulator.js';
 </script>

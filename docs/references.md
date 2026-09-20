@@ -155,3 +155,79 @@ research found behavior and understanding don't automatically improve together.
 **Door artwork:** original digital illustrations (closed door, door revealing a goat, door
 revealing a bag of money), cropped to a consistent frame across all three states so swapping the
 image doesn't shift the door's size or position on screen.
+
+## The Monty Hall Problem (Part 2: 100-Trial Simulator)
+
+**Visualization on the site:** two canvas-rendered 10×10 icon grids, one per strategy ("always
+stay" and "always switch"), filling in cell by cell as up to 100 independent trials are revealed
+either one at a time ("Step") or on a short timer ("Run All 100 Trials"). Both grids are driven by
+the same 100 underlying simulated rounds (one random prize door, one random first pick, one host
+reveal per round) so that "what stay would have won" and "what switch would have won" on that same
+round are shown side by side, rather than needing 200 independent trials to compare the two
+strategies. An always-visible scoreboard (wins / attempts / percentage) sits above each grid, and a
+status line plus progress bar report what just happened in plain language. This is a deliberate
+second exhibit alongside Part 1's single-round playable game: a handful of personally-played
+rounds is too small a sample to feel conclusive against a visitor's own intuition, so this adds a
+much larger, faster-to-run sample size to watch both win rates settle in near their true long-run
+values (1/3 and 2/3).
+
+**Why this is a second, separate exhibit rather than an extension of Part 1's tally:**
+
+- Gilovich, T., Vallone, R., & Tversky, A. (1985). The Hot Hand in Basketball: On the
+  Misperception of Random Sequences. *Cognitive Psychology*, 17(3), 295–314; and Ayton, P., &
+  Fischer, I. (2004). The Hot Hand Fallacy and the Gambler's Fallacy: Two Faces of Subjective
+  Randomness? *Memory & Cognition*, 32(8), 1369–1378. https://doi.org/10.3758/BF03206327 -- this
+  line of research shows people systematically misread short random binary sequences (seeing
+  streaks as meaningful, or seeing a "due" reversal that isn't actually more likely), and that
+  these misperceptions are strongest at small sample sizes. A handful of rounds played by hand (as
+  in Part 1) is exactly the small-N regime where streak noise can look meaningful either way; 100
+  trials run back-to-back gives a large enough sample that the win rate visibly stabilizes near
+  its true value even though individual streaks of wins/losses still appear along the way.
+- Petrocelli, J. V., & Harris, A. K. (2011). Learning Inhibition in the Monty Hall Problem: The
+  Role of Dysfunctional Counterfactual Prescriptions. *Personality and Social Psychology
+  Bulletin*, 37(10), 1297–1311. https://doi.org/10.1177/0146167211410245 -- found that even after
+  60 rounds of actively playing the Monty Hall problem, participants' own memory of their results
+  was biased by counterfactual thinking (over-remembering stick-wins, under-remembering
+  switch-wins), and their self-assessed switch-win rate never approached the true ~67% even when
+  their actual results were closer to it. If a visitor's memory of their own play can't be
+  trusted, the exhibit shouldn't rely on it either -- hence the always-visible numeric scoreboard,
+  the same design choice Part 1 makes for the same reason, applied here to a much larger sample.
+- Ancker, J. S., Benda, N. C., & Zikmund-Fisher, B. J. (2024). Insufficient Evidence for
+  Interactive or Animated Graphics for Communicating Probability. *Journal of the American
+  Medical Informatics Association*, 31(11), 2760–2765. https://doi.org/10.1093/jamia/ocae123 -- a
+  review of 24 studies found that animated/interactive probability graphics do not reliably beat a
+  well-designed static display for comprehension, and in some cases animated randomness displays
+  performed worse. This is why the step-by-step reveal here is treated as pacing/engagement (so
+  the exhibit doesn't just dump a finished grid on the visitor) rather than as the thing that
+  teaches the concept -- the persistent win/attempt count and percentage next to each grid is what
+  carries the actual information, exactly as intended whether a visitor watches the whole run or
+  jumps straight to "Run All."
+- Price, P. C., Carlock, G. A., Crouse, S., & Vargas Arciga, M. (2022). Effects of Icon Arrays to
+  Communicate Risk in a Repeated Risky Decision-Making Task. *Judgment and Decision Making*,
+  17(2), 378–399. Found that a randomly-scattered icon-array fill pattern distorts people's
+  perceived proportion relative to an ordered fill, independent of the actual count. Both grids
+  here fill in a fixed reading order (left to right, top to bottom, one cell per trial in the
+  order the trial was simulated) rather than placing outcomes at randomized positions, so the only
+  thing communicating the proportion is the actual number of colored cells.
+- One additional related paper turned up in this research pass but could not be fully verified: a
+  2015 *Thinking & Reasoning* article (vol. 21, issue 2, doi:10.1080/13546783.2014.918562) titled
+  "A randomised Monty Hall experiment: The positive effect of conditional frequency feedback,"
+  whose full author list could not be confirmed from accessible sources during this research pass.
+  It's noted here rather than cited as a design driver, since its finding (conditional frequency
+  feedback helps) is already covered by Saenen et al. (2018) above; if a future pass confirms the
+  authorship it can be added properly.
+
+**Side-by-side comparison layout:** showing both strategies simultaneously (rather than a toggle
+between two single-strategy views) follows general visualization-comparison best practice
+(simultaneous juxtaposition over sequential single-view display for comparing two conditions), not
+a Monty-Hall-specific finding -- no study turned up in this research pass that tested side-by-side
+vs. sequential display specifically for this kind of probability-convergence demonstration, so this
+is flagged here as general HCI/visualization-design support rather than paradox-specific evidence.
+
+**Colors:** wins are emerald-500, losses are slate-200, and not-yet-run cells are slate-100 with a
+slate-200 outline -- kept clearly distinct from both the win/loss colors and the white card
+background so an empty grid reads as "100 cells waiting to fill in," not as blank or broken.
+
+**Inspiration:** this simulator was inspired by the Monty Hall simulation segment on
+[MythBusters](https://www.youtube.com/watch?v=WhSjcF-qjXs), which ran a large batch of physical
+trials of both strategies to settle the same question empirically.
