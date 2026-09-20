@@ -65,7 +65,9 @@
                 <!-- 1. Law of Truly Large Numbers -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">1. The Law of Truly Large Numbers</h3>
-                    <p class="text-slate-600 mb-6">Watch how highly improbable events become inevitable as the number of opportunities (trials) increases.</p>
+                    <p class="text-slate-600 mb-6">The Law of Truly Large Numbers says that with enough opportunities, even extremely unlikely events are likely to happen.
+                    In a sufficiently large population or over enough trials, “miraculous” coincidences become statistically expected.
+                    Watch how highly improbable events become inevitable as the number of opportunities (trials) increases.</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid gap-4 md:grid-cols-2">
                         <div>
@@ -83,12 +85,19 @@
                     </div>
                     <div id="plot1" class="w-full h-80"></div>
                     <div id="ln-result" class="mt-4 text-center p-4 bg-blue-50 text-blue-900 rounded-lg text-lg"></div>
+                     <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+                        Further reading:
+                        <a href="https://en.wikipedia.org/wiki/Law_of_truly_large_numbers" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Law of Truly Large Numbers on Wikipedia</a>.
+              		  </p>
                 </div>
+
 
                 <!-- 2. Littlewood's Law -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">2. Littlewood's Law Calculator</h3>
-                    <p class="text-slate-600 mb-6">Calculate how many days it takes for a one-in-a-million event to happen based on your daily awareness rate.</p>
+                    <p class="text-slate-600 mb-6">Littlewood’s Law says that a person experiences roughly one “miracle” per month,
+                    if a miracle is defined as a one-in-a-million event. The idea is that we experience so many events each day that
+                    rare coincidences become surprisingly common. Calculate how many days it takes for a one-in-a-million event to happen based on your daily awareness rate.</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid gap-6 md:grid-cols-3">
                         <div>
@@ -112,6 +121,10 @@
                     </div>
                     <div id="plot2" class="w-full h-64"></div>
                     <div id="lw-result" class="mt-4 text-center p-4 bg-emerald-50 text-emerald-900 rounded-lg text-lg"></div>
+                    <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+                        Further reading:
+                        <a href="https://en.wikipedia.org/wiki/Littlewood%27s_law" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Littlewood's Law on Wikipedia</a>.
+              		</p>
                 </div>
             </div>
 
@@ -125,7 +138,8 @@
                 <!-- 3. The Birthday Paradox -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">3. The Birthday Paradox</h3>
-                    <p class="text-slate-600 mb-6">How many people need to be in a room for it to be mathematically likely (>50%) that two share a birthday? Toggle the switch to see the difference between "Any Match" and matching "YOUR Match".</p>
+                    <p class="text-slate-600 mb-6">The Birthday Paradox (or Birthday problem) is the counterintuitive fact that in a group of just 23 people, there’s already about a 50% chance that two share a birthday. It happens because you’re comparing many possible pairs, not just one person against everyone else.
+                    Explore the probabilities as the number of people in the room changes. Toggle the switch to see the difference between Paradox "Any Match" and matching "YOUR Birthday Match".</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 flex flex-col md:flex-row md:items-center gap-6 justify-between">
                         <div class="flex-1">
@@ -144,18 +158,23 @@
                     </div>
                     <div id="plot3" class="w-full h-96"></div>
                     <div id="bp-result" class="mt-4 text-center p-4 bg-emerald-50 text-emerald-900 rounded-lg text-lg"></div>
+                    <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+                        Further reading:
+                        <a href="https://en.wikipedia.org/wiki/Birthday_problem" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Birthday Problem on Wikipedia</a>.
+              		</p>
                 </div>
 
                 <!-- 4. The Friendship Paradox -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">4. The Friendship Paradox</h3>
-                    <p class="text-slate-600 mb-6">Adjust your own immediate friend group size. Notice how the mathematical average of your friends' friend count almost always exceeds your own, driven by highly connected central nodes.</p>
+                    <p class="text-slate-600 mb-6">The Friendship Paradox says that, on average, your friends have more friends than you do. This happens because highly connected people are more likely to appear in other people’s friend groups.
+                    Adjust your own immediate friend group size. Notice how the mathematical average of your friends' friend count almost always exceeds your own, driven by highly connected central nodes.</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 max-w-md mx-auto">
                         <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
                             Your Friend Count: <span id="fp-val" class="text-orange-500 font-mono text-lg">5</span>
                         </label>
-                        <input type="range" id="fp-slider" min="1" max="25" step="1" value="5" class="w-full accent-orange-500">
+                        <input type="range" id="fp-slider" min="1" max="50" step="1" value="10" class="w-full accent-orange-500">
                     </div>
 
                     <div class="grid md:grid-cols-2 gap-6">
@@ -167,6 +186,10 @@
                             <div id="plot4b" class="w-full h-80 bg-slate-50 rounded-xl border border-slate-200"></div>
                             <p class="text-center text-xs text-slate-500 mt-2">Node-Link Diagram (Larger nodes = More connections)</p>
                         </div>
+                        <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+                        	Further reading:
+                       	 	<a href="https://en.wikipedia.org/wiki/Friendship_paradox" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Friendship Paradox on Wikipedia</a>.
+              			</p>
                     </div>
                 </div>
             </div>
@@ -181,23 +204,33 @@
                 <!-- 5. Benford's Law -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">5. Benford's Law (The First-Digit Anomaly)</h3>
-                    <p class="text-slate-600 mb-6">In naturally occurring datasets, the number 1 appears as the leading digit ~30% of the time. Human intuition expects an even ~11.1% spread.</p>
+                    <p class="text-slate-600 mb-6">Benford’s Law says that in many real-world datasets, numbers are much more likely to begin with smaller digits
+                    than larger ones. About 30% begin with 1, while fewer than 5% begin with 9. Human intuition expects a more even ~11.1%
+                    spread. Benford's law happens because many real-world quantities grow or vary over wide ranges, so they spend more time
+                    starting with smaller digits before reaching the larger ones.</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 flex flex-wrap gap-4 justify-center">
                         <button id="btn-natural" class="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-purple-600">
                             Natural (Logarithmic) Data
                         </button>
                         <button id="btn-human" class="px-6 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-semibold transition-colors shadow-sm focus:ring-2 focus:ring-offset-2 focus:ring-rose-500">
-                            Human (Random) Guessing
+                            The Human Intuition
                         </button>
                     </div>
                     <div id="plot5" class="w-full h-80"></div>
+                    <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+            			Further reading:
+                       	<a href="https://en.wikipedia.org/wiki/Benford%27s_law" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Benford's Law on Wikipedia</a>.
+              		</p>
                 </div>
 
                 <!-- 6. The Inspection Paradox -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">6. The Inspection Paradox (Bus Stop Bias)</h3>
-                    <p class="text-slate-600 mb-6">Buses arrive every 10 minutes on average. Adjust the "Chaos" slider to make buses bunch up. Click "Spawn Passenger" to see why you always land in the longest waits.</p>
+                    <p class="text-slate-600 mb-6">The Inspection Paradox, or waiting-time paradox, says that when you arrive at a random
+                    time, you’re more likely to encounter a long interval than a short one. This happens because longer gaps are more likely
+                    to contain the moment you arrive. The usual mistake is assuming that if buses arrive every 10 minutes on average, then a randomly arriving passenger should wait about 5 minutes. That only works when the intervals are regular.
+                    <br>Adjust the "Chaos" slider to make buses bunch up. Click "Spawn Passenger" to see why you always land in the longest waits.</p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6 grid md:grid-cols-2 gap-6 items-center">
                         <div>
@@ -214,18 +247,26 @@
                     </div>
                     <div id="plot6" class="w-full h-64"></div>
                     <div id="ip-result" class="mt-4 text-center p-4 bg-purple-50 text-purple-900 rounded-lg text-lg font-semibold"></div>
+                    <p class="text-xs text-slate-500 mt-6" id="brn-footnote">
+            			Further reading:
+                       	<a href="https://leightonvw.com/2024/12/11/the-inspection-paradox/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Inspection Paradox</a>.
+              		</p>
                 </div>
 
                 <!-- 7. Simpson's Paradox -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">7. Simpson's Paradox</h3>
                     <p class="text-slate-600 mb-6">
+                        Simpson’s Paradox happens when a trend appears in several separate groups but reverses or
+                        disappears when the groups are combined. This usually happens because a hidden factor changes
+                        the relative sizes or makeup of the groups, making the overall average misleading.
+                    </p>
+                    <p class="text-slate-600 mb-6">
                         Below are two groups of students, each showing a <strong>positive</strong> relationship
-                        between study hours and test scores &mdash; more studying, better scores, within each group.
+                        between study hours and test scores: more studying = better scores within each group.
                         But watch what happens when the two groups are combined into one dataset: the overall trend
                         <strong>reverses</strong>. Nothing about the underlying data changes; only how it's grouped
-                        does. This is an illustrative example built to demonstrate the effect clearly &mdash; drag
-                        the slider slowly from left to right to watch the story unfold.
+                        does. Drag the slider slowly from left to right to watch the story unfold.
                     </p>
 
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6">
@@ -257,8 +298,15 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                     <h3 class="text-xl font-bold text-slate-800 mb-2">8. The Prosecutor's Fallacy (Base-Rate Neglect)</h3>
                     <p class="text-slate-600 mb-6" id="brn-intro-text">
-                        A test can be highly accurate and still be wrong most of the time it flags someone &mdash;
-                        if what it's looking for is rare enough. This is one of the most common reasoning errors in
+						The Prosecutor’s Fallacy is the mistake of confusing the probability of seeing certain evidence
+						if someone is innocent with the probability that they are innocent given that evidence. It ignores
+						the base rate; how common guilt, innocence, or the matching evidence is in the larger population.
+						This is the same basic error as base-rate neglect: people focus on the test’s accuracy and ignore
+						how rare the disease is in the population being tested. So hearing that a cancer test is “93%
+						accurate” can make people assume a positive result means a 93% chance of having cancer, when the
+						true probability may be much lower if the cancer itself is uncommon and false positives occur.
+
+                        This is one of the most common reasoning errors in
                         medicine and the courtroom: people hear "the test is 90% accurate" and assume a positive
                         result means a 90% chance of being right. It usually doesn't. What matters just as much as
                         the test's accuracy is how rare the thing it's testing for was to begin with &mdash; the
