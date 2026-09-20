@@ -15,7 +15,7 @@
  *
  * The game moves through four phases, stored in `phase`:
  *   'pick'    -> player has not yet chosen a door. Doors are clickable.
- *   'reveal'  -> player has chosen; "Make Host Reveal a Goat" button is enabled.
+ *   'reveal'  -> player has chosen; the "Reveal Goat" button is enabled.
  *   'decide'  -> host has revealed a goat door; the player's original door and the
  *                one remaining unopened door are both clickable (stay or switch).
  *   'done'    -> the second door is open; the round is over. Only "Play Again" advances.
@@ -206,7 +206,23 @@ function render(outcome) {
                 ? `Door ${doorNum}, open, revealing ${outcome.won ? 'the money' : 'a goat'}`
                 : `Door ${doorNum}, closed`;
 
-        caption.textContent = `Door ${doorNum}`;
+        // Once this door is the player's pick (any phase after 'pick'), the caption
+        // gains a bold "- Your Pick" suffix so the choice stays visible even after the
+        // door itself is no longer highlighted as strongly (e.g. in the 'done' phase).
+        // During 'decide' specifically, the other still-closed door is labeled
+        // "- Switch?" so the two options read as a clear, labeled pair rather than
+        // requiring the player to map the teal/red ring colors back to the instruction
+        // text above. Both suffixes disappear once the round resolves ('done'): at
+        // that point the ring colors alone (kept on for the picked/final doors) still
+        // show what happened, and re-asking "Switch?" about a door that's already
+        // been decided would be confusing.
+        const isPicked = doorNum === pickedDoor && phase !== 'pick';
+        const isSwitchOption = phase === 'decide' && doorNum !== pickedDoor && doorNum !== openedGoatDoor;
+        caption.innerHTML = isPicked
+            ? `Door ${doorNum} - <strong>Your Pick</strong>`
+            : isSwitchOption
+                ? `Door ${doorNum} - <strong>Switch?</strong>`
+                : `Door ${doorNum}`;
 
         // Reset per-round visual state, then apply what's current.
         el.classList.remove(
@@ -255,31 +271,41 @@ function render(outcome) {
     // It only makes sense once a door is picked. The two "other" doors are sometimes
     // adjacent (picked door 1 or 3 -> other two are next to each other) and sometimes
     // split around the picked door (picked door 2 -> others are doors 1 and 3), so the
-    // bar's position and width are computed from the actual door-column geometry rather
-    // than assumed, and it spans from the left edge of the leftmost "other" door to the
-    // right edge of the rightmost one -- which correctly passes *behind* the picked
-    // door's column when the picked door is in the middle, visually reading as "these
-    // two, and only these two, are grouped" rather than "everything is grouped".
+    // bar's position and width are computed from the actual on-screen positions rather
+    // than assumed.
+    //
+    // The bar's ends land under the horizontal CENTER of each "66.7%" label (doorProbEls),
+    // not the outer edges of the door-column divs -- lining the bar up with the numbers it's
+    // grouping, rather than with the wider door artwork above them, reads more precisely as
+    // "these two percentages are one group." It still passes *behind* the picked door's
+    // column when that door is in the middle, so it reads as "these two, and only these two,
+    // are grouped" rather than "everything is grouped."
     const showGroupBar = statsMode && pickedDoor !== null && phase !== 'pick';
     groupBarEl.classList.toggle('hidden', !showGroupBar);
     if (showGroupBar) {
         const otherDoors = [1, 2, 3].filter((d) => d !== pickedDoor);
         const rowRect = doorsRowEl.getBoundingClientRect();
-        const rects = otherDoors.map((d) => doorColEls[d - 1].getBoundingClientRect());
-        const left = Math.min(...rects.map((r) => r.left)) - rowRect.left;
-        const right = Math.max(...rects.map((r) => r.right)) - rowRect.left;
+        const centers = otherDoors.map((d) => {
+            const r = doorProbEls[d - 1].getBoundingClientRect();
+            return r.left + r.width / 2 - rowRect.left;
+        });
+        const left = Math.min(...centers);
+        const right = Math.max(...centers);
         groupBarEl.style.left = `${left}px`;
         groupBarEl.style.width = `${right - left}px`;
     }
 
     // ---- action button ------------------------------------------------------------
+    // Label is short ("Reveal Goat" rather than "Make Host Reveal a Goat") so the
+    // action-buttons column in the actions row's 3-column grid stays narrow enough
+    // for the button pair to fit on one line at the card's typical width.
     if (phase === 'reveal') {
         actionBtn.disabled = false;
-        actionBtn.textContent = 'Make Host Reveal a Goat';
+        actionBtn.textContent = 'Reveal Goat';
         actionBtn.classList.add('mh-pulse-amber');
     } else {
         actionBtn.disabled = true;
-        actionBtn.textContent = 'Make Host Reveal a Goat';
+        actionBtn.textContent = 'Reveal Goat';
         actionBtn.classList.remove('mh-pulse-amber');
     }
 
@@ -323,9 +349,14 @@ actionBtn.addEventListener('click', handleActionButton);
 playAgainBtn.addEventListener('click', newRound);
 statsToggle.addEventListener('change', () => render(lastOutcome ?? undefined));
 resetStatsBtn.addEventListener('click', () => {
+    // "Reset my results" resets the whole exhibit, not just the scoreboard: the
+    // cumulative tally AND the round in progress both go back to a fresh start, so a
+    // player doesn't end up in an inconsistent state (e.g. a door already picked, but
+    // a zeroed scoreboard as if nothing had happened yet). newRound() already calls
+    // render(), so no separate render() call is needed here.
     stats.stay.attempts = 0; stats.stay.wins = 0;
     stats.switch.attempts = 0; stats.switch.wins = 0;
-    render(lastOutcome ?? undefined);
+    newRound();
 });
 
 // Re-render on resize/orientation change so the "tap"/"click" wording in the message
