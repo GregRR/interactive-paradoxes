@@ -1,5 +1,8 @@
 ---
 import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+import { withBase } from '../data/paradoxes.js';
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <ParadoxLayout slug="clustering-illusion">
@@ -157,9 +160,9 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
         </p>
     </div>
 
-    <details class="mt-4 text-sm text-slate-600">
-        <summary class="cursor-pointer font-semibold text-slate-700 min-h-[44px] flex items-center">How these patterns are made</summary>
-        <div class="pb-2 space-y-2">
+    <div class="mt-6">
+        <h4 class="font-semibold text-slate-700 mb-2">How these patterns are made</h4>
+        <div class="text-sm text-slate-600 space-y-2">
             <p>
                 Every grid has 100 squares, exactly 50 filled and 50 empty, so the only thing that
                 differs between patterns is how the squares are arranged.
@@ -177,11 +180,11 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                 reaches the target setting.
             </p>
         </div>
-    </details>
+    </div>
 
-    <details class="mt-2 text-sm text-slate-600">
-        <summary class="cursor-pointer font-semibold text-slate-700 min-h-[44px] flex items-center">Research behind this</summary>
-        <div class="pb-2 space-y-2">
+    <div class="mt-6">
+        <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
+        <div class="text-sm text-slate-600 space-y-2">
             <p>
                 <strong>The math</strong> is exact: the grids, counts, and neighbor-alternation measure are defined
                 above. <strong>The experimental findings</strong> are about how people judge randomness: people tend to
@@ -214,12 +217,26 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                 </li>
             </ul>
         </div>
-    </details>
+    </div>
 
     <p class="text-xs text-slate-500 mt-4">
         Further reading:
         <a href="https://en.wikipedia.org/wiki/Clustering_illusion" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Clustering Illusion on Wikipedia</a>.
     </p>
+
+    <!-- Series navigation: this exhibit is Part 1 of a four-part Clustering Illusion series
+         (see notes/clustering_illusion_step_1_implementation_spec.md). The target page for
+         Part 2 doesn't exist yet -- this slug is a placeholder to be confirmed/created when
+         Part 2 is built, at which point this link should be re-checked. -->
+    <div class="mt-8 flex justify-end">
+        <a
+            href={withBase('/clustering-illusion-part-2/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
+        >
+            Continue to Human-made randomness
+            <span aria-hidden="true">&rarr;</span>
+        </a>
+    </div>
 </ParadoxLayout>
 
 <!-- is:global because the grid cells, reveal labels and feedback text are created or filled in
@@ -242,9 +259,13 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
         transition: background-color 0.15s;
     }
     .ci-tab:hover { background: #e2e8f0; } /* slate-200 */
-    /* Same teal treatment the rest of the site uses for the active/primary control. */
-    .ci-tab[aria-selected="true"] { background: #0d9488; color: #fff; } /* teal-600 */
-    .ci-tab[aria-selected="true"]:hover { background: #0f766e; }        /* teal-700 */
+    /* Amber, not the teal used by the grids and New patterns/New sample buttons below, so the
+       tab row reads as a distinct control rather than blending into the exhibit's primary
+       action color. amber-700 (not the site's usual amber-500) is used here specifically for
+       contrast: amber-500 white-on-amber is only 2.15:1, well under WCAG AA's 4.5:1 for text;
+       amber-700 reaches 5.02:1. */
+    .ci-tab[aria-selected="true"] { background: #b45309; color: #fff; } /* amber-700 */
+    .ci-tab[aria-selected="true"]:hover { background: #92400e; }        /* amber-800 */
 
     /* --- Grids ----------------------------------------------------------- */
     .ci-grid {
