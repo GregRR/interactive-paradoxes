@@ -1,0 +1,367 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+import { withBase } from '../data/paradoxes.js';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<ParadoxLayout slug="random-streaks">
+    <p class="text-slate-600 mb-4">
+        <strong>In Part 2, you tried to imitate randomness. Now let chance do it.</strong>
+        Before we flip 50 fair coins, predict how long you think the longest
+        uninterrupted streak will be.
+    </p>
+
+    <h3 class="text-lg font-bold text-slate-800 mb-3">Part 3: What Does a Fair Coin Actually Do?</h3>
+
+    <!-- ======================================================================
+         One region, reused across the whole interaction. The prediction step comes
+         first; once made, it collapses to a compact line and never reappears. The two
+         modes (One sequence / 1,000 sequences) then share this same region and are
+         swapped in place, never stacked (spec sections 5, 6, 23).
+         ====================================================================== -->
+
+    <!-- ---------------- Prediction (shown once, before the first sequence) ---------------- -->
+    <div id="rs-prediction-ask">
+        <p class="text-center font-semibold text-slate-700 mb-2">
+            In 50 fair coin flips, how long do you think the longest streak will be?
+        </p>
+        <div role="group" aria-label="Predict the longest streak" class="grid grid-cols-6 gap-1.5 max-w-md mx-auto">
+            {[2, 3, 4, 5, 6, '7+'].map((n) => (
+                <button type="button" class="rs-predict-btn" data-prediction={n}>{n}</button>
+            ))}
+        </div>
+    </div>
+
+    <!-- Collapsed prediction line + primary action, shown after a prediction is made. -->
+    <div id="rs-prediction-made" hidden class="flex items-center justify-between gap-3 mb-1">
+        <p class="text-sm font-semibold text-slate-700">
+            Your prediction: <span id="rs-prediction-value"></span>
+        </p>
+        <button id="rs-flip" type="button" class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700">
+            Flip 50 coins
+        </button>
+    </div>
+
+    <!-- ---------------- Mode switcher (shown once the first sequence exists) ---------------- -->
+    <div id="rs-mode-switch" hidden role="tablist" aria-label="View mode" class="grid grid-cols-2 gap-2 my-4">
+        <button id="rs-mode-single" type="button" role="tab" aria-selected="true" aria-controls="rs-panel-single" class="rs-tab">
+            One sequence
+        </button>
+        <button id="rs-mode-sim" type="button" role="tab" aria-selected="false" aria-controls="rs-panel-sim" tabindex="-1" class="rs-tab">
+            1,000 sequences
+        </button>
+    </div>
+
+    <!-- ---------------- Mode 1: One sequence ---------------- -->
+    <div id="rs-panel-single" role="tabpanel" aria-labelledby="rs-mode-single" hidden>
+        <!-- 50 cells: 10 per row on mobile (5 rows), 25 per row from sm up (2 rows). Built
+             once in JS; only cell content/highlight state changes afterward. Runs are
+             calculated from the linear array (see random-streaks-stats.js), so a streak
+             that visually wraps to the next row is still highlighted correctly on both
+             pieces (spec section 9.2). -->
+        <div id="rs-sequence" class="grid grid-cols-10 sm:grid-cols-25 gap-1 sm:gap-1.5 mx-auto max-w-sm sm:max-w-2xl rs-fade" role="img" aria-label="Sequence of 50 coin flips"></div>
+        <p id="rs-wrap-note" class="text-center text-[11px] text-slate-500 mt-1">Sequence continues left-to-right across rows.</p>
+
+        <p class="text-center text-sm text-slate-700 mt-3">
+            <span id="rs-longest-run" class="font-semibold"></span>
+            <span class="mx-1.5 text-slate-300">&middot;</span>
+            <span id="rs-heads-tails"></span>
+            <span class="mx-1.5 text-slate-300">&middot;</span>
+            <span id="rs-highlighted-count"></span>
+        </p>
+
+        <!-- Streak threshold: changes ONLY the highlighting and messaging, never the
+             underlying sequence (spec sections 13, 37, 54). -->
+        <div class="mt-3 max-w-md mx-auto">
+            <p class="text-center text-xs font-semibold text-slate-700 mb-1">Highlight runs of:</p>
+            <div role="group" aria-label="Streak highlight threshold" class="grid grid-cols-4 gap-1.5">
+                {[3, 4, 5, 6].map((k) => (
+                    <button type="button" class="rs-threshold-btn" data-threshold={k} aria-pressed={k === 3 ? 'true' : 'false'}>{k}+</button>
+                ))}
+            </div>
+            <p class="text-center mt-1">
+                <button id="rs-why-3" type="button" class="text-xs text-purple-600 underline hover:text-purple-800">Why 3?</button>
+            </p>
+        </div>
+
+        <div class="mt-3 flex justify-center">
+            <button id="rs-new-sequence" type="button" class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700">
+                New random sequence
+            </button>
+        </div>
+    </div>
+
+    <!-- ---------------- Mode 2: 1,000 sequences ---------------- -->
+    <div id="rs-panel-sim" role="tabpanel" aria-labelledby="rs-mode-sim" hidden>
+        <p class="text-center text-sm font-semibold text-slate-700 mb-2">Longest streak in 1,000 random sequences</p>
+        <div id="rs-histogram" class="w-full h-64 sm:h-72"></div>
+        <!-- Plotly's own chart is not screen-reader-legible, so a plain-text table carries
+             the same information (bin, observed %, exact %) for assistive tech and anyone
+             who prefers text (spec section 49). -->
+        <table id="rs-histogram-table" class="sr-only">
+            <caption>Longest streak distribution across 1,000 simulated sequences, compared with the exact theoretical percentage</caption>
+            <thead><tr><th scope="col">Longest streak</th><th scope="col">Observed</th><th scope="col">Exact probability</th></tr></thead>
+            <tbody></tbody>
+        </table>
+
+        <p class="text-center text-sm text-slate-700 mt-2">
+            <span id="rs-sim-threshold-result" class="font-semibold"></span>
+        </p>
+
+        <div class="mt-3 max-w-md mx-auto">
+            <p class="text-center text-xs font-semibold text-slate-700 mb-1">Threshold:</p>
+            <div role="group" aria-label="Streak highlight threshold" class="grid grid-cols-4 gap-1.5">
+                {[3, 4, 5, 6].map((k) => (
+                    <button type="button" class="rs-threshold-btn rs-threshold-btn-sim" data-threshold={k} aria-pressed={k === 3 ? 'true' : 'false'}>{k}+</button>
+                ))}
+            </div>
+        </div>
+
+        <div class="mt-3 flex justify-center">
+            <button id="rs-run-1000" type="button" class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700">
+                Run another 1,000
+            </button>
+        </div>
+    </div>
+
+    <!-- One persistent feedback box, reused across the prediction, both modes, and every
+         threshold/sample change (spec sections 41-42). -->
+    <div id="rs-box" class="rs-box">
+        <div class="rs-msg" aria-live="polite"></div>
+    </div>
+
+    <!-- Closing statement. Revealed once the first sequence has been generated. -->
+    <div id="rs-conclusion" hidden class="mt-6 p-4 bg-slate-50 border border-slate-100 rounded-xl text-slate-700">
+        <p class="hidden sm:block">
+            <strong>Streaks are not the opposite of randomness. They're part of it.</strong> In
+            only 50 fair coin flips, five in a row happens about 82% of the time, and six in a
+            row happens more often than not. A streak can feel like evidence that something
+            changed&mdash;but first we need to ask how often a streak that large would appear
+            under chance alone.
+        </p>
+        <p class="sm:hidden">
+            <strong>Randomness makes streaks.</strong> The question isn't whether a streak
+            appeared; it's whether the streak is unusual under the right chance model.
+        </p>
+    </div>
+
+    <div class="mt-6">
+        <h4 class="font-semibold text-slate-700 mb-2">Important caveats</h4>
+        <div class="text-sm text-slate-600 space-y-2">
+            <p>
+                A streak does not prove the underlying probability changed&mdash;independent
+                fair coins generate streaks naturally. But a streak does not prove independence
+                either: a process whose probability actually changes over time can also produce
+                streaks. The right question is always whether the observed data fit one model
+                better than another, not whether a streak occurred at all.
+            </p>
+            <p>
+                This exhibit models 50 independent fair-coin trials with a constant 50%
+                probability. It does not evaluate whether any particular real-world streak
+                (a game, a market, a treatment outcome) reflects a genuine change in the
+                underlying process&mdash;that requires a model and evidence specific to that
+                situation. Later statistical work also found a subtle streak-selection bias in
+                some influential early studies of real-world "hot hand" streaks, so this
+                exhibit does not claim that every apparent hot streak is illusory.
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
+        <div class="text-sm text-slate-600 space-y-2">
+            <p>
+                <strong>The math</strong> is exact: the longest-run probabilities above come from
+                a dynamic-programming calculation over all 50-flip sequences, not a simulation.
+                <strong>The experimental findings</strong> are about human intuition: people tend to
+                expect shorter runs and more alternation than an independent process actually
+                produces, and the third repeated outcome in particular is where a sequence tends
+                to start feeling like a "streak" to an observer. <strong>The wider
+                interpretation</strong> is deliberately narrow: this exhibit demonstrates baseline
+                streak behavior under one explicit chance model, and does not adjudicate any
+                specific real-world claim of a hot streak or a change in process.
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>
+                    Carlson, K. A., &amp; Shu, S. B. (2007). The rule of three: How the third event signals the emergence of a streak.
+                    <em>Organizational Behavior and Human Decision Processes, 104</em>(1), 113&ndash;121.
+                    <a href="https://doi.org/10.1016/j.obhdp.2007.03.004" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1016/j.obhdp.2007.03.004</a>
+                </li>
+                <li>
+                    Bar-Hillel, M., &amp; Wagenaar, W. A. (1991). The perception of randomness.
+                    <em>Advances in Applied Mathematics, 12</em>(4), 428&ndash;454.
+                    <a href="https://doi.org/10.1016/0196-8858(91)90029-I" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1016/0196-8858(91)90029-I</a>
+                </li>
+                <li>
+                    Falk, R., &amp; Konold, C. (1997). Making sense of randomness: Implicit encoding as a basis for judgment.
+                    <em>Psychological Review, 104</em>(2), 301&ndash;318.
+                    <a href="https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">PDF</a>
+                </li>
+                <li>
+                    Nickerson, R. S. (2002). The production and perception of randomness.
+                    <em>Psychological Review, 109</em>(2), 330&ndash;357.
+                    <a href="https://doi.org/10.1037/0033-295X.109.2.330" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1037/0033-295X.109.2.330</a>
+                </li>
+                <li>
+                    Schilling, M. F. (1990). The longest run of heads.
+                    <em>The College Mathematics Journal, 21</em>(3), 196&ndash;207.
+                    <a href="https://doi.org/10.1080/07468342.1990.11973306" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1080/07468342.1990.11973306</a>
+                </li>
+                <li>
+                    Miller, J. B., &amp; Sanjurjo, A. (2018). Surprised by the hot hand fallacy? A truth in the law of small numbers.
+                    <em>Econometrica, 86</em>(6), 2019&ndash;2047.
+                    <a href="https://doi.org/10.3982/ECTA14943" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.3982/ECTA14943</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <p class="text-xs text-slate-500 mt-4">
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/Gambler%27s_fallacy" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Gambler's Fallacy on Wikipedia</a>.
+    </p>
+
+    <!-- Series navigation: Part 3 of 4. Part 4's slug is a placeholder to be
+         confirmed/created when Part 4 is built. -->
+    <div class="mt-8 flex items-center justify-between gap-3">
+        <a
+            href={withBase('/human-made-randomness/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-slate-200 text-slate-700 hover:bg-slate-300"
+        >
+            <span aria-hidden="true">&larr;</span>
+            Back to Human-made randomness
+        </a>
+        <a
+            href={withBase('/clustering-illusion-part-4/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
+        >
+            Continue to Putting it together
+            <span aria-hidden="true">&rarr;</span>
+        </a>
+    </div>
+</ParadoxLayout>
+
+<!-- is:global for the same reason as clustering-illusion.astro and human-made-randomness.astro:
+     cells, bars and messages are filled in by the script after load. Every selector is
+     prefixed rs- (Random Streaks) so nothing collides with ci- (Part 1) or hmr- (Part 2),
+     since all three style blocks are global.
+
+     COLORS: Heads/Tails streak highlights use the same teal (filled cells, Part 1) and a
+     second hue (amber, matching Part 1's tab accent) that differ by both HUE and LUMINANCE,
+     so the pair remains distinguishable under protanopia/deuteranopia/tritanopia. H/T
+     lettering is never removed by a highlight -- only the cell background/border changes. -->
+<style is:global>
+    .grid-cols-25 { grid-template-columns: repeat(25, minmax(0, 1fr)); }
+
+    /* --- Prediction buttons --- */
+    .rs-predict-btn {
+        min-height: 44px;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        background: #f1f5f9;   /* slate-100 */
+        color: #1e293b;        /* slate-800 */
+        border: 2px solid #cbd5e1; /* slate-300 */
+        transition: background-color 0.15s, border-color 0.15s;
+    }
+    .rs-predict-btn:hover { background: #e2e8f0; border-color: #94a3b8; }
+    .rs-predict-btn:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+    .rs-predict-btn[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
+
+    /* --- Mode tabs (same treatment as Part 1's ci-tab) --- */
+    .rs-tab {
+        min-height: 44px;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #f1f5f9;
+        color: #334155;
+        transition: background-color 0.15s;
+    }
+    .rs-tab:hover { background: #e2e8f0; }
+    .rs-tab[aria-selected="true"] { background: #b45309; color: #fff; } /* amber-700, see Part 1's contrast note */
+    .rs-tab[aria-selected="true"]:hover { background: #92400e; }
+
+    /* --- Sequence grid --- */
+    .rs-cell {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.25rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border: 1px solid #cbd5e1; /* slate-300 */
+        color: #0f172a;
+        background: #fff;
+        transition: opacity 180ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    }
+    /* Qualifying-streak highlights: distinct hue AND luminance per outcome, so the pair
+       reads under any color-vision type; the H/T letter is always still drawn on top. */
+    .rs-cell[data-highlight="H"] { background: #99f6e4; border-color: #0f766e; box-shadow: inset 0 0 0 1px #0f766e; } /* teal-200 / teal-700 */
+    .rs-cell[data-highlight="T"] { background: #fde68a; border-color: #b45309; box-shadow: inset 0 0 0 1px #b45309; } /* amber-200 / amber-700 */
+
+    .rs-cell[data-just-added="true"] { animation: rs-cell-in 120ms ease-out; }
+    @keyframes rs-cell-in {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    /* --- Threshold buttons --- */
+    .rs-threshold-btn {
+        min-height: 40px;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        font-size: 0.875rem;
+        background: #f1f5f9;
+        color: #1e293b;
+        border: 2px solid #cbd5e1;
+        transition: background-color 0.15s, border-color 0.15s;
+    }
+    .rs-threshold-btn:hover { background: #e2e8f0; }
+    .rs-threshold-btn:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+    .rs-threshold-btn[aria-pressed="true"] { background: #0f766e; border-color: #0f766e; color: #fff; }
+
+    /* --- Fade used for the sequence area (new sequence, mode switch) --- */
+    .rs-fade { transition: opacity 180ms ease; }
+    .rs-fade[data-faded="true"] { opacity: 0; }
+
+    /* --- Feedback box --- */
+    .rs-box {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        background: #f8fafc;
+        color: #1e293b;
+        font-size: 0.875rem;
+        line-height: 1.4;
+        min-height: 5.5rem;
+    }
+    @media (min-width: 640px) {
+        .rs-box { font-size: 1rem; min-height: 4rem; }
+    }
+
+    @keyframes rs-flash-kf {
+        from { background-color: #ccfbf1; border-color: #0d9488; }
+        to   { background-color: #f8fafc; border-color: #e2e8f0; }
+    }
+    .rs-flash { animation: rs-flash-kf 700ms ease-out; }
+
+    .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rs-cell, .rs-cell[data-just-added="true"] { transition: none; animation: none; }
+        .rs-flash { animation: none; }
+        .rs-fade { transition: none; }
+        .rs-tab, .rs-predict-btn, .rs-threshold-btn { transition: none; }
+    }
+</style>
+
+<script>
+    import '../scripts/paradoxes/random-streaks.js';
+</script>

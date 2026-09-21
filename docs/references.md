@@ -99,3 +99,26 @@ Carlson, K. A., & Shu, S. B. (2007). The rule of three: How the third event sign
 
 [Human judgment of randomness — Wikipedia](https://en.wikipedia.org/wiki/Randomness#Human_judgment)
 - Linked as the further-reading source at the bottom of the exhibit.
+
+## Random Streaks
+
+Carlson, K. A., & Shu, S. B. (2007). The rule of three: How the third event signals the emergence of a streak. *Organizational Behavior and Human Decision Processes*, 104(1), 113–121. https://doi.org/10.1016/j.obhdp.2007.03.004
+- Principal source for defaulting the streak-highlight threshold to 3+: across five studies, the third repeated outcome was found to be pivotal to observers' subjective sense that a streak had emerged, with perceived streakiness largely plateauing after that point. Basis for the "Why 3?" control's explicit distinction between this perceptual threshold and a mathematical definition of a run — the exhibit never implies 3 is a universal cutoff.
+
+Bar-Hillel, M., & Wagenaar, W. A. (1991). The perception of randomness. *Advances in Applied Mathematics*, 12(4), 428–454. https://doi.org/10.1016/0196-8858(91)90029-I
+- Same source used in Part 2. Here it supports the contrast this exhibit draws explicitly: people expect shorter runs and more alternation than independent random sequences actually produce, which is exactly what Part 3's generated sequences are shown to contradict.
+
+Falk, R., & Konold, C. E. (1997). Making sense of randomness: Implicit encoding as a basis for judgment. *Psychological Review*, 104(2), 301–318. https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf
+- Same source used in Parts 1 and 2. Basis for framing Part 3 as the direct answer to Part 2: human-generated sequences suppress runs, while an actual independent process (shown here) produces them naturally.
+
+Nickerson, R. S. (2002). The production and perception of randomness. *Psychological Review*, 109(2), 330–357. https://doi.org/10.1037/0033-295X.109.2.330
+- Same source used in Part 2. Basis for the exhibit's careful language distinguishing properties of the generating process (the exact longest-run distribution) from properties of any one finite sequence, and for never labeling a generated result "impossible" or "not random."
+
+Schilling, M. F. (1990). The longest run of heads. *The College Mathematics Journal*, 21(3), 196–207. https://doi.org/10.1080/07468342.1990.11973306
+- Read in full (JSTOR copy) to verify this citation, not taken on the spec's word alone. Derives the exact recursion this exhibit's dynamic-programming calculation mirrors: partitioning sequences by how many heads precede the first tail gives A_n(x), the count of length-n sequences whose longest head-run is at most x (Schilling's eq. 1); the longest run of either heads or tails is then obtained via the shift relation B_n(x) = 2·A_{n-1}(x-1) rather than a separate derivation. Basis for using this exact recursive approach — not simulation alone — for the probabilities shown to visitors. Also source of the opening classroom demonstration this exhibit is structurally modeled on: two "200 coin flips" sequences, one real and one human-invented, distinguished almost entirely by whether a sufficiently long run appears.
+
+Miller, J. B., & Sanjurjo, A. (2018). Surprised by the hot hand fallacy? A truth in the law of small numbers. *Econometrica*, 86(6), 2019–2047. https://doi.org/10.3982/ECTA14943
+- Basis for the exhibit's explicit caveat that the classic hot-hand literature contains a streak-selection bias in common finite-sample analyses, and that this exhibit's demonstration of streaks under independence does not by itself prove any real-world "hot streak" (in sports, markets, or elsewhere) is illusory. Included specifically to prevent overstating the lesson.
+
+[Gambler's fallacy — Wikipedia](https://en.wikipedia.org/wiki/Gambler%27s_fallacy)
+- Linked as the further-reading source at the bottom of the exhibit; its coin-flip examples directly cover why streaks are an expected feature of independent randomness rather than evidence of a changed process.

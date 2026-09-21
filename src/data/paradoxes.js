@@ -68,6 +68,12 @@ export const groups = [
                 title: 'Human-made Randomness',
                 summary: 'When people try to imitate a fair coin, they typically switch outcomes more often than chance would, and avoid the long runs that real randomness naturally produces.',
                 usesPlotly: false
+            },
+            {
+                slug: 'random-streaks',
+                title: 'Random Streaks',
+                summary: 'In 50 fair coin flips, a streak of 5 or more in a row happens about 82% of the time, and 6 or more happens more often than not.',
+                usesPlotly: true
             }
         ]
     },

@@ -188,8 +188,7 @@ const base = import.meta.env.BASE_URL;
     </p>
 
     <!-- Series navigation: Part 2 of 4. Part 1 has no Previous button; Part 4 will have no
-         Next button (user-specified convention). Part 3's slug is a placeholder to be
-         confirmed/created when Part 3 is built. -->
+         Next button (user-specified convention). Part 3 is now built at /random-streaks/. -->
     <div class="mt-8 flex items-center justify-between gap-3">
         <a
             href={withBase('/clustering-illusion/', base)}
@@ -199,7 +198,7 @@ const base = import.meta.env.BASE_URL;
             Back to Spatial clustering
         </a>
         <a
-            href={withBase('/clustering-illusion-part-3/', base)}
+            href={withBase('/random-streaks/', base)}
             class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
         >
             Continue to Random streaks
