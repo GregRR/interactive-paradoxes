@@ -122,3 +122,38 @@ Miller, J. B., & Sanjurjo, A. (2018). Surprised by the hot hand fallacy? A truth
 
 [Gambler's fallacy — Wikipedia](https://en.wikipedia.org/wiki/Gambler%27s_fallacy)
 - Linked as the further-reading source at the bottom of the exhibit; its coin-flip examples directly cover why streaks are an expected feature of independent randomness rather than evidence of a changed process.
+
+## When Does a Pattern Mean Something?
+
+Griffiths, T. L., & Tenenbaum, J. B. (2007). From mere coincidences to meaningful discoveries. *Cognition*, 103(2), 180–226. https://doi.org/10.1016/j.cognition.2006.03.004
+- Read in full (open-access PDF at cocosci.princeton.edu) to verify this citation. Core conceptual foundation of the exhibit: their Bayesian account defines a coincidence as "an event that provides support for an alternative to a current theory, but not necessarily enough support to accept that alternative in light of its low prior probability" — confirmed word-for-word against the paper's own text. Basis for the exhibit's central distinction between an interesting pattern, evidence for an alternative process, and having enough evidence to prefer that alternative; also basis for treating coincidence detection itself as reasonable rather than an error.
+
+Johansen, M. K., & Osman, M. (2015). Coincidences: A fundamental consequence of rational cognition. *New Ideas in Psychology*, 39, 34–44. https://doi.org/10.1016/j.newideapsych.2015.07.001
+- Confirmed bibliographic details (title/authors/journal/volume) independently, but the abstract/full text could not be read directly (publisher access blocked). Cited, per the source spec document, for a "3C" framework distinguishing coincidence detection, causal-mechanism search, and coincidence-versus-cause judgment — used narrowly here to support the idea that noticing a pattern can appropriately prompt investigation without by itself settling what caused it.
+
+Johansen, M. K., & Osman, M. (2020). Coincidence judgment in causal reasoning: How coincidental is this? *Cognitive Psychology*, 120, 101290. https://doi.org/10.1016/j.cogpsych.2020.101290
+- Confirmed bibliographic details and abstract independently: the study separately measures coincidentality alongside "event uncertainty, hypothesis belief and surprise" as predictors. Full separation of every named quantity (chance-hypothesis belief vs. causal-hypothesis belief vs. likelihood vs. surprise vs. coincidentality) was not independently confirmed beyond the abstract. Used narrowly to support keeping "how striking a cluster looks," "how unlikely it is under chance," and "how well the alternative model predicts the whole sequence" as three separate quantities rather than one.
+
+van der Wal, R. C., Sutton, R. M., Lange, J., & Braga, J. P. N. (2018). Suspicious binds: Conspiracy thinking and tenuous perceptions of causal connections between co-occurring and spuriously correlated events. *European Journal of Social Psychology*, 48(7), 970–989. https://doi.org/10.1002/ejsp.2507
+- Same source used for The Clustering Illusion (Part 1); see that entry above. Reused here only for its narrow experimental finding that clustered vs. isolated co-occurrence and perceived causal connection are separable — it studies conspiracy-related judgments, not miracles, and is not cited for anything broader than that.
+
+Wallenstein, S., Naus, J., & Glaz, J. (1993). Power of the scan statistic for detection of clustering. *Statistics in Medicine*, 12(19–20), 1829–1843. https://doi.org/10.1002/sim.4780121910
+- Confirmed bibliographic details independently (publisher access to full text blocked). Cited, per the source spec, as the formal origin of the scan statistic used here: the maximum event count in a moving window of fixed width, compared against a null model. Basis for using a fixed 6-slot window as the exhibit's scan statistic rather than an ad hoc "does this look clustered" judgment.
+
+Naus, J., & Wallenstein, S. (2006). Temporal surveillance using scan statistics. *Statistics in Medicine*, 25(2), 311–324. https://doi.org/10.1002/sim.2209
+- Confirmed bibliographic details independently (publisher access to full text blocked). Cited, per the source spec, for temporal cluster detection using moving windows compared with an expected background rate. Background support for the "Show me the math" modal's local-cluster section.
+
+Robertson, C., Nelson, T. A., MacNab, Y. C., & Lawson, A. B. (2010). Review of methods for space–time disease surveillance. *Spatial and Spatio-temporal Epidemiology*, 1(2–3), 105–116. https://pmc.ncbi.nlm.nih.gov/articles/PMC7185413/
+- Read via search summary (direct PMC fetch was blocked by a CAPTCHA, but a mirrored abstract confirmed the title, authors, journal, and its methodological review of scan-statistic-based outbreak/trend detection). General methodological background only, explicitly not evidence that this exhibit's toy model is a disease-surveillance method.
+
+Kass, R. E., & Raftery, A. E. (1995). Bayes factors. *Journal of the American Statistical Association*, 90(430), 773–795. https://doi.org/10.1080/01621459.1995.10476572
+- Confirmed bibliographic details independently (full text access blocked by the publisher). This is the standard reference for the Bayes factor as a measure of evidence between two hypotheses; used here as background for presenting the evidence ratio on a continuous scale rather than as a binary verdict.
+
+van Doorn, J., van den Bergh, D., Böhm, U., Dablander, F., et al., & Wagenmakers, E.-J. (2021). The JASP guidelines for conducting and reporting a Bayesian analysis. *Psychonomic Bulletin & Review*, 28(3), 813–826. https://pmc.ncbi.nlm.nih.gov/articles/PMC8219590/
+- Read in full via an accessible copy to verify this citation (the direct PMC link was blocked by a CAPTCHA; content was confirmed through the paper's Springer-hosted full text). Confirmed word-for-word: "these classifications should only be used as general rules of thumb to facilitate communication and interpretation of evidential strength," and that the Bayes factor's value lies partly in offering "an assessment of evidence on a continuous scale." Direct basis for the exhibit's explicit statement that the 3:1 evidence-category rule is an instructional convention, not a scientific law, and for always displaying the raw ratio alongside the category.
+
+Diaconis, P., & Mosteller, F. (1989). Methods for studying coincidences. *Journal of the American Statistical Association*, 84(408), 853–861. https://doi.org/10.1080/01621459.1989.10478847
+- Read in full (open-access PDF) to verify this citation. Confirmed word-for-word: discusses how multiple endpoints and near-miss matching inflate apparent coincidence rates, and states the "law of truly large numbers" as "with a large enough sample, any outrageous thing is likely to happen." Basis for the exhibit's caution that a single striking pattern must be evaluated against the actual opportunity space, not treated as self-evidently rare.
+
+[Bayes factor — Wikipedia](https://en.wikipedia.org/wiki/Bayes_factor)
+- Linked as the further-reading source at the bottom of the exhibit.

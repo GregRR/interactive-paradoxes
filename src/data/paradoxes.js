@@ -74,6 +74,12 @@ export const groups = [
                 title: 'Random Streaks',
                 summary: 'In 50 fair coin flips, a streak of 5 or more in a row happens about 82% of the time, and 6 or more happens more often than not.',
                 usesPlotly: true
+            },
+            {
+                slug: 'when-does-a-pattern-mean-something',
+                title: 'When Does a Pattern Mean Something?',
+                summary: 'Two processes can average the same 20% event rate while one is independent and the other is not—so a striking cluster alone can’t tell you which one you’re looking at.',
+                usesPlotly: false
             }
         ]
     },
