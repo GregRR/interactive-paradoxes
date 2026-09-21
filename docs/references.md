@@ -70,3 +70,32 @@ van der Wal, R. C., Sutton, R. M., Lange, J., & Braga, J. P. N. (2018). Suspicio
 
 [Clustering illusion — Wikipedia](https://en.wikipedia.org/wiki/Clustering_illusion)
 - Linked as the further-reading source at the bottom of the exhibit.
+
+## Human-made Randomness
+
+Bar-Hillel, M., & Wagenaar, W. A. (1991). The perception of randomness. *Advances in Applied Mathematics*, 12(4), 428–454. https://doi.org/10.1016/0196-8858(91)90029-I
+- One of the two main theoretical foundations for the exhibit: evidence that people expect too much alternation and too-short runs from a random process, and that this carries over into production tasks as excess alternation. Also the source of "local representativeness" (short portions of a sequence are expected to mirror the overall 50/50, irregular character of the generating process), which underlies the framing that a fair coin has no mechanism forcing short-run balance.
+
+Falk, R., & Konold, C. E. (1997). Making sense of randomness: Implicit encoding as a basis for judgment. *Psychological Review*, 104(2), 301–318. https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf
+- Same source used for Part 1. Here it supports the claim that people asked to generate random sequences commonly produce more alternations than chance, and connects this exhibit's production task back to Part 1's perception task as two facets of the same subjective-randomness phenomenon.
+
+Wagenaar, W. A. (1972). Generation of random sequences by human subjects: A critical survey of literature. *Psychological Bulletin*, 77(1), 65–72. https://doi.org/10.1037/h0032060
+- Historical review establishing that repetition avoidance and excess alternation recur across many random-generation tasks, and the methodological caution that results depend heavily on instructions, sequence length, pacing, and number of alternatives. Basis for describing the 30-outcome task as a teaching demonstration grounded in a well-established phenomenon, not a replication of one specific study.
+
+Nickerson, R. S. (2002). The production and perception of randomness. *Psychological Review*, 109(2), 330–357. https://doi.org/10.1037/0033-295X.109.2.330
+- Comprehensive review cautioning against claims that people are simply "incapable" of randomness, and emphasizing sensitivity to task instructions and the ambiguity of what "randomness" means to a participant. Basis for never producing a single global "randomness score" and for keeping the interpretation of any one visitor's sequence deliberately restrained.
+
+Rapoport, A., & Budescu, D. V. (1997). Randomization in individual choice behavior. *Psychological Review*, 104(3), 603–617. https://doi.org/10.1037/0033-295X.104.3.603
+- Evidence connecting excess alternation to suppressed long runs and a theoretical account of how short-term memory and local sequence monitoring may drive human randomization behavior. Basis for presenting alternation and longest run as two views of the same underlying tendency (R = A + 1).
+
+Warren, P. A., Gostoli, U., Farmer, G. D., El-Deredy, W., & Hahn, U. (2018). A re-examination of "bias" in human randomness perception. *Journal of Experimental Psychology: Human Perception and Performance*, 44(5), 663–680. https://pmc.ncbi.nlm.nih.gov/articles/PMC5933241/
+- Modern qualification of simpler "humans are bad at randomness" claims: some measures of human-generated sequences differ from an unbiased process (alternation, subsequence frequency) while others are closer to it than older summaries suggest, and experience with genuine random sequences can move later generation closer to true randomness. Basis for the exhibit's tone: overalternation is presented as a well-established tendency, not evidence of a personal cognitive deficiency, and the copy never diagnoses an individual visitor.
+
+Guseva, M., Bogler, C., Allefeld, C., & Haynes, J.-D. (2023). Instruction effects on randomness in sequence generation. *Frontiers in Psychology*, 14, 1113654. https://doi.org/10.3389/fpsyg.2023.1113654
+- Direct evidence that the specific instructions given in a random-generation task materially affect the measured behavior. Basis for the design decision to use a familiar "imagine a fair coin" instruction while explicitly cautioning, in the exhibit's own research disclosure, that the exact instruction matters and that this is not a standardized psychological test.
+
+Carlson, K. A., & Shu, S. B. (2007). The rule of three: How the third event signals the emergence of a streak. *Organizational Behavior and Human Decision Processes*, 104(1), 113–121. https://doi.org/10.1016/j.obhdp.2007.03.004
+- Background support for the longest-run line as a bridge to Part 3 (real random streaks): repeated outcomes are found to register as a "streak" to observers very quickly, which is part of why long runs can look surprising even though a fair coin produces them regularly.
+
+[Human judgment of randomness — Wikipedia](https://en.wikipedia.org/wiki/Randomness#Human_judgment)
+- Linked as the further-reading source at the bottom of the exhibit.

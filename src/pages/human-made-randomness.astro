@@ -1,0 +1,338 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+import { withBase } from '../data/paradoxes.js';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<ParadoxLayout slug="human-made-randomness">
+    <p class="text-slate-600 mb-4">
+        <strong>A fair coin has no memory: each flip is independent.</strong> But what does
+        that actually look like over a short sequence? Without flipping a real coin, make up
+        30 results that you think could plausibly have come from one.
+    </p>
+
+    <h3 class="text-lg font-bold text-slate-800 mb-3">Part 2: Can You Make a Sequence That Looks Like a Fair Coin?</h3>
+
+    <!-- ======================================================================
+         One region, three in-place states: generating -> ready -> analyzed. Nothing is
+         ever appended below an earlier state; the same sequence display and message box
+         are reused throughout so the exhibit never grows vertically (spec sections 6, 27).
+         ====================================================================== -->
+
+    <p id="hmr-instruction" class="text-center font-semibold text-slate-700 mb-1">
+        Pretend you're the coin. Make 30 outcomes.
+    </p>
+    <p class="text-center text-xs text-slate-500 mb-3">
+        Try to make a sequence that someone else might believe came from a fair coin.
+    </p>
+
+    <!-- The sequence display. 30 cells, 10 per row on mobile (3 rows), 15 per row from the sm
+         breakpoint up (2 rows) per spec sections 7.2 and 28. Cells are built once in JS and
+         never rebuilt -- only their text/state changes between phases. -->
+    <div id="hmr-sequence" class="grid grid-cols-10 sm:grid-cols-15 gap-1 sm:gap-1.5 mx-auto max-w-sm sm:max-w-xl" role="img" aria-label="Your sequence, 0 of 30 outcomes entered"></div>
+
+    <!-- ---------------- Phase: generating ---------------- -->
+    <div id="hmr-generating-controls">
+        <div class="grid grid-cols-2 gap-3 mt-4">
+            <button id="hmr-pick-h" type="button" class="hmr-input-btn" aria-keyshortcuts="H">
+                Heads <span class="text-xs font-normal opacity-80">(H)</span>
+            </button>
+            <button id="hmr-pick-t" type="button" class="hmr-input-btn" aria-keyshortcuts="T">
+                Tails <span class="text-xs font-normal opacity-80">(T)</span>
+            </button>
+        </div>
+
+        <div class="mt-3 flex items-center justify-between gap-x-4">
+            <p class="text-sm font-semibold text-slate-700" aria-live="polite">
+                <span id="hmr-progress">0</span> / 30
+            </p>
+            <div class="flex items-center gap-3">
+                <button id="hmr-undo" type="button" disabled class="text-sm text-slate-500 underline enabled:hover:text-slate-700 disabled:no-underline disabled:opacity-50 disabled:cursor-not-allowed">
+                    Undo
+                </button>
+                <button id="hmr-start-over" type="button" disabled class="text-sm text-slate-500 underline enabled:hover:text-slate-700 disabled:no-underline disabled:opacity-50 disabled:cursor-not-allowed">
+                    Start over
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------- Phase: ready (30 entered, not yet analyzed) ---------------- -->
+    <div id="hmr-ready-controls" hidden class="mt-4 flex justify-center">
+        <button id="hmr-analyze" type="button" class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700">
+            Analyze my sequence
+        </button>
+    </div>
+
+    <!-- ---------------- Phase: analyzed ---------------- -->
+    <div id="hmr-results" hidden class="mt-4">
+        <p class="text-center text-sm text-slate-700 mb-3">
+            <span id="hmr-heads-tails" class="font-semibold"></span>
+            <span class="mx-1.5 text-slate-300">&middot;</span>
+            <span id="hmr-longest-run"></span>
+        </p>
+
+        <!-- Alternation meter: one compact horizontal bar, fair-coin reference fixed at 50%,
+             visitor marker placed at their measured rate. A full textual equivalent sits
+             below it for screen readers and anyone who prefers not to read the bar (spec
+             sections 11, 30). -->
+        <div class="max-w-md mx-auto">
+            <div class="grid grid-cols-3 text-[11px] sm:text-xs text-slate-600 mb-1">
+                <span class="text-left">More repetition</span>
+                <span class="text-center font-semibold text-slate-800">Fair-coin expectation</span>
+                <span class="text-right">More switching</span>
+            </div>
+            <div id="hmr-meter" class="hmr-meter">
+                <div class="hmr-meter-midline" aria-hidden="true"></div>
+                <div id="hmr-meter-marker" class="hmr-meter-marker" aria-hidden="true"></div>
+            </div>
+            <div class="grid grid-cols-3 text-xs text-slate-500 mt-1">
+                <span class="text-left">0%</span>
+                <span class="text-center">50%</span>
+                <span class="text-right">100%</span>
+            </div>
+            <p id="hmr-meter-text" class="text-center text-sm font-semibold text-slate-800 mt-1"></p>
+        </div>
+
+        <div class="mt-2 flex justify-center">
+            <button id="hmr-try-again" type="button" class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700">
+                Try again
+            </button>
+        </div>
+    </div>
+
+    <!-- One persistent feedback box, reused across all three phases (spec section 18). -->
+    <div id="hmr-box" class="hmr-box">
+        <div class="hmr-msg" aria-live="polite"></div>
+    </div>
+
+    <!-- First-attempt summary, shown once a second attempt has been analyzed (spec section 26). -->
+    <p id="hmr-first-attempt" hidden class="text-center text-xs text-slate-500 mt-2"></p>
+
+    <!-- Closing statement. Revealed once the visitor's first sequence has been analyzed. -->
+    <div id="hmr-conclusion" hidden class="mt-6 p-4 bg-slate-50 border border-slate-100 rounded-xl text-slate-700">
+        <p>
+            <strong>Human randomness often looks a little too tidy.</strong> When people try to
+            imitate chance, they commonly switch outcomes more often and suppress repetitions.
+            A fair coin does neither&mdash;it has no memory and no preference for what should
+            come next.
+        </p>
+        <p class="mt-2 font-semibold">Next: what streaks does real randomness actually produce?</p>
+    </div>
+
+    <div class="mt-6">
+        <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
+        <div class="text-sm text-slate-600 space-y-2">
+            <p>
+                <strong>The math</strong> is exact: with 30 outcomes there are 29 adjacent transitions,
+                and for an independent fair coin the number that differ follows a
+                Binomial(29, 0.5) distribution, so every comparison above uses the true
+                probability rather than a simulation. <strong>The experimental findings</strong> are
+                about how people produce random-looking sequences: across many studies, people
+                asked to generate binary sequences tend to switch outcomes more often, and
+                produce shorter runs, than an independent process would. <strong>The wider
+                interpretation</strong> is deliberately cautious: a single 30-outcome sequence is a
+                small sample and task details (instructions, pacing, visibility of earlier
+                choices) are known to affect the result, so this exhibit is a teaching
+                demonstration rather than a diagnostic test of any one visitor.
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>
+                    Bar-Hillel, M., &amp; Wagenaar, W. A. (1991). The perception of randomness.
+                    <em>Advances in Applied Mathematics, 12</em>(4), 428&ndash;454.
+                    <a href="https://doi.org/10.1016/0196-8858(91)90029-I" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1016/0196-8858(91)90029-I</a>
+                </li>
+                <li>
+                    Falk, R., &amp; Konold, C. (1997). Making sense of randomness: Implicit encoding as a basis for judgment.
+                    <em>Psychological Review, 104</em>(2), 301&ndash;318.
+                    <a href="https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">PDF</a>
+                </li>
+                <li>
+                    Wagenaar, W. A. (1972). Generation of random sequences by human subjects: A critical survey of literature.
+                    <em>Psychological Bulletin, 77</em>(1), 65&ndash;72.
+                    <a href="https://doi.org/10.1037/h0032060" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1037/h0032060</a>
+                </li>
+                <li>
+                    Nickerson, R. S. (2002). The production and perception of randomness.
+                    <em>Psychological Review, 109</em>(2), 330&ndash;357.
+                    <a href="https://doi.org/10.1037/0033-295X.109.2.330" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1037/0033-295X.109.2.330</a>
+                </li>
+                <li>
+                    Rapoport, A., &amp; Budescu, D. V. (1997). Randomization in individual choice behavior.
+                    <em>Psychological Review, 104</em>(3), 603&ndash;617.
+                    <a href="https://doi.org/10.1037/0033-295X.104.3.603" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1037/0033-295X.104.3.603</a>
+                </li>
+                <li>
+                    Warren, P. A., Gostoli, U., Farmer, G. D., El-Deredy, W., &amp; Hahn, U. (2018). A re-examination of "bias" in human randomness perception.
+                    <em>Journal of Experimental Psychology: Human Perception and Performance, 44</em>(5), 663&ndash;680.
+                    <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5933241/" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">PMC5933241</a>
+                </li>
+                <li>
+                    Guseva, M., Bogler, C., Allefeld, C., &amp; Haynes, J.-D. (2023). Instruction effects on randomness in sequence generation.
+                    <em>Frontiers in Psychology, 14</em>, 1113654.
+                    <a href="https://doi.org/10.3389/fpsyg.2023.1113654" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.3389/fpsyg.2023.1113654</a>
+                </li>
+                <li>
+                    Carlson, K. A., &amp; Shu, S. B. (2007). The rule of three: How the third event signals the emergence of a streak.
+                    <em>Organizational Behavior and Human Decision Processes, 104</em>(1), 113&ndash;121.
+                    <a href="https://doi.org/10.1016/j.obhdp.2007.03.004" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1016/j.obhdp.2007.03.004</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <p class="text-xs text-slate-500 mt-4">
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/Randomness#Human_judgment" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">Human judgment of randomness on Wikipedia</a>.
+    </p>
+
+    <!-- Series navigation: Part 2 of 4. Part 1 has no Previous button; Part 4 will have no
+         Next button (user-specified convention). Part 3's slug is a placeholder to be
+         confirmed/created when Part 3 is built. -->
+    <div class="mt-8 flex items-center justify-between gap-3">
+        <a
+            href={withBase('/clustering-illusion/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-slate-200 text-slate-700 hover:bg-slate-300"
+        >
+            <span aria-hidden="true">&larr;</span>
+            Back to Spatial clustering
+        </a>
+        <a
+            href={withBase('/clustering-illusion-part-3/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
+        >
+            Continue to Random streaks
+            <span aria-hidden="true">&rarr;</span>
+        </a>
+    </div>
+</ParadoxLayout>
+
+<!-- is:global for the same reason as clustering-illusion.astro: cells and messages are
+     filled in by the script after load. Every selector is prefixed hmr- (Human-Made
+     Randomness) so nothing collides with the ci- selectors from Part 1's stylesheet, since
+     both style blocks are global and could otherwise leak across pages.
+
+     COLORS: same palette as Part 1. Filled sequence cells use the site's teal/amber pair;
+     the meter marker is teal-700 on a light track, and the fair-coin midline is a dark
+     slate line plus a text label, so its position never depends on color alone. -->
+<style is:global>
+    /* --- Sequence grid ----------------------------------------------------- */
+    .grid-cols-15 { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+
+    .hmr-cell {
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        border: 1px solid #cbd5e1; /* slate-300 */
+        color: #0f172a;            /* slate-900 */
+        background: #fff;
+        transition: opacity 180ms ease, background-color 150ms ease, border-color 150ms ease;
+    }
+    /* Empty positions: visibly present but subdued (spec section 7.2). */
+    .hmr-cell[data-state="empty"] {
+        color: #cbd5e1;            /* slate-300 */
+        border-style: dashed;
+        background: #f8fafc;       /* slate-50 */
+    }
+    .hmr-cell[data-state="filled"] { background: #f1f5f9; } /* slate-100 */
+    /* A very small entrance for a newly added outcome, per spec section 29. Opacity only,
+       no bounce or movement. */
+    .hmr-cell[data-just-added="true"] { animation: hmr-cell-in 150ms ease-out; }
+    @keyframes hmr-cell-in {
+        from { opacity: 0; transform: scale(0.85); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* After analysis: runs of 3+ get a thin non-color-dependent bracket underline rather
+       than a color change, so the marking works under any color vision (spec section 17). */
+    .hmr-cell[data-run="true"] { box-shadow: inset 0 -2px 0 0 #0f172a; }
+
+    /* --- Input buttons ------------------------------------------------------ */
+    .hmr-input-btn {
+        min-height: 48px;
+        border-radius: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        background: #f1f5f9;   /* slate-100 */
+        color: #1e293b;        /* slate-800 */
+        border: 2px solid #cbd5e1; /* slate-300 */
+        transition: background-color 0.15s, border-color 0.15s;
+    }
+    .hmr-input-btn:hover { background: #e2e8f0; border-color: #94a3b8; } /* slate-200 / slate-400 */
+    .hmr-input-btn:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+    .hmr-input-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* --- Alternation meter --------------------------------------------------- */
+    .hmr-meter {
+        position: relative;
+        height: 0.75rem;
+        border-radius: 9999px;
+        background: linear-gradient(to right, #e2e8f0, #cbd5e1, #e2e8f0); /* slate-200/300 */
+    }
+    .hmr-meter-midline {
+        position: absolute;
+        top: -3px;
+        bottom: -3px;
+        left: 50%;
+        width: 2px;
+        background: #475569; /* slate-600: fixed fair-coin reference, never moves */
+    }
+    .hmr-meter-marker {
+        position: absolute;
+        top: -4px;
+        width: 14px;
+        height: 14px;
+        margin-left: -7px;
+        border-radius: 9999px;
+        background: #0f766e; /* teal-700, matches Part 1's filled-cell color */
+        border: 2px solid #fff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.35);
+        transition: left 220ms ease;
+        left: 50%; /* default before first analysis; set inline by JS after */
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hmr-meter-marker { transition: none; }
+    }
+
+    /* --- Feedback box -------------------------------------------------------- */
+    .hmr-box {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;   /* slate-200 */
+        border-radius: 0.5rem;
+        background: #f8fafc;         /* slate-50 */
+        color: #1e293b;              /* slate-800 */
+        font-size: 0.875rem;
+        line-height: 1.4;
+        min-height: 6rem;
+    }
+    @media (min-width: 640px) {
+        .hmr-box { font-size: 1rem; min-height: 4.5rem; }
+    }
+
+    @keyframes hmr-flash-kf {
+        from { background-color: #ccfbf1; border-color: #0d9488; } /* teal-100 / teal-600 */
+        to   { background-color: #f8fafc; border-color: #e2e8f0; }
+    }
+    .hmr-flash { animation: hmr-flash-kf 700ms ease-out; }
+
+    /* Fade used for the sequence area on Try again (spec section 24, 29). */
+    .hmr-fade { transition: opacity 180ms ease; }
+    .hmr-fade[data-faded="true"] { opacity: 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hmr-cell, .hmr-cell[data-just-added="true"] { transition: none; animation: none; }
+        .hmr-flash { animation: none; }
+        .hmr-fade { transition: none; }
+        .hmr-input-btn { transition: none; }
+    }
+</style>
+
+<script>
+    import '../scripts/paradoxes/human-made-randomness.js';
+</script>

@@ -62,6 +62,12 @@ export const groups = [
                 title: 'The Clustering Illusion',
                 summary: 'Random events don’t spread themselves out: genuine randomness produces clumps and gaps, while an unusually even pattern can contain more structure than a random one.',
                 usesPlotly: false
+            },
+            {
+                slug: 'human-made-randomness',
+                title: 'Human-made Randomness',
+                summary: 'When people try to imitate a fair coin, they typically switch outcomes more often than chance would, and avoid the long runs that real randomness naturally produces.',
+                usesPlotly: false
             }
         ]
     },

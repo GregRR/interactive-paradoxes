@@ -225,12 +225,12 @@ const base = import.meta.env.BASE_URL;
     </p>
 
     <!-- Series navigation: this exhibit is Part 1 of a four-part Clustering Illusion series
-         (see notes/clustering_illusion_step_1_implementation_spec.md). The target page for
-         Part 2 doesn't exist yet -- this slug is a placeholder to be confirmed/created when
-         Part 2 is built, at which point this link should be re-checked. -->
+         (see notes/clustering_illusion_step_1_implementation_spec.md). Part 1 has no
+         Previous button by design (user-specified series convention); Part 2 is now built
+         at /human-made-randomness/. -->
     <div class="mt-8 flex justify-end">
         <a
-            href={withBase('/clustering-illusion-part-2/', base)}
+            href={withBase('/human-made-randomness/', base)}
             class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
         >
             Continue to Human-made randomness
