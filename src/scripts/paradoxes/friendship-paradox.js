@@ -1,7 +1,7 @@
 /**
  * Exhibit 4: The Friendship Paradox
  *
- * Belongs to: Group 2 (The Egocentric Blind Spot)
+ * Belongs to: Group 3 (The Egocentric Blind Spot)
  * Depends on: ../core.js (plotlyConfig) and the Plotly global.
  * DOM ids used: fp-slider, fp-val, fp-result, plot4a, plot4b
  *

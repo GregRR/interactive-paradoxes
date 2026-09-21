@@ -52,6 +52,21 @@ export const groups = [
     },
     {
         number: 2,
+        title: 'Clustering Illusions',
+        description: 'How genuine randomness produces clumps, gaps, and streaks, and why we so often read them as meaningful or as “not random.”',
+        labelColor: 'text-rose-400',
+        activeBorder: 'border-rose-500',
+        paradoxes: [
+            {
+                slug: 'clustering-illusion',
+                title: 'The Clustering Illusion',
+                summary: 'Random events don’t spread themselves out: genuine randomness produces clumps and gaps, while an unusually even pattern can contain more structure than a random one.',
+                usesPlotly: false
+            }
+        ]
+    },
+    {
+        number: 3,
         title: 'The Egocentric Blind Spot',
         description: 'Paradoxes that trick us by making us focus on our personal perspective rather than the entire network.',
         labelColor: 'text-emerald-400',
@@ -72,7 +87,7 @@ export const groups = [
         ]
     },
     {
-        number: 3,
+        number: 4,
         title: 'Hidden Structures in Chaos',
         description: 'Investigating statistical laws that govern seemingly random or chaotic datasets.',
         labelColor: 'text-purple-400',
@@ -105,7 +120,7 @@ export const groups = [
         ]
     },
     {
-        number: 4,
+        number: 5,
         title: 'Information & Conditional Probability',
         description: 'How new information from a knowledgeable source should change the odds you assign to what you already picked.',
         labelColor: 'text-amber-400',

@@ -1,7 +1,7 @@
 /**
  * Exhibit 6: The Inspection Paradox (Bus Stop Bias)
  *
- * Belongs to: Group 3 (Hidden Structures in Chaos)
+ * Belongs to: Group 4 (Hidden Structures in Chaos)
  * Depends on: ../core.js (plotlyConfig) and the Plotly global.
  * DOM ids used: ip-chaos-slider, ip-chaos-val, btn-passenger, ip-result, plot6
  *

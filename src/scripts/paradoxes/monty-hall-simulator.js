@@ -1,7 +1,7 @@
 /**
  * Exhibit: The Monty Hall Problem (Part 2 — 100-Trial Simulator)
  *
- * Belongs to: Group 4 (Information & Conditional Probability), same page as Part 1
+ * Belongs to: Group 5 (Information & Conditional Probability), same page as Part 1
  * (src/scripts/paradoxes/monty-hall-problem.js). This file is fully independent of that
  * one -- it shares no state or DOM ids with Part 1's single-round game, so the two can be
  * developed and read separately even though they live on the same page.

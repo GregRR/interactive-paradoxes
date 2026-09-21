@@ -1,7 +1,7 @@
 /**
  * Exhibit 5: Benford's Law
  *
- * Belongs to: Group 3 (Hidden Structures in Chaos)
+ * Belongs to: Group 4 (Hidden Structures in Chaos)
  * Depends on: ../core.js (plotlyConfig) and the Plotly global.
  * DOM ids used: btn-natural, btn-human, plot5
  *

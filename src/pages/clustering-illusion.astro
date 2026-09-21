@@ -1,0 +1,338 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+---
+
+<ParadoxLayout slug="clustering-illusion">
+    <p class="text-slate-600 mb-4">
+        <strong>Random events don't have to spread themselves out.</strong> When unusual things happen
+        close together&mdash;in time, place, or circumstance&mdash;they can feel connected. But chance
+        itself can produce clusters.
+    </p>
+    <p class="text-slate-600 mb-6">
+        <strong>First, see what randomness looks like to you.</strong>
+    </p>
+
+    <h3 class="text-lg font-bold text-slate-800 mb-3">Part 1: What Does Random Look Like?</h3>
+
+    <!-- ======================================================================
+         The interactive. Two mutually exclusive tabs share one region, so the exhibit
+         never grows downward: new rounds and new samples replace what is on screen.
+         The tab buttons are 44px tall for touch, and nothing depends on hover.
+         ====================================================================== -->
+    <div role="tablist" aria-label="Exhibit modes" class="grid grid-cols-2 gap-2 mb-4">
+        <button id="ci-tab-quiz" type="button" role="tab" aria-selected="true" aria-controls="ci-panel-quiz" class="ci-tab">
+            Spot the Random Pattern
+        </button>
+        <button id="ci-tab-explore" type="button" role="tab" aria-selected="false" aria-controls="ci-panel-explore" tabindex="-1" class="ci-tab">
+            Explore Clumping
+        </button>
+    </div>
+
+    <!-- ---------------- TAB 1: Spot the Random Pattern ---------------- -->
+    <div id="ci-panel-quiz" role="tabpanel" aria-labelledby="ci-tab-quiz">
+        <p class="text-center font-semibold text-slate-700 mb-3">
+            Which pattern was generated independently at random?
+        </p>
+
+        <!-- The three grids stay side by side at every width: comparing them is the task, so
+             seeing them all at once matters more than making each one large. Below the sm
+             breakpoint the row extends 16px into the card's side padding (-mx-4) so each grid
+             gets about 80px at a 320px viewport and about 92px at 360px, which is plenty to
+             see clumping in. Each whole grid-plus-letter is one <button>; the cells inside it
+             are decoration and don't need touch-sized targets. -->
+        <div class="-mx-4 sm:mx-auto grid grid-cols-3 gap-1.5 sm:gap-4 sm:max-w-md">
+            {[0, 1, 2].map((i) => (
+                <div class="flex flex-col items-center min-w-0">
+                    <button
+                        id={`ci-pick-${i}`}
+                        type="button"
+                        class="ci-pick"
+                        aria-label={`Pattern ${'ABC'[i]}`}
+                        aria-pressed="false"
+                        aria-disabled="false"
+                    >
+                        <div id={`ci-grid-${i}`} class="ci-grid ci-fade" aria-hidden="true"></div>
+                        <span class="block text-center text-sm font-semibold text-slate-700 mt-1">{'ABC'[i]}</span>
+                    </button>
+                    <!-- Filled in after an answer. Its height is reserved up front so the reveal
+                         doesn't push the feedback box down. The pick button's aria-label carries
+                         the same information for screen readers, so this is hidden from them. -->
+                    <div id={`ci-reveal-${i}`} class="ci-reveal" aria-hidden="true"></div>
+                </div>
+            ))}
+        </div>
+
+        <!-- One persistent feedback box. It reserves enough height for the longest message so
+             the controls below it never jump, and it flashes briefly when its text changes. -->
+        <div id="ci-quiz-box" class="ci-box">
+            <div class="ci-msg" aria-live="polite"></div>
+        </div>
+
+        <div class="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+            <p class="text-sm font-semibold text-slate-700">
+                Correct: <span id="ci-correct">0</span> / <span id="ci-rounds">0</span>
+            </p>
+            <div class="flex items-center gap-2">
+                <button
+                    id="ci-new-patterns"
+                    type="button"
+                    disabled
+                    class="min-h-[44px] px-4 whitespace-nowrap rounded-lg font-semibold shadow-sm transition-colors bg-slate-300 text-slate-500 enabled:bg-teal-600 enabled:text-white enabled:hover:bg-teal-700 disabled:cursor-not-allowed"
+                >
+                    New patterns
+                </button>
+                <button
+                    id="ci-reset"
+                    type="button"
+                    disabled
+                    class="min-h-[44px] px-3 whitespace-nowrap text-sm text-slate-500 underline enabled:hover:text-slate-700 disabled:no-underline disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    Reset score
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ---------------- TAB 2: Explore Clumping ---------------- -->
+    <div id="ci-panel-explore" role="tabpanel" aria-labelledby="ci-tab-explore" hidden>
+        <!-- One larger grid. role="img" with a label the script keeps current; the cells inside
+             are decoration. -->
+        <div id="ci-explore-grid" class="ci-grid ci-fade mx-auto w-full max-w-[240px] sm:max-w-[320px]" role="img" aria-label="Sample pattern"></div>
+
+        <div class="mt-4 max-w-md mx-auto">
+            <label for="ci-slider" class="flex justify-between gap-2 text-sm font-semibold text-slate-700 mb-1">
+                <span>Neighbor alternation</span>
+                <span id="ci-slider-value" class="font-mono">50% (Independent)</span>
+            </label>
+            <!-- Native range input: keyboard and touch work for free. step=5 means it only ever
+                 sits on the eleven allowed settings, so a new grid is generated only when the
+                 setting actually changes, never per pixel of drag. -->
+            <input id="ci-slider" type="range" min="25" max="75" step="5" value="50" class="w-full accent-teal-600">
+            <!-- 11px below the sm breakpoint so all three labels fit on one line at 320px. -->
+            <div class="grid grid-cols-3 text-[11px] sm:text-xs text-slate-600 mt-1">
+                <span class="text-left">More clumped</span>
+                <span class="text-center font-semibold text-slate-800">Independent</span>
+                <span class="text-right">More dispersed</span>
+            </div>
+            <div class="grid grid-cols-3 text-xs text-slate-500">
+                <span class="text-left">25%</span>
+                <span class="text-center">50%</span>
+                <span class="text-right">75%</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">
+                <em>Neighbor alternation</em> is how often two touching squares differ, one filled and one empty.
+                Low means neighbors usually match (clumps). High means they usually differ (checkerboard-like).
+            </p>
+        </div>
+
+        <div id="ci-explore-box" class="ci-box ci-box-explore">
+            <div class="ci-msg" aria-live="polite"></div>
+            <p id="ci-explore-observed" class="mt-2 text-xs text-slate-500"></p>
+        </div>
+
+        <div class="mt-3 flex justify-center">
+            <button
+                id="ci-new-sample"
+                type="button"
+                class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700"
+            >
+                New sample
+            </button>
+        </div>
+    </div>
+
+    <!-- Closing statement. Revealed after the visitor's first interaction in either tab; it
+         sits below the interactive so showing it never moves anything above it. The short
+         version is for phones. -->
+    <div id="ci-conclusion" hidden class="mt-6 p-4 bg-slate-50 border border-slate-100 rounded-xl text-slate-700">
+        <p class="hidden sm:block">
+            <strong>Random doesn't mean evenly spaced.</strong> Independent randomness naturally produces
+            clumps and gaps, while a pattern that consistently avoids clumps contains structure of its own.
+            So when unusual events occur close together, the cluster may feel significant&mdash;but
+            closeness alone does not show that the events share a cause.
+        </p>
+        <p class="sm:hidden">
+            <strong>Randomness naturally clumps.</strong> An unusually even spread can contain more
+            structure than the random pattern itself.
+        </p>
+    </div>
+
+    <details class="mt-4 text-sm text-slate-600">
+        <summary class="cursor-pointer font-semibold text-slate-700 min-h-[44px] flex items-center">How these patterns are made</summary>
+        <div class="pb-2 space-y-2">
+            <p>
+                Every grid has 100 squares, exactly 50 filled and 50 empty, so the only thing that
+                differs between patterns is how the squares are arranged.
+            </p>
+            <p>
+                To measure that arrangement, count the touching pairs of squares (side by side, or one above
+                the other). A 10&times;10 grid has 180 of them. <strong>Neighbor alternation</strong> is the share of
+                those pairs where one square is filled and the other is empty.
+            </p>
+            <p>
+                The <strong>independent</strong> pattern is a plain random shuffle of 50 filled and 50 empty
+                squares. Nothing is adjusted afterward, which is why its neighbor alternation lands near
+                50% but varies from sample to sample. The <strong>more clumped</strong> and <strong>more dispersed</strong> patterns
+                start from a random shuffle, then swap squares one pair at a time until neighbor alternation
+                reaches the target setting.
+            </p>
+        </div>
+    </details>
+
+    <details class="mt-2 text-sm text-slate-600">
+        <summary class="cursor-pointer font-semibold text-slate-700 min-h-[44px] flex items-center">Research behind this</summary>
+        <div class="pb-2 space-y-2">
+            <p>
+                <strong>The math</strong> is exact: the grids, counts, and neighbor-alternation measure are defined
+                above. <strong>The experimental findings</strong> are about how people judge randomness: people tend to
+                produce and prefer more alternation than chance does, and to rate over-alternating patterns as
+                especially random. <strong>The wider interpretation</strong> is more tentative: events that cluster
+                can feel causally connected, but this exhibit does not show that misjudging randomness explains
+                any particular belief.
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>
+                    Falk, R., &amp; Konold, C. (1997). Making sense of randomness: Implicit encoding as a basis for judgment.
+                    <em>Psychological Review, 104</em>(2), 301&ndash;318.
+                    <a href="https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">PDF</a>
+                </li>
+                <li>
+                    Wilke, A., Minich, S., Panis, M., &amp; Langen, T. A. (2015). A game of hide and seek: Expectations of clumpy
+                    resources influence hiding and searching patterns. <em>PLOS ONE, 10</em>(7), e0130976.
+                    <a href="https://doi.org/10.1371/journal.pone.0130976" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1371/journal.pone.0130976</a>
+                </li>
+                <li>
+                    Bertamini, M., Zito, M., Scott-Samuel, N. E., &amp; Hulleman, J. (2016). Spatial clustering and its effect on
+                    perceived clustering, numerosity, and dispersion. <em>Attention, Perception, &amp; Psychophysics, 78</em>, 1460&ndash;1471.
+                    <a href="https://doi.org/10.3758/s13414-016-1100-0" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.3758/s13414-016-1100-0</a>
+                </li>
+                <li>
+                    van der Wal, R. C., Sutton, R. M., Lange, J., &amp; Braga, J. P. N. (2018). Suspicious binds: Conspiracy thinking and
+                    tenuous perceptions of causal connections between co-occurring and spuriously correlated events.
+                    <em>European Journal of Social Psychology, 48</em>(7), 970&ndash;989.
+                    <a href="https://doi.org/10.1002/ejsp.2507" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1002/ejsp.2507</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+
+    <p class="text-xs text-slate-500 mt-4">
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/Clustering_illusion" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Clustering Illusion on Wikipedia</a>.
+    </p>
+</ParadoxLayout>
+
+<!-- is:global because the grid cells, reveal labels and feedback text are created or filled in
+     by the script, and Astro's default scoped styles only reach elements present in this file's
+     markup. Every selector is prefixed ci- so nothing leaks to other pages.
+
+     COLORS: filled vs empty cells differ by LUMINANCE (dark teal on white, about 5.5:1), so the
+     patterns read the same under every kind of color blindness. Which grid is selected or
+     random is always also stated in text, never by color alone. -->
+<style is:global>
+    /* --- Tabs ------------------------------------------------------------ */
+    .ci-tab {
+        min-height: 44px;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        background: #f1f5f9;   /* slate-100 */
+        color: #334155;        /* slate-700 */
+        transition: background-color 0.15s;
+    }
+    .ci-tab:hover { background: #e2e8f0; } /* slate-200 */
+    /* Same teal treatment the rest of the site uses for the active/primary control. */
+    .ci-tab[aria-selected="true"] { background: #0d9488; color: #fff; } /* teal-600 */
+    .ci-tab[aria-selected="true"]:hover { background: #0f766e; }        /* teal-700 */
+
+    /* --- Grids ----------------------------------------------------------- */
+    .ci-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 1px;
+        padding: 1px;
+        background: #cbd5e1;   /* slate-300: the hairlines between cells */
+        border-radius: 3px;
+        aspect-ratio: 1 / 1;
+        width: 100%;
+    }
+    .ci-cell { background: #fff; }
+    .ci-cell[data-filled="1"] { background: #0f766e; } /* teal-700 */
+
+    /* Fade used whenever a whole new sample replaces the old one. Opacity only: cells never
+       move. The 180ms matches FADE_MS in clustering-illusion.js. */
+    .ci-fade { transition: opacity 180ms ease; }
+    .ci-fade[data-faded="true"] { opacity: 0; }
+
+    /* --- Quiz choices ---------------------------------------------------- */
+    .ci-pick {
+        width: 100%;
+        padding: 2px;
+        border: 2px solid transparent;
+        border-radius: 0.5rem;
+        cursor: pointer;
+    }
+    .ci-pick[aria-disabled="false"]:hover { background: #f1f5f9; } /* slate-100 */
+    .ci-pick[aria-disabled="true"] { cursor: default; }
+    .ci-pick:focus-visible { outline: 2px solid #0d9488; outline-offset: 2px; }
+    /* After the reveal: the visitor's pick gets a dark border, the random pattern a teal one.
+       Both are also spelled out in the text below the grid. */
+    .ci-pick.ci-selected { border-color: #0f172a; background: #f1f5f9; }
+    .ci-pick.ci-random { border-color: #0f766e; }
+
+    /* Reserved height for the reveal text: up to five short lines at phone width. */
+    .ci-reveal {
+        margin-top: 0.25rem;
+        min-height: 5.5rem;
+        width: 100%;
+        text-align: center;
+        font-size: 0.6875rem;   /* 11px */
+        line-height: 1.25;
+        color: #475569;         /* slate-600 */
+    }
+    .ci-reveal span { display: block; }
+    .ci-tag-choice { font-weight: 700; color: #0f172a; }
+    .ci-tag-type { font-weight: 600; color: #1e293b; }
+    .ci-tag-rate { color: #64748b; margin-top: 0.125rem; } /* slate-500, secondary */
+    @media (min-width: 640px) {
+        .ci-reveal { font-size: 0.8125rem; min-height: 4.5rem; }
+    }
+
+    /* --- Feedback box ---------------------------------------------------- */
+    .ci-box {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        border: 1px solid #e2e8f0;   /* slate-200 */
+        border-radius: 0.5rem;
+        background: #f8fafc;         /* slate-50 */
+        color: #1e293b;              /* slate-800 */
+        font-size: 0.875rem;
+        line-height: 1.4;
+        /* Tall enough for the longest quiz message at phone width (about six lines). */
+        min-height: 8.5rem;
+    }
+    /* The explore box also holds the observed-alternation line. */
+    .ci-box-explore { min-height: 9.5rem; }
+    @media (min-width: 640px) {
+        .ci-box { font-size: 1rem; min-height: 5.75rem; }
+        .ci-box-explore { min-height: 7.5rem; }
+    }
+
+    /* Brief highlight when the message changes. Reduced motion turns it off below. */
+    @keyframes ci-flash-kf {
+        from { background-color: #ccfbf1; border-color: #0d9488; } /* teal-100 / teal-600 */
+        to   { background-color: #f8fafc; border-color: #e2e8f0; }
+    }
+    .ci-flash { animation: ci-flash-kf 700ms ease-out; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ci-fade { transition: none; }
+        .ci-flash { animation: none; }
+        .ci-tab { transition: none; }
+    }
+</style>
+
+<script>
+    import '../scripts/paradoxes/clustering-illusion.js';
+</script>

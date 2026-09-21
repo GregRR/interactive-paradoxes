@@ -53,3 +53,20 @@ Price, P. C., Carlock, G. A., Crouse, S., & Vargas Arciga, M. (2022). Effects of
 
 [MythBusters — Monty Hall simulation segment](https://www.youtube.com/watch?v=WhSjcF-qjXs)
 - Inspiration for the 100-trial simulator: this segment ran a large batch of physical trials of both strategies to settle the same question empirically.
+
+## The Clustering Illusion
+
+Falk, R., & Konold, C. E. (1997). Making Sense of Randomness: Implicit Encoding as a Basis for Judgment. *Psychological Review*, 104(2), 301–318. https://www.srri.umass.edu/sites/srri/files/FalkKonold1997/index.pdf
+- Primary psychological basis for the exhibit: people identify randomness with too much alternation and rate over-alternating sequences as especially random. Their own aggregated data across three studies (Table 5, N=491) puts peak apparent-randomness ratings at p(A) = 0.6–0.7 (AR = 0.99 at .6, AR = 1.00 at .7), not at 0.5. Basis for running the "which one looks random" test before any explanation, for framing the opposite of clumping as over-dispersion rather than as randomness, and for the "More evenly mixed" message at the 60–65% slider setting.
+
+Wilke, A., Minich, S., Panis, M., & Langen, T. A. (2015). A Game of Hide and Seek: Expectations of Clumpy Resources Influence Hiding and Searching Patterns. *PLOS ONE*, 10(7), e0130976. https://doi.org/10.1371/journal.pone.0130976
+- Source of the 10×10 grid with 50 filled and 50 empty cells, the neighbor-alternation rate p(A), and the 0.30 / 0.50 / 0.70 three-grid comparison used in Spot the Random Pattern (their own visual-pattern questionnaire, adapted from Falk & Konold's paradigm). Also the source for the configuration measure C = |p(A) − 0.5| / 0.5 (used only to validate generated patterns).
+
+Bertamini, M., Zito, M., Scott-Samuel, N. E., & Hulleman, J. (2016). Spatial clustering and its effect on perceived clustering, numerosity, and dispersion. *Attention, Perception, & Psychophysics*, 78, 1460–1471. https://doi.org/10.3758/s13414-016-1100-0
+- Found that spatial configuration itself changes judged clustering, dispersion, and numerosity. Basis for keeping every grid identical in size, cell count, and styling so that only arrangement differs.
+
+van der Wal, R. C., Sutton, R. M., Lange, J., & Braga, J. P. N. (2018). Suspicious binds: Conspiracy thinking and tenuous perceptions of causal connections between co-occurring and spuriously correlated events. *European Journal of Social Psychology*, 48(7), 970–989. https://doi.org/10.1002/ejsp.2507
+- Basis for the restrained claim that clustered or co-occurring events can encourage perceived causal connection. It studies causal and conspiracy interpretations, not miracle belief, so it is not cited for anything broader.
+
+[Clustering illusion — Wikipedia](https://en.wikipedia.org/wiki/Clustering_illusion)
+- Linked as the further-reading source at the bottom of the exhibit.

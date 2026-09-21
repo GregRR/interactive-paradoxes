@@ -17,7 +17,7 @@ make it click fastest for the widest range of people.
 
 ## What's in here
 
-The paradoxes are organized into four groups, each built around a different flavor of
+The paradoxes are organized into five groups, each built around a different flavor of
 "how does that even make sense."
 
 ### Belief Revision & Coincidence
@@ -27,6 +27,13 @@ opportunities.
 
 - The Law of Truly Large Numbers
 - Littlewood's Law Calculator
+
+### Clustering Illusions
+
+How genuine randomness produces clumps, gaps, and streaks, and why we so often read them
+as meaningful or as "not random."
+
+- The Clustering Illusion
 
 ### The Egocentric Blind Spot
 

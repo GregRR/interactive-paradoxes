@@ -1,7 +1,7 @@
 /**
  * Exhibit 3: The Birthday Paradox
  *
- * Belongs to: Group 2 (The Egocentric Blind Spot)
+ * Belongs to: Group 3 (The Egocentric Blind Spot)
  * Depends on: ../core.js (plotlyConfig) and the Plotly global.
  * DOM ids used: bp-slider, bp-toggle, bp-val, bp-result, plot3
  *

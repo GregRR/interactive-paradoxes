@@ -1,7 +1,7 @@
 /**
  * Exhibit 8: The Prosecutor's Fallacy / Base-Rate Neglect
  *
- * Belongs to: Group 3 (Hidden Structures in Chaos)
+ * Belongs to: Group 4 (Hidden Structures in Chaos)
  * Depends on: nothing from core.js. Draws on a plain <canvas>, so it does not use Plotly.
  * DOM ids used: brn-scenario, brn-prior-slider, brn-sensitivity-slider, brn-specificity-slider, brn-canvas, brn-result, brn-intro-text
  *

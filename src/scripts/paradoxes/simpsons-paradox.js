@@ -1,7 +1,7 @@
 /**
  * Exhibit 7: Simpson's Paradox
  *
- * Belongs to: Group 3 (Hidden Structures in Chaos)
+ * Belongs to: Group 4 (Hidden Structures in Chaos)
  * Depends on: ../core.js (plotlyConfig) and the Plotly global.
  * DOM ids used: sp-slider, sp-stage-label, sp-result, plot7
  *

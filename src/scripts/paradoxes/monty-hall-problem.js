@@ -1,7 +1,7 @@
 /**
  * Exhibit: The Monty Hall Problem (Part 1 — Play the Game)
  *
- * Belongs to: Group 4 (Information & Conditional Probability)
+ * Belongs to: Group 5 (Information & Conditional Probability)
  * Depends on: nothing from core.js. Pure DOM; no Plotly on this part.
  * DOM ids used: mh-door-1/2/3, mh-door-1-img/2-img/3-img, mh-door-1-caption/2-caption/3-caption,
  *   mh-action-btn, mh-stats-toggle, mh-message, mh-stay-count, mh-stay-wins, mh-switch-count,
