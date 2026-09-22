@@ -74,6 +74,12 @@ export const groups = [
                 title: 'Random Streaks',
                 summary: 'In 50 fair coin flips, a streak of 5 or more in a row happens about 82% of the time, and 6 or more happens more often than not.',
                 usesPlotly: true
+            },
+            {
+                slug: 'this-couldnt-be-coincidence',
+                title: "This Couldn't Just Be Coincidence!",
+                summary: 'A striking local pattern can come from pure chance or from a genuinely non-random process, and can look the same either way at first glance.',
+                usesPlotly: false
             }
         ]
     },

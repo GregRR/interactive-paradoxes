@@ -48,3 +48,9 @@ coverage/
 
 #Project
 notes/
+
+# Claude desktop app's auto-save location for files delivered to chat. This folder is
+# created automatically by the app itself, not by any file-write tool -- see
+# claude/project-state.md's "Known operational quirk" note. It must never be committed;
+# it belongs nowhere but here.
+Claude outputs/

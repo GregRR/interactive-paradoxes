@@ -1,0 +1,327 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+import { withBase } from '../data/paradoxes.js';
+import { DENSITY_STOPS } from '../scripts/paradoxes/coincidence-grids.js';
+
+const base = import.meta.env.BASE_URL;
+---
+
+<ParadoxLayout slug="this-couldnt-be-coincidence">
+    <p id="tccbc-intro" class="text-slate-600 mb-3">
+        <strong>"That looks too patterned to be a coincidence."</strong> Each grid below
+        stands in for a stretch of ordinary days: one small event per cell. Most days,
+        nothing lines up into anything notable. Every so often, purely by chance, a few
+        nearby days form something that looks like a pattern.
+    </p>
+    <p class="text-slate-600 mb-4">
+        One of the two grids below was filled in completely at random. The other was
+        filled in by a process that genuinely favors placing events near other events.
+        Watch what happens when you uncover them.
+    </p>
+
+    <h3 class="text-lg font-bold text-slate-800 mb-2">Part 4: This Couldn't Just Be Coincidence!</h3>
+
+    <!-- Visually-hidden live region: announces each phase transition (spec section 59) so a
+         screen-reader visitor gets the same "something just changed" signal the animated
+         reveal gives a sighted visitor. Kept separate from the visible try-count/stats text
+         so those can stay static markup updated in place, rather than every visible element
+         needing its own aria-live and potentially double-announcing the same change. -->
+    <p id="tccbc-status" class="tccbc-sr-only" aria-live="polite" role="status"></p>
+
+    <!-- ======================================================================
+         Primary interaction (spec section 8). Two grids, initially fully hidden. One click
+         reveals a matching cluster on both; a second click reveals everything and enters
+         exploration mode. DOM ids are position-based (left/right), never random/non-random
+         -- which logical grid renders on which side is randomized by the script on every
+         generation, so the page markup itself carries no positional tell.
+
+         Width: kept at sm:max-w-lg (matching the rest of the site's grid-based exhibits) so
+         the grids stay a manageable, square-aspect size. The stats cards below are a
+         SEPARATE row with their own, wider cap -- widening the grids by the same amount as
+         the stats cards would make each grid noticeably taller too (they're square), which
+         defeats the point of keeping the grids and the exploration controls visible together
+         on one screen. ====================================================================== -->
+    <div class="grid grid-cols-2 gap-3 sm:gap-6 sm:max-w-lg sm:mx-auto">
+        <div class="flex flex-col items-center min-w-0">
+            <!-- Labels are short and equal length ("RANDOM" / "NON-RANDOM") on purpose: a
+                 longer label on one side only would wrap to two lines while the other stayed
+                 on one, pushing that grid out of vertical alignment with its twin. The process
+                 name ("local attraction") lives in the explanatory text below instead. -->
+            <p id="tccbc-label-left" hidden class="text-xs sm:text-sm font-bold text-slate-800 mb-1 text-center"></p>
+            <div id="tccbc-grid-left" class="tccbc-grid" role="img" aria-label="First hidden grid of events"></div>
+        </div>
+        <div class="flex flex-col items-center min-w-0">
+            <p id="tccbc-label-right" hidden class="text-xs sm:text-sm font-bold text-slate-800 mb-1 text-center"></p>
+            <div id="tccbc-grid-right" class="tccbc-grid" role="img" aria-label="Second hidden grid of events"></div>
+        </div>
+    </div>
+
+    <div class="mt-3 flex items-center justify-center gap-3">
+        <button
+            id="tccbc-primary-btn"
+            type="button"
+            class="min-h-[44px] px-5 rounded-lg font-semibold shadow-sm transition-colors bg-teal-600 text-white hover:bg-teal-700 disabled:bg-slate-300 disabled:text-slate-500 disabled:cursor-not-allowed"
+        >
+            Find Clustered Events
+        </button>
+        <!-- Starts a brand-new pair of grids from scratch and returns to the initial hidden
+             state, without requiring a page reload. Always enabled: even before the first
+             click, it is a quick way to draw a different pair of days. -->
+        <button
+            id="tccbc-reset-btn"
+            type="button"
+            class="min-h-[44px] px-3 text-sm text-slate-500 underline hover:text-slate-700"
+        >
+            Reset
+        </button>
+    </div>
+
+    <!-- Honest try-count line (spec section 9, section 15): discloses how many independent
+         random days were drawn before one happened to qualify. Reserves its height so
+         nothing shifts when it fills in after the full reveal. -->
+    <p id="tccbc-try-count" aria-live="polite" class="mt-2 text-center text-sm text-slate-500 min-h-[1.25rem]"></p>
+
+    <!-- data-null-table-url carries the base-path-aware fetch URL for the precomputed null
+         distribution (spec section 20, section 24). Computed here via withBase(), same
+         convention as every hand-written href on this site, and read by the script from
+         this attribute rather than the script importing import.meta.env itself -- base-path
+         resolution stays in .astro frontmatter throughout this codebase. -->
+    <div id="tccbc-config" hidden data-null-table-url={withBase('/data/coincidence-null-tables.json', base)}></div>
+
+    <!-- ---------------- Exploration mode (spec sections 13-16) ----------------
+         Placed directly below the button/try-count, ahead of the stats cards and the
+         explanatory text, so the rewind and density controls are visible on screen at the
+         same time as the grids with as little scrolling as possible -- that's the entire
+         point of this control, so it needs to be close to what it's controlling.
+
+         Starts hidden and, in addition, carries the tccbc-reveal-section treatment (see the
+         <style> block below): rather than snapping into existence and shoving the rest of
+         the page straight down, it grows open with a smooth height/opacity transition when
+         the full reveal completes (openRevealSection() in this-couldnt-be-coincidence.js). -->
+    <div id="tccbc-explore" hidden class="mt-4 pt-4 border-t border-slate-200">
+        <h4 class="font-semibold text-slate-700 mb-2">Rewind and watch it happen</h4>
+        <p class="text-sm text-slate-600 mb-3">
+            Drag the slider below to rewind both grids to blank, then play them forward.
+            Every cell you see is shown in the exact order it was actually placed. This is
+            not a new random draw, it's a replay of the same two grids above.
+        </p>
+        <label for="tccbc-scrubber" class="flex justify-between gap-2 text-sm font-semibold text-slate-700 mb-1">
+            <span>Playback position</span>
+            <span id="tccbc-scrubber-value" class="font-mono text-xs sm:text-sm"></span>
+        </label>
+        <input id="tccbc-scrubber" type="range" class="w-full accent-teal-600">
+
+        <div class="mt-4 max-w-md">
+            <label for="tccbc-density-slider" class="flex justify-between gap-2 text-sm font-semibold text-slate-700 mb-1">
+                <span>Black squares</span>
+                <span id="tccbc-density-value" class="font-mono"></span>
+            </label>
+            <input id="tccbc-density-slider" type="range" step="1" class="w-full accent-teal-600">
+            <!-- Labeled stops (spec section 16, section 26), matching the pattern used by
+                 clustering-illusion.astro's slider. Driven by DENSITY_STOPS so there's one
+                 source of truth with coincidence-grids.js; the slider itself still accepts
+                 every integer in between -- these are labeled reference points, not the
+                 only allowed values. -->
+            <div class="grid text-xs text-slate-500 mt-1" style={`grid-template-columns: repeat(${DENSITY_STOPS.length}, 1fr);`}>
+                {DENSITY_STOPS.map((stop, i) => (
+                    <span class={i === 0 ? 'text-left' : i === DENSITY_STOPS.length - 1 ? 'text-right' : 'text-center'}>{stop}</span>
+                ))}
+            </div>
+            <p class="text-xs text-slate-500 mt-2">
+                Choosing a new value generates a brand-new pair of grids at that density, so
+                you can see whether matches become more or less common.
+            </p>
+        </div>
+    </div>
+
+    <!-- Statistics cards (spec sections 18-20), filled in at full reveal. Placed after the
+         exploration controls (rather than before, as in the original layout) so the
+         interactive rewind/density controls can sit as close to the grids and button as
+         possible -- per-grid statistics are reference material a visitor can scroll to when
+         they want it, not something that needs to be beside the controls. Also carries the
+         tccbc-reveal-section treatment, same as the exploration block above.
+
+         Deliberately UNCAPPED (no max-w-*, unlike the grids row): these cards hold several
+         short lines of text each, so keeping them narrow just makes them wrap more and grow
+         taller for no benefit. Letting them use the full width of the exhibit card keeps
+         them shorter and puts more of each stat on one line. -->
+    <div id="tccbc-stats-row" hidden class="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+        <div id="tccbc-stats-left" class="tccbc-stats-card"></div>
+        <div id="tccbc-stats-right" class="tccbc-stats-card"></div>
+    </div>
+
+    <div class="mt-5">
+        <h4 class="font-semibold text-slate-700 mb-2">How these grids are made</h4>
+        <div class="text-sm text-slate-600 space-y-2">
+            <p>
+                Both grids are 20&times;20, exactly 80 squares filled in by default (tunable
+                above), so the only thing that can differ between them is arrangement, not
+                quantity. A <strong>qualifying cluster</strong> is a completely filled square
+                block: 2&times;2 or larger. Squares were chosen over other cluster shapes
+                because their symmetry reads as more "deliberate" than an asymmetric shape of
+                the same size.
+            </p>
+            <p>
+                The <strong>random</strong> grid is a plain uniform draw: exactly 80 of the 400
+                cells chosen with no spatial preference at all. Because a plain random draw
+                doesn't always happen to contain a qualifying square, several random grids are
+                drawn in the background and discarded until one does. The count shown above is
+                the real number of tries that took. The <strong>non-random</strong> grid is
+                built one cell at a time by a process called <strong>local attraction</strong>,
+                which makes each new cell more likely to land next to cells already placed, so
+                clusters emerge from genuine spatial preference, not chance.
+            </p>
+            <p>
+                The rewind control replays each grid's actual placement history. Scrubbing the
+                random grid shows cells appearing in no particular spatial relationship to one
+                another. Scrubbing the non-random grid shows later cells visibly favoring
+                the neighborhoods of earlier ones.
+            </p>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
+        <div class="text-sm text-slate-600 space-y-2">
+            <p>
+                <strong>The math</strong> is exact: the grid generation, cluster detection, and
+                exact-outcome probability above follow directly from the fixed-count random
+                model and the local-attraction placement process described above.
+                <strong>The wider interpretation</strong> connects to the site's broader
+                coincidence theme: a tiny probability for one exact, specific outcome is not
+                evidence against that outcome being the product of chance, since some exact
+                outcome always has to occur.
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>
+                    Diaconis, P., &amp; Mosteller, F. (1989). Methods for studying coincidences.
+                    <em>Journal of the American Statistical Association, 84</em>(408), 853&ndash;861.
+                    <a href="https://doi.org/10.1080/01621459.1989.10478847" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1080/01621459.1989.10478847</a>
+                </li>
+                <li>
+                    Gigerenzer, G., &amp; Hoffrage, U. (1995). How to improve Bayesian reasoning
+                    without instruction: Frequency formats. <em>Psychological Review, 102</em>(4), 684&ndash;704.
+                    <a href="https://doi.org/10.1037/0033-295X.102.4.684" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">doi:10.1037/0033-295X.102.4.684</a>
+                </li>
+            </ul>
+            <p class="text-xs text-slate-500">
+                A citation on why symmetric shapes (like solid squares) read more strongly as
+                "deliberate" than asymmetric shapes of the same size is still being sourced and
+                verified before it's added here.
+            </p>
+        </div>
+    </div>
+
+    <p class="text-xs text-slate-500 mt-3">
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/Clustering_illusion" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Clustering Illusion on Wikipedia</a>.
+    </p>
+
+    <!-- Series navigation: Part 4 of 4, now published. Part 3 is at /random-streaks/. -->
+    <div class="mt-6 flex items-center justify-between gap-3">
+        <a
+            href={withBase('/random-streaks/', base)}
+            class="inline-flex items-center gap-1.5 px-5 py-3 rounded-lg font-semibold shadow-sm transition-colors bg-slate-200 text-slate-700 hover:bg-slate-300"
+        >
+            <span aria-hidden="true">&larr;</span>
+            Back to Random streaks
+        </a>
+    </div>
+</ParadoxLayout>
+
+<!-- is:global because grid cells, labels, and stats cards are created or filled in by the
+     script, and Astro's default scoped styles only reach markup present in this file.
+     Every selector is prefixed tccbc- (This Couldn't Just Be Coincidence) so nothing leaks
+     to other pages.
+
+     COLORS: black/white/gray cell states differ by LUMINANCE, matching the pattern used on
+     clustering-illusion.astro (dark teal filled, white empty, mid-gray hidden) so the site
+     stays visually consistent and colorblind-safe. The cluster outline uses a border, never
+     color alone, to stay identifiable under every form of color blindness. Which grid is
+     random is always also stated in text (the label), never by color or position alone. -->
+<style is:global>
+    /* Visually hidden but still announced by screen readers, matching random-streaks.astro's
+       .sr-only. Prefixed tccbc- to stay consistent with this file's other selectors rather
+       than relying on a shared/global sr-only utility existing. */
+    .tccbc-sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+        overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* --- Grids ------------------------------------------------------------ */
+    .tccbc-grid {
+        display: grid;
+        grid-template-columns: repeat(20, 1fr);
+        gap: 1px;
+        padding: 1px;
+        background: #cbd5e1;   /* slate-300: hairlines between cells */
+        border-radius: 3px;
+        aspect-ratio: 1 / 1;
+        width: 100%;
+    }
+    .tccbc-cell { background: #fff; }
+    .tccbc-cell[data-state="gray"] { background: #94a3b8; }   /* slate-400: hidden */
+    .tccbc-cell[data-state="white"] { background: #fff; }
+    .tccbc-cell[data-state="black"] { background: #0f766e; }  /* teal-700, matches ci-cell filled */
+
+    /* Cluster outline: a ring drawn with box-shadow so it doesn't shift cell layout. Kept
+       subtle enough not to overwhelm the grid, but visible under grayscale rendering
+       (border, not a color-only highlight). */
+    .tccbc-cell-outlined {
+        box-shadow: inset 0 0 0 2px #0f172a; /* slate-900 */
+    }
+
+    /* --- Labels ------------------------------------------------------------ */
+    /* Text-only distinction (RANDOM / NON-RANDOM), so the labels never rely on color to be
+       understood -- consistent with the rest of the exhibit's colorblind-safety approach. */
+
+    /* --- Stats cards --------------------------------------------------------- */
+    .tccbc-stats-card {
+        padding: 0.625rem 0.75rem;
+        border: 1px solid #e2e8f0;   /* slate-200 */
+        border-radius: 0.5rem;
+        background: #f8fafc;         /* slate-50 */
+        font-size: 0.75rem;
+        line-height: 1.4;
+    }
+    @media (min-width: 640px) {
+        .tccbc-stats-card { font-size: 0.8125rem; }
+    }
+    .tccbc-stats-heading {
+        font-weight: 700;
+        color: #0f172a; /* slate-900 */
+        margin-bottom: 0.25rem;
+    }
+    .tccbc-stats-line { color: #334155; margin-top: 0.125rem; } /* slate-700 */
+    .tccbc-stats-secondary { color: #64748b; }                  /* slate-500 */
+
+    /* --- Smooth reveal for sections that only appear after the full grid reveal
+       (exploration controls, stats cards) --------------------------------------------
+       Grows from zero height while fading in, instead of snapping into existence and
+       shoving everything below it straight down. Uses a single grid-template-rows track
+       animated between 0fr and 1fr, which sizes itself to the content's natural height
+       without any JS measurement. Classes are added/removed by openRevealSection() /
+       closeRevealSection() in this-couldnt-be-coincidence.js; the element's `hidden`
+       attribute is what actually removes it from the accessibility tree and tab order
+       between reveals, so this only ever animates while it is genuinely visible. */
+    .tccbc-reveal-section {
+        display: grid;
+        grid-template-rows: 0fr;
+        opacity: 0;
+        overflow: hidden;
+        transition: grid-template-rows 450ms ease, opacity 350ms ease;
+    }
+    .tccbc-reveal-section > * { min-height: 0; }
+    .tccbc-reveal-section.tccbc-reveal-open {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .tccbc-grid, .tccbc-cell, .tccbc-reveal-section { transition: none; }
+    }
+</style>
+
+<script>
+    import '../scripts/paradoxes/this-couldnt-be-coincidence.js';
+</script>

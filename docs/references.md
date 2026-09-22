@@ -123,7 +123,14 @@ Miller, J. B., & Sanjurjo, A. (2018). Surprised by the hot hand fallacy? A truth
 [Gambler's fallacy — Wikipedia](https://en.wikipedia.org/wiki/Gambler%27s_fallacy)
 - Linked as the further-reading source at the bottom of the exhibit; its coin-flip examples directly cover why streaks are an expected feature of independent randomness rather than evidence of a changed process.
 
-## When Does a Pattern Mean Something?
+## When Does a Pattern Mean Something? (archived)
+
+This exhibit was pulled from the app after testing showed it read as too
+abstract for a first-time visitor; its source is kept under
+`notes/part4-archive/` but it is no longer part of the published site. The
+citations below are kept as a record of the research consulted for it. Part 4
+of the Clustering Illusions series is now "This Couldn't Just Be
+Coincidence!", cited in its own section below.
 
 Griffiths, T. L., & Tenenbaum, J. B. (2007). From mere coincidences to meaningful discoveries. *Cognition*, 103(2), 180–226. https://doi.org/10.1016/j.cognition.2006.03.004
 - Read in full (open-access PDF at cocosci.princeton.edu) to verify this citation. Core conceptual foundation of the exhibit: their Bayesian account defines a coincidence as "an event that provides support for an alternative to a current theory, but not necessarily enough support to accept that alternative in light of its low prior probability" — confirmed word-for-word against the paper's own text. Basis for the exhibit's central distinction between an interesting pattern, evidence for an alternative process, and having enough evidence to prefer that alternative; also basis for treating coincidence detection itself as reasonable rather than an error.
@@ -160,3 +167,16 @@ Gigerenzer, G., & Hoffrage, U. (1995). How to improve Bayesian reasoning without
 
 [Bayes factor — Wikipedia](https://en.wikipedia.org/wiki/Bayes_factor)
 - Linked as the further-reading source at the bottom of the exhibit.
+
+## This Couldn't Just Be Coincidence!
+
+Diaconis, P., & Mosteller, F. (1989). Methods for studying coincidences. *Journal of the American Statistical Association*, 84(408), 853–861. https://doi.org/10.1080/01621459.1989.10478847
+- Read in full (open-access PDF) to verify this citation. Confirmed word-for-word: discusses how multiple endpoints and near-miss matching inflate apparent coincidence rates, and states the "law of truly large numbers" as "with a large enough sample, any outrageous thing is likely to happen." Basis for the exhibit's framing that a single striking cluster must be weighed against how many chances it had to occur, and for the exact-outcome-probability panel's caution that a tiny probability for one specific grid is not evidence against chance.
+
+Gigerenzer, G., & Hoffrage, U. (1995). How to improve Bayesian reasoning without instruction: Frequency formats. *Psychological Review*, 102(4), 684–704. https://doi.org/10.1037/0033-295X.102.4.684
+- Same source used for The Prosecutor's Fallacy / Base-Rate Neglect; see that entry above. Reused here as the basis for the "N of 100 comparable random grids..." natural-frequency phrasing used to compare an observed grid's cluster count against the null distribution, rather than a bare percentage.
+
+[The Clustering Illusion — Wikipedia](https://en.wikipedia.org/wiki/Clustering_illusion)
+- Linked as the further-reading source at the bottom of the exhibit.
+
+Note: the page's "Research behind this" section also flags an unsourced claim (that solid squares read as more "deliberate" than asymmetric clusters of the same size, motivating squares-only detection) as still awaiting a verified citation. Do not treat that claim as backed by research until a source is found and confirmed against this project's citation-verification standard.
