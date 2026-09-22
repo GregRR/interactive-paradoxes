@@ -155,5 +155,8 @@ van Doorn, J., van den Bergh, D., Böhm, U., Dablander, F., et al., & Wagenmaker
 Diaconis, P., & Mosteller, F. (1989). Methods for studying coincidences. *Journal of the American Statistical Association*, 84(408), 853–861. https://doi.org/10.1080/01621459.1989.10478847
 - Read in full (open-access PDF) to verify this citation. Confirmed word-for-word: discusses how multiple endpoints and near-miss matching inflate apparent coincidence rates, and states the "law of truly large numbers" as "with a large enough sample, any outrageous thing is likely to happen." Basis for the exhibit's caution that a single striking pattern must be evaluated against the actual opportunity space, not treated as self-evidently rare.
 
+Gigerenzer, G., & Hoffrage, U. (1995). How to improve Bayesian reasoning without instruction: Frequency formats. *Psychological Review*, 102(4), 684–704.
+- Same source used for The Prosecutor's Fallacy / Base-Rate Neglect; see that entry above. Reused here only as the basis for stating each process's behavior as natural frequencies ("1 in 5", "3 of 12") rather than bare percentages, in the process panels and the counts shown beside each sequence.
+
 [Bayes factor — Wikipedia](https://en.wikipedia.org/wiki/Bayes_factor)
 - Linked as the further-reading source at the bottom of the exhibit.

@@ -224,10 +224,11 @@ const base = import.meta.env.BASE_URL;
         <a href="https://en.wikipedia.org/wiki/Clustering_illusion" target="_blank" rel="noopener noreferrer" class="text-purple-600 underline hover:text-purple-800">The Clustering Illusion on Wikipedia</a>.
     </p>
 
-    <!-- Series navigation: this exhibit is Part 1 of a four-part Clustering Illusion series
-         (see notes/clustering_illusion_step_1_implementation_spec.md). Part 1 has no
-         Previous button by design (user-specified series convention); Part 2 is now built
-         at /human-made-randomness/. -->
+    <!-- Series navigation: this exhibit is Part 1 of the Clustering Illusion series
+         (see notes/clustering_illusion_step_1_implementation_spec.md). Part 4 was pulled from
+         the app after testing too abstract; see notes/part4-archive/ for the standalone
+         archive. Part 1 has no Previous button by design (user-specified series convention);
+         Part 2 is now built at /human-made-randomness/. -->
     <div class="mt-8 flex justify-end">
         <a
             href={withBase('/human-made-randomness/', base)}
