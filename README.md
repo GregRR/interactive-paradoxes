@@ -6,7 +6,7 @@ visualization you can poke at, drag, click through, or run over and over until t
 counterintuitive result stops feeling like a trick and starts feeling obvious.
 
 The idea behind the project: most of these paradoxes are easy to state but can still
-be difficult to grasp. FOr many people, watching the numbers move in
+be difficult to grasp. For many people, watching the numbers move in
 front of you tends to work a lot better. So every paradox here gets an interactive piece
 built around whatever visualization the research on that specific topic suggests will
 make it click fastest for the widest range of people.
@@ -17,7 +17,7 @@ make it click fastest for the widest range of people.
 
 ## What's in here
 
-The paradoxes are organized into five groups, each built around a different flavor of
+The paradoxes are organized into six groups, each built around a different flavor of
 "how does that even make sense."
 
 ### Belief Revision & Coincidence
@@ -34,6 +34,9 @@ How genuine randomness produces clumps, gaps, and streaks, and why we so often r
 as meaningful or as "not random."
 
 - The Clustering Illusion
+- Human-made Randomness
+- Random Streaks
+- This Couldn't Just Be Coincidence!
 
 ### The Egocentric Blind Spot
 
@@ -59,12 +62,19 @@ you already picked.
 
 - The Monty Hall Problem
 
+### Psychological Effects
+
+Not mathematical paradoxes, but cognitive and memory biases that distort how we judge
+track records and evidence.
+
+- The Jeane Dixon Effect
+
 ## Sources
 
 Every paradox's math and visualization design is backed by actual research rather than
 guesswork, and it's all logged in [`docs/references.md`](docs/references.md) — papers,
 articles, and videos consulted, organized by paradox, along with a note on why each one
-mattered. (Still getting all the references in.)
+mattered.
 
 ## Tech stack
 
@@ -86,8 +96,7 @@ worth knowing:
 
 ```bash
 npm run build      # builds the static site into dist/
-npm run preview    # serves the built site locally so you can sanity-check the production
-build
+npm run preview    # serves the built site locally so you can sanity-check the build
 ```
 
 ## Adding a new paradox
