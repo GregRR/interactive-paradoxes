@@ -68,8 +68,8 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                 <input id="jde-miss-recall" type="range" min="0" max="100" step="1" value="25" class="w-full accent-cyan-600">
             </label>
 
-            <details class="jde-details">
-                <summary>Optional: reinterpretation after the fact</summary>
+            <div class="jde-details">
+                <p class="jde-details-title">Optional: reinterpretation after the fact</p>
                 <p>
                     This is separate from selective memory. It represents remembered non-hits
                     later being reframed as hits because the original claim was broad or
@@ -83,7 +83,7 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                     </div>
                     <input id="jde-reinterpret" type="range" min="0" max="100" step="1" value="0" class="w-full accent-cyan-600">
                 </label>
-            </details>
+            </div>
         </div>
 
         <div class="jde-right-column">
@@ -334,8 +334,10 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
         border-top: 1px solid #e2e8f0; /* slate-200 */
     }
 
-    .jde-details summary {
-        cursor: pointer;
+    /* Always-visible section title, styled to match the <summary> it
+       replaced (this section used to be a collapsible <details>; it's now
+       permanently expanded since there was no real reason to hide it). */
+    .jde-details-title {
         font-size: 0.875rem;
         font-weight: 600;
         color: #334155; /* slate-700 */
