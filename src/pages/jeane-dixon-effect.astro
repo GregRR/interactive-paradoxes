@@ -1,0 +1,700 @@
+---
+import ParadoxLayout from '../layouts/ParadoxLayout.astro';
+---
+
+<ParadoxLayout slug="jeane-dixon-effect">
+    <p class="text-slate-600 mb-6">
+        The Jeane Dixon Effect, named for a mid-20th-century American psychic whose occasional
+        correct-sounding guesses were long remembered while her many misses faded from public
+        memory, describes a general habit of mind: people (and the media covering them) tend to
+        remember confirming "hits" much better than disconfirming "non-hits." The underlying
+        prediction record never changes, but selective memory alone can make it look far more
+        impressive in hindsight than it really was. Adjust the sliders below to see how big a gap
+        selective memory can open up between an actual track record and the one people remember.
+    </p>
+
+    <div id="jde-explorer" class="jde-main-grid">
+        <div class="jde-panel jde-controls">
+            <div>
+                <h3 class="jde-section-title">Change the underlying record</h3>
+                <p class="jde-section-help">
+                    These controls describe what actually happens before memory or reporting
+                    enters the picture.
+                </p>
+            </div>
+
+            <label class="jde-control">
+                <div class="jde-control-row">
+                    <span>Predictions / opportunities</span>
+                    <strong id="jde-n-out">100</strong>
+                </div>
+                <input id="jde-n" type="range" min="20" max="500" step="10" value="100" class="w-full accent-cyan-600">
+            </label>
+
+            <label class="jde-control">
+                <div class="jde-control-row">
+                    <span>Actual hit rate</span>
+                    <strong id="jde-hit-rate-out">11%</strong>
+                </div>
+                <input id="jde-hit-rate" type="range" min="0" max="100" step="1" value="11" class="w-full accent-cyan-600">
+            </label>
+
+            <div class="jde-divider-section">
+                <h3 class="jde-section-title">Change the memory filter</h3>
+                <p class="jde-section-help">
+                    A hit and a non-hit need not have the same chance of being remembered,
+                    repeated, or retold.
+                </p>
+            </div>
+
+            <label class="jde-control">
+                <div class="jde-control-row">
+                    <span>Hits remembered</span>
+                    <strong id="jde-hit-recall-out">60%</strong>
+                </div>
+                <input id="jde-hit-recall" type="range" min="0" max="100" step="1" value="60" class="w-full accent-cyan-600">
+            </label>
+
+            <label class="jde-control">
+                <div class="jde-control-row">
+                    <span>
+                        Non-hits remembered
+                        <sup>
+                            <button type="button" class="jde-info-button jde-nonhit-info" aria-label="What does non-hit mean?">?</button>
+                        </sup>
+                    </span>
+                    <strong id="jde-miss-recall-out">25%</strong>
+                </div>
+                <input id="jde-miss-recall" type="range" min="0" max="100" step="1" value="25" class="w-full accent-cyan-600">
+            </label>
+
+            <details class="jde-details">
+                <summary>Optional: reinterpretation after the fact</summary>
+                <p>
+                    This is separate from selective memory. It represents remembered non-hits
+                    later being reframed as hits because the original claim was broad or
+                    flexible.
+                </p>
+
+                <label class="jde-control">
+                    <div class="jde-control-row">
+                        <span>Remembered non-hits reclassified as hits</span>
+                        <strong id="jde-reinterpret-out">0%</strong>
+                    </div>
+                    <input id="jde-reinterpret" type="range" min="0" max="100" step="1" value="0" class="w-full accent-cyan-600">
+                </label>
+            </details>
+        </div>
+
+        <div class="jde-right-column">
+            <div class="jde-panel jde-rate-panel">
+                <div class="jde-rate-row">
+                    <div class="jde-rate-block">
+                        <div class="jde-rate-label">Actual success rate</div>
+                        <div id="jde-actual-rate" class="jde-rate-value">11%</div>
+                    </div>
+
+                    <div class="jde-rate-block jde-rate-block-right">
+                        <div class="jde-rate-label">Apparent remembered rate</div>
+                        <div id="jde-apparent-rate" class="jde-rate-value">23%</div>
+                    </div>
+                </div>
+
+                <div id="jde-inflation-text" class="jde-inflation-text" aria-live="polite">
+                    The remembered record makes an 11% hit rate look like 23%.
+                </div>
+            </div>
+
+            <div class="jde-card jde-chart-card">
+                <div>
+                    <div class="jde-bar-heading">
+                        <strong>What actually happened</strong>
+                        <span id="jde-actual-counts" class="jde-counts">11 hits &middot; 89 non-hits</span>
+                    </div>
+
+                    <div class="jde-stacked-bar" role="img" aria-label="Bar chart of actual outcomes: 11% hits, 89% non-hits">
+                        <div id="jde-actual-hit-bar" class="jde-bar-segment jde-bar-hits" style="width:11%">
+                            <span id="jde-actual-hit-label">11%</span>
+                        </div>
+                        <div id="jde-actual-miss-bar" class="jde-bar-segment jde-bar-misses" style="width:89%">
+                            <span id="jde-actual-miss-label">89%</span>
+                        </div>
+                    </div>
+
+                    <div class="jde-legend-row">
+                        <span>Hits</span>
+                        <span>
+                            Non-hits
+                            <sup>
+                                <button type="button" class="jde-info-button jde-nonhit-info" aria-label="What does non-hit mean?">?</button>
+                            </sup>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="jde-memory-divider">
+                    <span>selective memory / reporting</span>
+                </div>
+
+                <div>
+                    <div class="jde-bar-heading">
+                        <strong>What remains in the remembered record</strong>
+                        <span id="jde-remembered-counts" class="jde-counts">6.6 hits &middot; 22 non-hits</span>
+                    </div>
+
+                    <div class="jde-stacked-bar" role="img" aria-label="Bar chart of remembered outcomes: 23% hits, 77% non-hits">
+                        <div id="jde-remembered-hit-bar" class="jde-bar-segment jde-bar-hits" style="width:22.8769%">
+                            <span id="jde-remembered-hit-label">23%</span>
+                        </div>
+                        <div id="jde-remembered-miss-bar" class="jde-bar-segment jde-bar-misses" style="width:77.1231%">
+                            <span id="jde-remembered-miss-label">77%</span>
+                        </div>
+                    </div>
+
+                    <div class="jde-legend-row">
+                        <span>Remembered as hits</span>
+                        <span>
+                            Remembered as non-hits
+                            <sup>
+                                <button type="button" class="jde-info-button jde-nonhit-info" aria-label="What does non-hit mean?">?</button>
+                            </sup>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jde-metrics">
+                <div class="jde-metric-card">
+                    <div id="jde-hits-survive" class="jde-metric-value">6.6</div>
+                    <div class="jde-metric-label">hits surviving</div>
+                </div>
+
+                <div class="jde-metric-card">
+                    <div id="jde-misses-survive" class="jde-metric-value">22</div>
+                    <div class="jde-metric-label">non-hits surviving</div>
+                </div>
+
+                <div class="jde-metric-card">
+                    <div id="jde-forgotten" class="jde-metric-value">71</div>
+                    <div class="jde-metric-label">events forgotten</div>
+                </div>
+            </div>
+
+            <div class="jde-explanation">
+                <strong>What the visualization demonstrates</strong>
+                <p>
+                    The underlying hit rate never changes. Only the probability that hits and
+                    non-hits survive into the remembered record changes. When hits are much more
+                    memorable than non-hits, the apparent track record can become dramatically
+                    better than the complete record.
+                </p>
+            </div>
+        </div>
+
+        <dialog id="jde-nonhit-dialog" class="jde-definition-dialog" aria-labelledby="jde-nonhit-dialog-title">
+            <div class="jde-dialog-inner">
+                <div class="jde-dialog-header">
+                    <h3 id="jde-nonhit-dialog-title" class="jde-dialog-title">Why "non-hit" instead of "miss"?</h3>
+                    <button id="jde-nonhit-dialog-close" type="button" class="jde-dialog-close" aria-label="Close explanation">&times;</button>
+                </div>
+                <div class="jde-dialog-body">
+                    <p>
+                        The large prediction audit used to anchor the default hit rate did not
+                        classify every unsuccessful prediction as simply "wrong." Predictions
+                        could also be too vague to score, obvious or expected, or impossible to
+                        verify.
+                    </p>
+                    <p>
+                        In the Great Australian Psychic Prediction Project, the published
+                        predictions were classified as:
+                    </p>
+                    <ul class="jde-dialog-breakdown">
+                        <li><strong>11%</strong> correct</li>
+                        <li><strong>53%</strong> wrong</li>
+                        <li><strong>15%</strong> expected or obvious</li>
+                        <li><strong>19%</strong> too vague</li>
+                        <li><strong>2%</strong> unknown</li>
+                    </ul>
+                    <p>
+                        This visualization therefore uses <strong>non-hit</strong> for the other
+                        89%: anything that did not qualify as a scored correct prediction. That
+                        avoids incorrectly labeling vague, obvious, or uncheckable statements as
+                        definite misses.
+                    </p>
+                </div>
+            </div>
+        </dialog>
+
+        <div class="jde-reset-row">
+            <button id="jde-reset" type="button" class="jde-reset-button">Reset example</button>
+        </div>
+    </div>
+
+    <p class="text-xs text-slate-500 mt-6">
+        Further reading:
+        <a href="https://en.wikipedia.org/wiki/Jeane_Dixon_effect" target="_blank" rel="noopener noreferrer" class="text-cyan-600 underline hover:text-cyan-800">Jeane Dixon effect on Wikipedia</a>
+        &middot;
+        <a href="https://www.skeptics.com.au/psychic-project-full-results-released/" target="_blank" rel="noopener noreferrer" class="text-cyan-600 underline hover:text-cyan-800">The Great Australian Psychic Prediction Project</a>.
+    </p>
+</ParadoxLayout>
+
+<style is:global>
+    /*
+     * Scoped-by-prefix styles for this exhibit only (jde-, following the
+     * site's convention for exhibits whose layout is too specific for
+     * Tailwind's utility classes alone -- see random-streaks.astro / rs- and
+     * this-couldnt-be-coincidence.astro / tccbc- for the same pattern).
+     * `is:global` matches how those exhibits' styles are declared; genuine
+     * scoping comes from the jde- class prefix, not Astro's scoped-CSS
+     * feature, since the section below is teleported into a <dialog> that
+     * Astro's automatic scoping attribute does not reliably reach.
+     *
+     * This layout intentionally mirrors the original standalone HTML
+     * prototype's structure closely (two-column controls/results grid,
+     * stacked comparison bars, definition dialog) per explicit request, with
+     * only the color palette changed to the site's own colorblind-safe
+     * scheme. Colors are written as literal hex values with a Tailwind
+     * color-name comment, matching this file's sibling exhibits.
+     */
+
+    .jde-main-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        align-items: start;
+    }
+
+    .jde-panel,
+    .jde-card {
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0; /* slate-200 */
+    }
+
+    .jde-panel {
+        background: #f8fafc; /* slate-50 */
+    }
+
+    .jde-card {
+        background: #ffffff;
+    }
+
+    .jde-controls {
+        padding: 1rem;
+    }
+
+    .jde-right-column {
+        display: grid;
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    .jde-section-title {
+        font-size: 1rem;
+        font-weight: 650;
+        line-height: 1.35;
+        color: #1e293b; /* slate-800 */
+    }
+
+    .jde-section-help {
+        margin-top: 0.25rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+        line-height: 1.45;
+    }
+
+    .jde-control {
+        display: block;
+        margin-top: 1rem;
+    }
+
+    .jde-control-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.75rem;
+        font-size: 0.875rem;
+        color: #334155; /* slate-700 */
+    }
+
+    .jde-control-row strong {
+        font-weight: 700;
+        white-space: nowrap;
+        color: #0f172a; /* slate-900 */
+    }
+
+    .jde-divider-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0; /* slate-200 */
+    }
+
+    .jde-details {
+        margin-top: 1rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid #e2e8f0; /* slate-200 */
+    }
+
+    .jde-details summary {
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #334155; /* slate-700 */
+    }
+
+    .jde-details p {
+        margin-top: 0.5rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+        line-height: 1.45;
+    }
+
+    .jde-info-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 17px;
+        height: 17px;
+        margin-left: 2px;
+        padding: 0;
+        border: 1px solid #94a3b8; /* slate-400 */
+        border-radius: 999px;
+        background: transparent;
+        color: #64748b; /* slate-500 */
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        vertical-align: super;
+        cursor: pointer;
+    }
+
+    .jde-info-button:hover {
+        border-color: #334155; /* slate-700 */
+        color: #334155; /* slate-700 */
+    }
+
+    .jde-info-button:focus-visible,
+    .jde-reset-button:focus-visible,
+    .jde-dialog-close:focus-visible,
+    .jde-main-grid input[type="range"]:focus-visible {
+        outline: 2px solid #0891b2; /* cyan-600 */
+        outline-offset: 2px;
+    }
+
+    .jde-rate-panel {
+        padding: 1rem;
+    }
+
+    .jde-rate-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem 1.25rem;
+    }
+
+    .jde-rate-label {
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+    }
+
+    .jde-rate-value {
+        margin-top: 1px;
+        font-size: 1.875rem;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: #0f172a; /* slate-900 */
+    }
+
+    .jde-rate-block-right {
+        text-align: right;
+    }
+
+    .jde-inflation-text {
+        margin-top: 0.75rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+        line-height: 1.45;
+    }
+
+    .jde-chart-card {
+        padding: 1rem;
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .jde-bar-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        color: #334155; /* slate-700 */
+    }
+
+    .jde-counts {
+        color: #64748b; /* slate-500 */
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .jde-stacked-bar {
+        display: flex;
+        height: 3rem;
+        overflow: hidden;
+        border: 1px solid #e2e8f0; /* slate-200 */
+        border-radius: 0.5rem;
+        background: #f1f5f9; /* slate-100 */
+    }
+
+    .jde-bar-segment {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        transition: width 140ms ease;
+        font-size: 0.875rem;
+        font-weight: 650;
+        color: #0f172a; /* slate-900 */
+    }
+
+    /*
+     * Colorblind-safe hit/non-hit pair (from the "Wong" palette commonly
+     * recommended for categorical data in vision-science guidance): blue
+     * reads clearly against orange under all three common forms of color
+     * vision deficiency (protanopia, deuteranopia, tritanopia), unlike the
+     * green/gold pairing used in the original standalone prototype this
+     * exhibit was ported from. Adjacent text labels and the legend below
+     * each bar also carry the meaning, so the distinction never depends on
+     * color alone.
+     */
+    .jde-bar-hits {
+        background: #0072b2;
+        color: #ffffff;
+    }
+
+    .jde-bar-misses {
+        background: #e69f00;
+        color: #0f172a; /* slate-900, for contrast against the lighter orange */
+    }
+
+    .jde-legend-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.75rem;
+    }
+
+    .jde-memory-divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+    }
+
+    .jde-memory-divider::before,
+    .jde-memory-divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: #e2e8f0; /* slate-200 */
+    }
+
+    .jde-metrics {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    .jde-metric-card {
+        padding: 0.75rem;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0; /* slate-200 */
+        background: #ffffff;
+    }
+
+    .jde-metric-value {
+        font-size: 1.25rem;
+        line-height: 1.2;
+        font-weight: 700;
+        color: #0f172a; /* slate-900 */
+    }
+
+    .jde-metric-label {
+        margin-top: 0.125rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.75rem;
+        line-height: 1.35;
+    }
+
+    .jde-explanation {
+        padding: 1rem;
+        border-radius: 0.75rem;
+        border: 1px solid #e2e8f0; /* slate-200 */
+        background: #ffffff;
+        font-size: 0.875rem;
+        color: #334155; /* slate-700 */
+    }
+
+    .jde-explanation p {
+        margin-top: 0.25rem;
+        color: #64748b; /* slate-500 */
+        line-height: 1.5;
+    }
+
+    .jde-definition-dialog {
+        /* Explicit fixed-position centering rather than relying on the
+           <dialog> UA stylesheet's default margin:auto centering, which is
+           unreliable when the dialog is nested inside a CSS Grid container
+           (as it is here, inside .jde-main-grid) -- some browsers fail to
+           center it in that case and it renders pinned to the top-left. */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+        width: min(520px, calc(100% - 2rem));
+        max-height: calc(100% - 2rem);
+        padding: 0;
+        border: 1px solid #e2e8f0; /* slate-200 */
+        border-radius: 0.75rem;
+        background: #ffffff;
+        color: #1e293b; /* slate-800 */
+        box-shadow: 0 18px 55px rgba(17, 24, 39, 0.20);
+    }
+
+    .jde-definition-dialog::backdrop {
+        background: rgba(17, 24, 39, 0.45);
+    }
+
+    .jde-dialog-inner {
+        padding: 1.25rem;
+    }
+
+    .jde-dialog-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .jde-dialog-title {
+        font-size: 1.125rem;
+        line-height: 1.3;
+        font-weight: 700;
+        color: #0f172a; /* slate-900 */
+    }
+
+    .jde-dialog-close {
+        flex: 0 0 auto;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        border: 1px solid #e2e8f0; /* slate-200 */
+        border-radius: 0.5rem;
+        background: transparent;
+        color: #1e293b; /* slate-800 */
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .jde-dialog-close:hover {
+        background: #f8fafc; /* slate-50 */
+    }
+
+    .jde-dialog-body {
+        margin-top: 0.75rem;
+        color: #64748b; /* slate-500 */
+        font-size: 0.875rem;
+        line-height: 1.55;
+    }
+
+    .jde-dialog-body p + p {
+        margin-top: 0.625rem;
+    }
+
+    .jde-dialog-breakdown {
+        margin: 0.75rem 0 0;
+        padding-left: 1.25rem;
+        list-style: disc;
+        color: #64748b; /* slate-500 */
+    }
+
+    .jde-dialog-breakdown li + li {
+        margin-top: 0.25rem;
+    }
+
+    .jde-reset-row {
+        margin-top: 1.25rem;
+    }
+
+    .jde-reset-button {
+        min-height: 44px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #cbd5e1; /* slate-300 */
+        border-radius: 0.5rem;
+        background: transparent;
+        color: #1e293b; /* slate-800 */
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .jde-reset-button:hover {
+        background: #f8fafc; /* slate-50 */
+    }
+
+    @media (max-width: 680px) {
+        .jde-main-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .jde-rate-block-right {
+            text-align: left;
+        }
+
+        .jde-rate-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .jde-bar-heading {
+            display: block;
+        }
+
+        .jde-counts {
+            margin-top: 0.125rem;
+            text-align: left;
+            white-space: normal;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .jde-rate-row {
+            grid-template-columns: 1fr;
+        }
+
+        .jde-metrics {
+            grid-template-columns: 1fr;
+        }
+
+        .jde-legend-row {
+            align-items: flex-start;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .jde-bar-segment {
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    import '../scripts/paradoxes/jeane-dixon-effect.js';
+</script>

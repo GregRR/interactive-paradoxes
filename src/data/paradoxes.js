@@ -151,6 +151,21 @@ export const groups = [
                 usesPlotly: false
             }
         ]
+    },
+    {
+        number: 6,
+        title: 'Psychological Effects',
+        description: 'Not mathematical paradoxes, but cognitive and memory biases that distort how we judge track records and evidence.',
+        labelColor: 'text-cyan-400',
+        activeBorder: 'border-cyan-500',
+        paradoxes: [
+            {
+                slug: 'jeane-dixon-effect',
+                title: 'The Jeane Dixon Effect',
+                summary: 'Selectively remembering the hits and forgetting the misses can make a mediocre or poor track record look impressive in hindsight.',
+                usesPlotly: false
+            }
+        ]
     }
 ];
 
