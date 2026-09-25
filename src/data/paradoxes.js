@@ -115,7 +115,7 @@ export const groups = [
                 slug: 'benfords-law',
                 title: "Benford's Law (The First-Digit Anomaly)",
                 summary: 'In many real-world datasets, numbers are much more likely to begin with smaller digits than larger ones.',
-                usesPlotly: true
+                usesPlotly: false
             },
             {
                 slug: 'inspection-paradox',

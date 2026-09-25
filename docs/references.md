@@ -214,3 +214,60 @@ Caballero, A., & López-Pérez, R. (2024). Memory bias beyond ego: Selective rec
 - Linked as a second further-reading source at the bottom of the exhibit, alongside the Wikipedia link.
 
 Note: an unpublished, non-peer-reviewed master's thesis (Bremer, 2024, MSH Medical School Hamburg) attempting to replicate a related unpublished study was consulted during this citation-verification pass but is deliberately not cited on the page or above. Its main hypothesis test found no significant confirmation-bias memory effect (t(33) = -0.54, p = .60); a secondary, likely underpowered subgroup analysis (n=8) suggested one, but the thesis itself flags a flawed survey design underlying that result. Kept out per the standing citation-verification standard: an unpublished, largely-null result with acknowledged design problems isn't a sound basis for this exhibit's claims.
+
+## Benford's Law
+
+Newcomb, S. (1881). Note on the Frequency of Use of the Different Digits in Natural Numbers. *American Journal of Mathematics*, 4(1), 39-40. https://doi.org/10.2307/2369148
+- Earliest statement of the first-digit phenomenon this exhibit visualizes, predating Benford's own paper by 57 years.
+
+Benford, F. (1938). The Law of Anomalous Numbers. *Proceedings of the American Philosophical Society*, 78(4), 551-572.
+- Source of the exhibit's namesake law and its exact prediction, P(first digit = d) = log10(1 + 1/d), tested against the observed distribution for every dataset mode.
+
+Hill, T. P. (1995). A Statistical Derivation of the Significant-Digit Law. *Statistical Science*, 10(4), 354-363. https://doi.org/10.1214/ss/1177009869
+- Reviews evidence, including Nigrini and Wood's analysis of the 1990 U.S. Census populations of 3,141 counties, that county-level populations follow Benford's Law closely. Basis for the "population-like values" dataset mode and its framing as a case where broad, mixed-scale real data tends to fit well.
+
+Berger, A., & Hill, T. P. (2011). A Basic Theory of Benford's Law. *Probability Surveys*, 8, 1-126. https://doi.org/10.1214/11-PS175
+- Basis for the exhibit's general qualification that good Benford fit is associated with data spanning several orders of magnitude or arising from multiplicative/mixed-scale processes, and poor fit with assigned identifiers or tightly bounded values.
+
+Berger, A., & Hill, T. P. (2015). An Introduction to Benford's Law. Princeton University Press. https://doi.org/10.23943/princeton/9780691163062.001.0001
+- Same role as Berger & Hill (2011) above; general theoretical grounding for which kinds of processes should and should not be expected to follow Benford.
+
+Berger, A., & Hill, T. P. (2020). The Mathematics of Benford's Law: A Primer. *Statistical Methods & Applications*, 30, 779-795. https://doi.org/10.1007/s10260-020-00532-8
+- Same role as the other Berger & Hill entries; consulted for the mathematical explanation of the logarithmic first-digit mechanism shown in the "regions on a logarithmic scale" diagram.
+
+Berger, A., Bunimovich, L. A., & Hill, T. P. (2005). One-Dimensional Dynamical Systems and Benford's Law. *Transactions of the American Mathematical Society*, 357(1), 197-219. https://doi.org/10.1090/S0002-9947-04-03455-5
+- Background theory on which deterministic sequences satisfy Benford's Law; consulted while designing the "proportional growth" and "Fibonacci" exact-sequence dataset modes.
+
+Cai, Z., Hildebrand, A. J., & Li, J. (2019). A Local Benford Law for a Class of Arithmetic Sequences. *International Journal of Number Theory*, 15(4), 809-830. https://doi.org/10.1142/S1793042119500325
+- Background theory on arithmetic sequences and Benford behavior; consulted while researching the Fibonacci dataset mode's mathematical justification.
+
+Balanzario, E. P., & Sanchez-Ortiz, J. (2010). Sufficient Conditions for Benford's Law. *Statistics & Probability Letters*, 80(23-24), 1713-1719.
+- Background theory on conditions under which a sequence or distribution satisfies Benford's Law; general grounding for the exhibit's qualification that Benford is not a universal rule for real-world numbers.
+
+Goodman, W. (2016). The Promises and Pitfalls of Benford's Law. *Significance*, 13(3), 38-41. https://doi.org/10.1111/j.1740-9713.2016.00919.x
+- Basis for the exhibit's caution that a mismatch with Benford does not by itself prove fabrication or error, and for treating the law as a heuristic rather than a strict test.
+
+Nigrini, M. J. (1999). I've Got Your Number. *Journal of Accountancy*. https://www.journalofaccountancy.com/issues/1999/may/nigrini/
+- Professional/forensic-accounting guidance listing variables with built-in minimums or maximums, including wage-type data, among datasets where Benford should not automatically be expected. Basis for the "salary-like values" dataset mode and its framing as a deliberately poor-fitting counterexample.
+
+Karthik, D., Stelzer, G., Gershanov, S., Baranes, D., & Salmon-Divon, M. (2016). Elucidating Tissue Specific Genes Using the Benford Distribution. *BMC Genomics*, 17, 595. https://doi.org/10.1186/s12864-016-2921-x
+- Peer-reviewed finding that digital gene-expression datasets, including mouse liver and human tissue RNA-seq data, show a Benford-like first-digit distribution when entire gene sets are considered. Basis for the "gene expression (RNA-seq-like)" dataset mode.
+
+Morag, S., & Salmon-Divon, M. (2019). Characterizing Human Cell Types and Tissue Origin Using the Benford Law. *Cells*, 8(9), 1004. https://doi.org/10.3390/cells8091004
+- Peer-reviewed follow-up applying Benford-adherence patterns to large single-cell and bulk RNA-seq datasets to help distinguish cell types and tissue origins. Reinforces the empirical basis for the "gene expression (RNA-seq-like)" dataset mode.
+
+U.S. Census Bureau. Population Estimates Program — Data Sets. https://www.census.gov/programs-surveys/popest/data/data-sets.html
+- Linked as the source of real (not synthetic) population data referenced in the "population-like values" mode's explanatory copy.
+
+[Benford's law — Wikipedia](https://en.wikipedia.org/wiki/Benford%27s_law)
+- Linked as the further-reading source at the bottom of the exhibit.
+
+Considered but not used:
+
+Kolachev, N. (2024). Benford's Law and reaction time distributions. *Modelling and Data Analysis*, 14(2). https://doi.org/10.17759/mda.2024140202
+- Examines Benford-based data-quality statistics applied to reaction-time measurements from a Stroop task. Not used as a dataset mode because the study focuses on standardized/transformed reaction-time values and data-quality diagnostics rather than a simple "ordinary psychological measurements follow Benford" example.
+
+Campanario, J. M., & Coslado, M. A. (2011). Ranking journals using altmetrics, or is science one thing? *Scientometrics*, 88(2), 421-432. https://doi.org/10.1007/s11192-011-0387-9
+- Reported that journal citation counts followed Benford well while article counts and most impact-factor data did not. Noted as a possible future "citation counts" dataset mode; not implemented in this version.
+
+Note: an earlier version of this exhibit included an idealized bacterial-doubling sequence (1, 2, 4, 8, 16, ...). It was removed because, as a second exponential/multiplicative sequence, it largely repeated the lesson already shown by the "proportional growth" and "Fibonacci" modes; gene expression was chosen instead as a distinct biological example (many simultaneous measurements rather than one quantity growing over time).
