@@ -4,13 +4,14 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
 
 <ParadoxLayout slug="jeane-dixon-effect">
     <p class="text-slate-600 mb-6">
-        The Jeane Dixon Effect, named for a mid-20th-century American psychic whose occasional
-        correct-sounding guesses were long remembered while her many misses faded from public
-        memory, describes a general habit of mind: people (and the media covering them) tend to
-        remember confirming "hits" much better than disconfirming "non-hits." The underlying
-        prediction record never changes, but selective memory alone can make it look far more
-        impressive in hindsight than it really was. Adjust the sliders below to see how big a gap
-        selective memory can open up between an actual track record and the one people remember.
+        The Jeane Dixon Effect is named for a mid-20th-century American psychic whose occasional
+        lucky-sounding guesses stuck in people's minds long after her many wrong guesses were
+        forgotten. It describes a common habit of mind. People (and the media covering them) tend
+        to remember the predictions that came true much better than the ones that didn't. The
+        predictions themselves never change, but this kind of selective memory alone can make a
+        track record look far more impressive in hindsight than it really was. Adjust the sliders
+        below to see how big a gap selective memory can open up between what actually happened and
+        what people remember happening.
     </p>
 
     <div id="jde-explorer" class="jde-main-grid">
@@ -18,7 +19,7 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             <div>
                 <h3 class="jde-section-title">Change the underlying record</h3>
                 <p class="jde-section-help">
-                    These controls describe what actually happens before memory or reporting
+                    These controls describe what actually happens, before memory or reporting
                     enters the picture.
                 </p>
             </div>
@@ -42,7 +43,7 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             <div class="jde-divider-section">
                 <h3 class="jde-section-title">Change the memory filter</h3>
                 <p class="jde-section-help">
-                    A hit and a non-hit need not have the same chance of being remembered,
+                    A hit and a non-hit don't have to have the same chance of being remembered,
                     repeated, or retold.
                 </p>
             </div>
@@ -69,16 +70,16 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             </label>
 
             <div class="jde-details">
-                <p class="jde-details-title">Optional: reinterpretation after the fact</p>
+                <p class="jde-details-title">Optional: reinterpreting after the fact</p>
                 <p>
-                    This is separate from selective memory. It represents remembered non-hits
-                    later being reframed as hits because the original claim was broad or
-                    flexible.
+                    This is separate from selective memory. It's about remembered non-hits
+                    later getting relabeled as hits because the original claim was vague or
+                    open to interpretation.
                 </p>
 
                 <label class="jde-control">
                     <div class="jde-control-row">
-                        <span>Remembered non-hits reclassified as hits</span>
+                        <span>Remembered non-hits later called hits</span>
                         <strong id="jde-reinterpret-out">0%</strong>
                     </div>
                     <input id="jde-reinterpret" type="range" min="0" max="100" step="1" value="0" class="w-full accent-cyan-600">
@@ -181,12 +182,12 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             </div>
 
             <div class="jde-explanation">
-                <strong>What the visualization demonstrates</strong>
+                <strong>What this visualization shows</strong>
                 <p>
-                    The underlying hit rate never changes. Only the probability that hits and
-                    non-hits survive into the remembered record changes. When hits are much more
-                    memorable than non-hits, the apparent track record can become dramatically
-                    better than the complete record.
+                    The actual hit rate never changes here. What changes is only how likely hits
+                    and non-hits are to survive into the remembered record. When hits are much
+                    easier to remember than non-hits, the record people recall can end up looking
+                    dramatically better than the full, honest record.
                 </p>
             </div>
         </div>
@@ -199,14 +200,14 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                 </div>
                 <div class="jde-dialog-body">
                     <p>
-                        The large prediction audit used to anchor the default hit rate did not
-                        classify every unsuccessful prediction as simply "wrong." Predictions
-                        could also be too vague to score, obvious or expected, or impossible to
-                        verify.
+                        The large study used to set the default hit rate didn't just sort every
+                        unsuccessful prediction into "wrong." Some predictions were too vague to
+                        judge one way or the other, some were obvious or expected, and some were
+                        impossible to check at all.
                     </p>
                     <p>
                         In the Great Australian Psychic Prediction Project, the published
-                        predictions were classified as:
+                        predictions broke down as:
                     </p>
                     <ul class="jde-dialog-breakdown">
                         <li><strong>11%</strong> correct</li>
@@ -216,10 +217,10 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
                         <li><strong>2%</strong> unknown</li>
                     </ul>
                     <p>
-                        This visualization therefore uses <strong>non-hit</strong> for the other
-                        89%: anything that did not qualify as a scored correct prediction. That
-                        avoids incorrectly labeling vague, obvious, or uncheckable statements as
-                        definite misses.
+                        This visualization uses <strong>non-hit</strong> for the other 89% because
+                        of that mix. Lumping vague, obvious, or uncheckable statements in with
+                        definite misses would be misleading, so "non-hit" just means anything that
+                        wasn't a clear, scored correct prediction.
                     </p>
                 </div>
             </div>

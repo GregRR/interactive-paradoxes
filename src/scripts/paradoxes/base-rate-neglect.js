@@ -33,12 +33,12 @@
 const BRN_POP = 10000; // fixed population size for the icon grid
 const BRN_SCENARIOS = {
     cancer: {
-        priorLabel: 'Condition Prevalence',
+        priorLabel: 'How Common the Condition Is',
         priorSlider: 541,          // -> ~1-in-100 (see brnPriorFromSlider)
-        sensLabel: 'Test Sensitivity',
+        sensLabel: 'Chance the Test Catches It',
         sensShow: true,
         sensSlider: 9000,          // 90.00%
-        specLabel: 'Test Specificity',
+        specLabel: 'Chance a Healthy Person Tests Clear',
         specSlider: 9000,          // 90.00%
         specMin: 5000,
         positiveWord: 'tests positive',
@@ -46,20 +46,20 @@ const BRN_SCENARIOS = {
         hasWord: 'has the condition',
         notHasWord: 'does not have the condition',
         subjectSingular: 'person',
-        intro: `A test can be highly accurate and still be wrong most of the time it flags someone &mdash;
+        intro: `A test can be highly accurate and still be wrong most of the time it flags someone,
             if what it's looking for is rare enough. This is one of the most common reasoning errors in
             medicine: people hear "the test is 90% accurate" and assume a positive result means a 90%
             chance of being right. It usually doesn't. What matters just as much as the test's accuracy is
-            how rare the condition was to begin with &mdash; the <strong>base rate</strong>. Adjust the
-            sliders below and watch the grid of 10,000 people change color.`,
+            how rare the condition was to begin with. Adjust the sliders below and watch the grid of
+            10,000 people change color.`,
     },
     dna: {
-        priorLabel: 'Prior Chance This Suspect Is Guilty',
+        priorLabel: 'Chance This Suspect Is Guilty Before the Test',
         priorSlider: 270,          // -> ~1-in-1,000 (see brnPriorFromSlider)
-        sensLabel: 'DNA Match Sensitivity (a true match is almost never missed)',
+        sensLabel: 'Chance a True Match Gets Caught',
         sensShow: false,
         sensSlider: 9990,          // 99.90%, fixed/hidden -- true matches are essentially always detected
-        specLabel: 'Specificity (1 &minus; random-match probability)',
+        specLabel: 'Chance an Innocent Person Is Cleared',
         specSlider: 9999,          // 99.99% specificity = 1-in-10,000 random match rate
         specMin: 9000,
         positiveWord: 'is flagged as a DNA match',
@@ -68,12 +68,12 @@ const BRN_SCENARIOS = {
         notHasWord: 'is actually innocent',
         subjectSingular: 'suspect',
         intro: `In courtrooms, a DNA match is often treated as near-certain proof of guilt. But a match only
-            tells you the suspect's DNA is consistent with the sample &mdash; not how likely they are to be
-            the source, especially when the pool of people who could have been searched or flagged is
-            large. This is the <strong>prosecutor's fallacy</strong>: confusing "the probability of this
-            evidence if innocent" with "the probability of innocence given this evidence." Adjust the
-            sliders below and watch the grid of 10,000 possible suspects change color. (These are
-            illustrative numbers, not a real case.)`,
+            tells you the suspect's DNA is consistent with the sample, not how likely they are to be the
+            source, especially when the pool of people who could have been searched or flagged is large.
+            This is the <strong>prosecutor's fallacy</strong>: confusing "how likely we'd see this evidence
+            if the person were innocent" with "how likely the person is innocent given this evidence."
+            Adjust the sliders below and watch the grid of 10,000 possible suspects change color. (These
+            are illustrative numbers, not a real case.)`,
     }
 };
 
@@ -144,8 +144,8 @@ function drawBaseRateNeglect() {
         <div class="pt-4 border-t border-purple-200">
             Of the <strong>${totalPositive.toLocaleString()}</strong> total who ${scenario.positiveWord},
             only <strong>${truePositive.toLocaleString()}</strong> actually ${scenario.hasWord.replace('has the', 'have the')}.
-            That's <strong class="text-purple-700">${pct}%</strong> &mdash;
-            not the ${(sensitivity * 100).toFixed(0)}%/${(specificity * 100).toFixed(0)}% figures the test's
+            That's <strong class="text-purple-700">${pct}%</strong>, not the
+            ${(sensitivity * 100).toFixed(0)}%/${(specificity * 100).toFixed(0)}% figures the test's
             accuracy alone might suggest.
         </div>`;
 }

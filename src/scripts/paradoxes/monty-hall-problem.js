@@ -1,5 +1,5 @@
 /**
- * Exhibit: The Monty Hall Problem (Part 1 — Play the Game)
+ * Exhibit: The Monty Hall Problem (Part 1: Play the Game)
  *
  * Belongs to: Group 5 (Information & Conditional Probability)
  * Depends on: nothing from core.js. Pure DOM; no Plotly on this part.
@@ -319,7 +319,7 @@ function render(outcome) {
         const other = [1, 2, 3].find((d) => d !== pickedDoor && d !== openedGoatDoor);
         let msg = `${verb} Door ${pickedDoor} (teal) to stick with your first choice, or switch by ${tappingOrClicking()} Door ${other} (red).`;
         if (statsMode) {
-            msg += ` The prize is still 66.7% likely to be behind one of the two doors you didn't pick first — the host opening a door didn't reset the odds, because the host always knows where the goats are and never opens the prize.`;
+            msg += ` The prize is still 66.7% likely to be behind one of the two doors you didn't pick first. Opening a door didn't reset the odds, because the host always knows where the goats are and never opens the prize.`;
         }
         messageEl.textContent = msg;
     } else if (phase === 'done') {

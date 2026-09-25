@@ -9,14 +9,14 @@ const base = import.meta.env.BASE_URL;
 <ParadoxLayout slug="this-couldnt-be-coincidence">
     <p id="tccbc-intro" class="text-slate-600 mb-3">
         <strong>"That looks too patterned to be a coincidence."</strong> Each grid below
-        stands in for a stretch of ordinary days: one small event per cell. Most days,
-        nothing lines up into anything notable. Every so often, purely by chance, a few
-        nearby days form something that looks like a pattern.
+        stands in for a stretch of ordinary days, with one small event per cell. On most
+        days, nothing lines up into anything notable. Every so often, purely by chance, a
+        few nearby days form something that looks like a pattern.
     </p>
     <p class="text-slate-600 mb-4">
-        One of the two grids below was filled in completely at random. The other was
-        filled in by a process that genuinely favors placing events near other events.
-        Watch what happens when you uncover them.
+        One of the two grids below was filled in completely at random. The other was filled
+        in by a process that really does favor placing events near other events. Uncover
+        them below and see if you can tell which is which.
     </p>
 
     <h3 class="text-lg font-bold text-slate-800 mb-2">Part 4: This Couldn't Just Be Coincidence!</h3>
@@ -102,8 +102,8 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">Rewind and watch it happen</h4>
         <p class="text-sm text-slate-600 mb-3">
             Drag the slider below to rewind both grids to blank, then play them forward.
-            Every cell you see is shown in the exact order it was actually placed. This is
-            not a new random draw, it's a replay of the same two grids above.
+            Every cell appears in the exact order it was actually placed. This isn't a new
+            random draw. It's a replay of the same two grids above.
         </p>
         <label for="tccbc-scrubber" class="flex justify-between gap-2 text-sm font-semibold text-slate-700 mb-1">
             <span>Playback position</span>
@@ -154,28 +154,27 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">How these grids are made</h4>
         <div class="text-sm text-slate-600 space-y-2">
             <p>
-                Both grids are 20&times;20, exactly 80 squares filled in by default (tunable
-                above), so the only thing that can differ between them is arrangement, not
-                quantity. A <strong>qualifying cluster</strong> is a completely filled square
-                block: 2&times;2 or larger. Squares were chosen over other cluster shapes
-                because their symmetry reads as more "deliberate" than an asymmetric shape of
-                the same size.
+                Both grids are 20&times;20 with exactly 80 squares filled in by default (you
+                can adjust that above), so the only thing that can differ between them is where
+                those squares end up, not how many there are. A <strong>qualifying cluster</strong>
+                is a completely filled block, 2&times;2 or larger. We used square blocks rather
+                than other shapes because a square just looks more "deliberate" to the eye than
+                an odd shape of the same size.
             </p>
             <p>
-                The <strong>random</strong> grid is a plain uniform draw: exactly 80 of the 400
-                cells chosen with no spatial preference at all. Because a plain random draw
-                doesn't always happen to contain a qualifying square, several random grids are
-                drawn in the background and discarded until one does. The count shown above is
-                the real number of tries that took. The <strong>non-random</strong> grid is
-                built one cell at a time by a process called <strong>local attraction</strong>,
-                which makes each new cell more likely to land next to cells already placed, so
-                clusters emerge from genuine spatial preference, not chance.
+                The <strong>random</strong> grid is a plain lottery draw: 80 of the 400 cells
+                are chosen with no regard for where any other cell landed. A random draw like
+                that doesn't always happen to contain a qualifying cluster, so several random
+                grids get drawn behind the scenes and thrown out until one does. The count shown
+                above is the real number of tries that took. The <strong>non-random</strong> grid
+                is built one cell at a time by a process called <strong>local attraction</strong>,
+                which makes each new cell more likely to land next to cells already placed. Its
+                clusters come from a genuine pull toward existing cells, not luck.
             </p>
             <p>
-                The rewind control replays each grid's actual placement history. Scrubbing the
-                random grid shows cells appearing in no particular spatial relationship to one
-                another. Scrubbing the non-random grid shows later cells visibly favoring
-                the neighborhoods of earlier ones.
+                The rewind control replays each grid's actual history. Scrub through the random
+                grid and cells pop up with no relationship to their neighbors. Scrub through the
+                non-random grid and you can watch later cells crowd in next to earlier ones.
             </p>
         </div>
     </div>
@@ -184,13 +183,12 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
         <div class="text-sm text-slate-600 space-y-2">
             <p>
-                <strong>The math</strong> is exact: the grid generation, cluster detection, and
-                exact-outcome probability above follow directly from the fixed-count random
-                model and the local-attraction placement process described above.
-                <strong>The wider interpretation</strong> connects to the site's broader
-                coincidence theme: a tiny probability for one exact, specific outcome is not
-                evidence against that outcome being the product of chance, since some exact
-                outcome always has to occur.
+                <strong>The math</strong> here is exact: how the grids are generated, how
+                clusters are detected, and the odds quoted above all follow directly from the
+                fixed-count random model and the local-attraction process described above.
+                <strong>The bigger point</strong> ties into the site's broader theme: a tiny
+                chance of landing on one exact, specific outcome doesn't mean that outcome
+                wasn't just luck. Some exact outcome always has to happen.
             </p>
             <ul class="list-disc pl-5 space-y-1">
                 <li>

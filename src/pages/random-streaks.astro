@@ -137,8 +137,8 @@ const base = import.meta.env.BASE_URL;
             <strong>Streaks are not the opposite of randomness. They're part of it.</strong> In
             only 50 fair coin flips, five in a row happens about 82% of the time, and six in a
             row happens more often than not. A streak can feel like evidence that something
-            changed&mdash;but first we need to ask how often a streak that large would appear
-            under chance alone.
+            changed, but first we need to ask how often a streak that large would show up
+            by chance alone.
         </p>
         <p class="sm:hidden">
             <strong>Randomness makes streaks.</strong> The question isn't whether a streak
@@ -150,20 +150,21 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">Important caveats</h4>
         <div class="text-sm text-slate-600 space-y-2">
             <p>
-                A streak does not prove the underlying probability changed&mdash;independent
-                fair coins generate streaks naturally. But a streak does not prove independence
-                either: a process whose probability actually changes over time can also produce
-                streaks. The right question is always whether the observed data fit one model
-                better than another, not whether a streak occurred at all.
+                A streak does not prove the odds changed. Fair coins produce streaks on
+                their own just fine. But a streak does not prove nothing changed either: a
+                process whose odds really do shift over time can also produce streaks. The
+                real question is always whether the data fit one explanation better than
+                another, not whether a streak happened at all.
             </p>
             <p>
-                This exhibit models 50 independent fair-coin trials with a constant 50%
-                probability. It does not evaluate whether any particular real-world streak
-                (a game, a market, a treatment outcome) reflects a genuine change in the
-                underlying process&mdash;that requires a model and evidence specific to that
-                situation. Later statistical work also found a subtle streak-selection bias in
-                some influential early studies of real-world "hot hand" streaks, so this
-                exhibit does not claim that every apparent hot streak is illusory.
+                This exhibit models 50 independent fair-coin flips with the odds fixed at 50%
+                throughout. It doesn't try to judge whether any specific real-world streak
+                (a winning streak in a game, a market swing, a run of good outcomes in a
+                treatment) reflects a real change in what's driving it. That takes a model and
+                evidence specific to that situation. Later statistical work also found a subtle
+                flaw in how some influential early studies measured real-world "hot hand"
+                streaks in sports, so this exhibit doesn't claim every apparent hot streak is
+                imaginary.
             </p>
         </div>
     </div>
@@ -172,15 +173,15 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
         <div class="text-sm text-slate-600 space-y-2">
             <p>
-                <strong>The math</strong> is exact: the longest-run probabilities above come from
-                a dynamic-programming calculation over all 50-flip sequences, not a simulation.
-                <strong>The experimental findings</strong> are about human intuition: people tend to
-                expect shorter runs and more alternation than an independent process actually
-                produces, and the third repeated outcome in particular is where a sequence tends
-                to start feeling like a "streak" to an observer. <strong>The wider
-                interpretation</strong> is deliberately narrow: this exhibit demonstrates baseline
-                streak behavior under one explicit chance model, and does not adjudicate any
-                specific real-world claim of a hot streak or a change in process.
+                <strong>The math</strong> is exact. The longest-run probabilities above come from
+                a calculation that checks every possible 50-flip sequence, not a simulation.
+                <strong>The experimental findings</strong> are about human intuition. People tend to
+                expect shorter runs and more switching than a real coin actually produces, and
+                the third repeat in a row is usually where a sequence starts feeling like a
+                "streak" to an observer. <strong>The wider interpretation</strong> stays deliberately
+                narrow here: this exhibit shows how streaks behave under one clear-cut random
+                process, and it doesn't weigh in on any specific real-world claim of a hot
+                streak or a change in the underlying odds.
             </p>
             <ul class="list-disc pl-5 space-y-1">
                 <li>

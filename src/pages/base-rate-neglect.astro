@@ -4,11 +4,11 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
 
 <ParadoxLayout slug="base-rate-neglect">
     <p class="text-slate-600 mb-6">
-    	The Prosecutor’s Fallacy, or base-rate neglect, is the mistake of focusing on how strong or unusual
-    	one piece of evidence seems while ignoring how common the underlying situation is to begin with. In
-    	simple terms, people often confuse “this evidence would be unusual by chance” with “therefore this
-    	explanation must be very likely"". See how this comes up on two scenarios: Cancer Screening Tests, and
-    	a Courtroom DNA / Forensic Match.
+    	The Prosecutor's Fallacy, or base-rate neglect, is the mistake of focusing on how strong or unusual
+    	one piece of evidence seems while ignoring how common the underlying situation is to begin with.
+    	People often confuse "this evidence would be unusual by chance" with "therefore this explanation
+    	must be very likely." See how this plays out in two scenarios: a cancer screening test, and a
+    	courtroom DNA match.
     </p>
 
     <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 mb-6">
@@ -19,26 +19,17 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
         </select>
 
         <p class="text-slate-600 mb-6" id="brn-intro-text">
-						The Prosecutor’s Fallacy is the mistake of confusing the probability of seeing certain evidence
-						if someone is innocent with the probability that they are innocent given that evidence. It ignores
-						the base rate; how common guilt, innocence, or the matching evidence is in the larger population.
-						This is the same basic error as base-rate neglect: people focus on the test’s accuracy and ignore
-						how rare the disease is in the population being tested. So hearing that a cancer test is “93%
-						accurate” can make people assume a positive result means a 93% chance of having cancer, when the
-						true probability may be much lower if the cancer itself is uncommon and false positives occur.
-
-        This is one of the most common reasoning errors in
-        medicine and the courtroom: people hear "the test is 90% accurate" and assume a positive
-        result means a 90% chance of being right. It usually doesn't. What matters just as much as
-        the test's accuracy is how rare the thing it's testing for was to begin with &mdash; the
-        <strong>base rate</strong>. Adjust the sliders below and watch the grid of 10,000 people
-        change color.
+        This is one of the most common reasoning errors in medicine and the courtroom: people hear
+        "the test is 90% accurate" and assume a positive result means a 90% chance of being right.
+        It usually doesn't. What matters just as much as the test's accuracy is how rare the thing
+        it's testing for was to begin with, how common the condition already is in the group being
+        tested. Adjust the sliders below and watch the grid of 10,000 people change color.
         </p>
 
         <div class="grid gap-6 md:grid-cols-3">
             <div>
                 <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                    <span id="brn-prior-label">Condition Prevalence</span>
+                    <span id="brn-prior-label">How Common the Condition Is</span>
                     <span id="brn-prior-val" class="text-purple-600 font-mono">1 in 100</span>
                 </label>
                 <!-- Log-scale slider (0-1000 maps internally to a probability between
@@ -47,7 +38,7 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             </div>
             <div id="brn-sensitivity-wrap">
                 <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                    <span id="brn-sensitivity-label">Test Sensitivity</span>
+                    <span id="brn-sensitivity-label">Chance the Test Catches It</span>
                     <span id="brn-sensitivity-val" class="text-purple-600 font-mono">90%</span>
                 </label>
                 <!-- Value is hundredths of a percent (0-9999 = 0.00%-99.99%); range/default set per-scenario in JS. -->
@@ -55,7 +46,7 @@ import ParadoxLayout from '../layouts/ParadoxLayout.astro';
             </div>
             <div>
                 <label class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
-                    <span id="brn-specificity-label">Test Specificity</span>
+                    <span id="brn-specificity-label">Chance a Healthy Person Tests Clear</span>
                     <span id="brn-specificity-val" class="text-purple-600 font-mono">90%</span>
                 </label>
                 <!-- Value is hundredths of a percent (0-9999 = 0.00%-99.99%); range/default set per-scenario in JS. -->

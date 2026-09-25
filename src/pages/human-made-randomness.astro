@@ -114,8 +114,8 @@ const base = import.meta.env.BASE_URL;
     <div id="hmr-conclusion" hidden class="mt-6 p-4 bg-slate-50 border border-slate-100 rounded-xl text-slate-700">
         <p>
             <strong>Human randomness often looks a little too tidy.</strong> When people try to
-            imitate chance, they commonly switch outcomes more often and suppress repetitions.
-            A fair coin does neither&mdash;it has no memory and no preference for what should
+            imitate chance, they commonly switch outcomes more often and avoid repeats.
+            A fair coin does neither: it has no memory and no preference for what should
             come next.
         </p>
         <p class="mt-2 font-semibold">Next: what streaks does real randomness actually produce?</p>
@@ -125,17 +125,18 @@ const base = import.meta.env.BASE_URL;
         <h4 class="font-semibold text-slate-700 mb-2">Research behind this</h4>
         <div class="text-sm text-slate-600 space-y-2">
             <p>
-                <strong>The math</strong> is exact: with 30 outcomes there are 29 adjacent transitions,
-                and for an independent fair coin the number that differ follows a
-                Binomial(29, 0.5) distribution, so every comparison above uses the true
-                probability rather than a simulation. <strong>The experimental findings</strong> are
-                about how people produce random-looking sequences: across many studies, people
-                asked to generate binary sequences tend to switch outcomes more often, and
-                produce shorter runs, than an independent process would. <strong>The wider
-                interpretation</strong> is deliberately cautious: a single 30-outcome sequence is a
-                small sample and task details (instructions, pacing, visibility of earlier
-                choices) are known to affect the result, so this exhibit is a teaching
-                demonstration rather than a diagnostic test of any one visitor.
+                <strong>The math</strong> is exact. With 30 outcomes there are 29 points where one
+                flip meets the next, and for a real coin, the number of those points where the
+                result switches follows a known probability curve, so every comparison above
+                uses the true odds rather than a computer simulation. <strong>The experimental
+                findings</strong> come from watching how people actually produce random-looking
+                sequences: across many studies, people asked to fill in heads and tails by hand
+                tend to switch more often, and avoid long runs, more than a real coin would.
+                <strong>The wider interpretation</strong> stays cautious on purpose. A single
+                30-outcome sequence is a small sample, and details of the task (the instructions
+                given, the pace, whether people can see their earlier choices) are known to
+                affect the result, so this exhibit is meant to teach the idea, not to diagnose
+                any one visitor.
             </p>
             <ul class="list-disc pl-5 space-y-1">
                 <li>

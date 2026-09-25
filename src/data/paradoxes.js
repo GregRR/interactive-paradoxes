@@ -139,7 +139,7 @@ export const groups = [
     },
     {
         number: 5,
-        title: 'Information & Conditional Probability',
+        title: 'New Information & Changing Odds',
         description: 'How new information from a knowledgeable source should change the odds you assign to what you already picked.',
         labelColor: 'text-amber-400',
         activeBorder: 'border-amber-500',

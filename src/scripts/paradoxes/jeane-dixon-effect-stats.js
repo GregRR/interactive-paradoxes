@@ -1,5 +1,5 @@
 /**
- * Pure math for the Jeane Dixon Effect exhibit — no DOM access, so it can be
+ * Pure math for the Jeane Dixon Effect exhibit. No DOM access, so it can be
  * unit tested in isolation and reused if the visualization is ever reworked.
  *
  * The model: a fixed number of predictions/opportunities produces a fixed

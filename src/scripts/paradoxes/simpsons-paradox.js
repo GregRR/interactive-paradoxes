@@ -152,13 +152,13 @@ function drawSimpsons() {
     if (pct < 33) {
         stageLabel = trendInOpacity > 0.05 ? 'Fitting a Trend Line to Each Group' : 'Two Separate Groups';
         resultHTML = `Group A: higher scores with fewer study hours. Group B: lower scores with more study hours. ` +
-            `<strong>Within each group</strong>, more studying still means a better score &mdash; both trend lines slope upward.`;
+            `<strong>Within each group</strong>, more studying still means a better score, and both trend lines slope upward.`;
     } else if (pct < 66) {
         stageLabel = 'Merging the Two Groups Together';
         resultHTML = `The group labels are fading away. Once we stop distinguishing Group A from Group B, we're left with a single scatter of points.`;
     } else {
         stageLabel = 'One Combined (Reversed) Trend';
-        resultHTML = `Fit a single trend line to <strong>all</strong> the points at once, ignoring the groups, and the slope flips: it now appears that <strong class="text-purple-700">more study hours predicts a lower score</strong> &mdash; the opposite of what's true within each group. The reversal comes entirely from mixing two differently-positioned groups, not from anything causal about studying.`;
+        resultHTML = `Fit a single trend line to <strong>all</strong> the points at once, ignoring the groups, and the slope flips: it now appears that <strong class="text-purple-700">more study hours predicts a lower score</strong>, the opposite of what's true within each group. The reversal comes entirely from mixing two differently-positioned groups, not from anything causal about studying.`;
     }
     document.getElementById('sp-stage-label').innerText = stageLabel;
     document.getElementById('sp-result').innerHTML = resultHTML;

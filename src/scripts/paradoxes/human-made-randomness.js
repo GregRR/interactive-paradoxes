@@ -232,7 +232,7 @@ function annotateRuns() {
 // ---------------------------------------------------------------------------
 
 const GENERATING_MESSAGE =
-    `<strong>Make the sequence before seeing the math.</strong> There is no score for each individual choice&mdash;just enter the outcomes that feel plausibly random.`;
+    `<strong>Make the sequence before seeing the math.</strong> There's no score for each individual choice, just enter the outcomes that feel plausibly random.`;
 
 const READY_MESSAGE =
     `<strong>Sequence complete.</strong> Take one last look at it, then reveal how it compares with an independent fair coin.`;
@@ -343,7 +343,7 @@ function handleStartOverClick() {
 function renderMeter(analysis) {
     const leftPercent = analysis.alternationRate * 100;
     meterMarkerEl.style.left = `${leftPercent}%`;
-    meterTextEl.textContent = `You: ${pct(analysis.alternationRate)}% alternation (fair-coin expectation: 50%)`;
+    meterTextEl.textContent = `You: ${pct(analysis.alternationRate)}% switching (a fair coin averages 50%)`;
 }
 
 /**
@@ -357,42 +357,42 @@ function alternationMessage(analysis) {
     const ratePct = pct(alternationRate);
 
     if (a >= HIGH_ALTERNATION_THRESHOLD) {
-        return `<strong>You switched outcomes ${a} times in 29 transitions&mdash;${ratePct}%.</strong> ` +
-            `A fair coin averages 50% alternation. Only about <strong>${pct(upperTailProbability, 1)}%</strong> ` +
-            `of 30-flip fair-coin sequences alternate at least this often. Human-generated random ` +
-            `sequences commonly show this kind of <strong>overalternation</strong>: people tend to switch ` +
-            `outcomes more often and produce fewer long runs than an independent process.`;
+        return `<strong>You switched outcomes ${a} out of 29 times, ${ratePct}% of the time.</strong> ` +
+            `A fair coin switches about 50% of the time. Only about <strong>${pct(upperTailProbability, 1)}%</strong> ` +
+            `of 30-flip fair-coin sequences switch at least this often. This is a pattern researchers see ` +
+            `again and again in sequences people write by hand: people tend to switch ` +
+            `outcomes more often and avoid long runs, compared to a real coin.`;
     }
     if (a >= MODERATE_ALTERNATION_MIN && a < HIGH_ALTERNATION_THRESHOLD) {
-        return `<strong>Your sequence alternated ${ratePct}% of the time, above the fair-coin expectation ` +
-            `of 50%.</strong> For a sequence this short, that result is still quite plausible under ` +
-            `chance. Across groups of people, however, researchers repeatedly find a tendency to ` +
-            `produce more alternations than a fair random process.`;
+        return `<strong>Your sequence switched ${ratePct}% of the time, a bit above the 50% a fair coin ` +
+            `would average.</strong> For a sequence this short, that result is still quite plausible by ` +
+            `chance alone. Across groups of people, though, researchers repeatedly find a tendency to ` +
+            `switch more often than a real coin would.`;
     }
     if (a <= LOW_ALTERNATION_THRESHOLD) {
-        return `<strong>Your sequence repeated outcomes more than a typical fair-coin sample.</strong> ` +
+        return `<strong>Your sequence repeated outcomes more than a typical fair-coin sample would.</strong> ` +
             `Only about <strong>${pct(lowerTailProbability, 1)}%</strong> of 30-flip fair-coin sequences ` +
-            `have this few or fewer alternations. Human-made sequences do not all depart from chance ` +
-            `in the same direction&mdash;individual strategies vary.`;
+            `switch this rarely or less. Not everyone drifts the same way when they try to fake ` +
+            `randomness; some people repeat more instead of switching more.`;
     }
     // Covers the remaining middle band (spec 19.3), including values between the low
     // threshold and the moderate band that the spec's illustrative ranges leave implicit.
-    return `<strong>Your alternation rate was ${ratePct}%.</strong> That's well within the range ` +
-        `commonly produced by 30 independent fair-coin flips. A single short sequence cannot tell ` +
-        `us much about one person's intuition; the overalternation finding is a group-level ` +
-        `research result.`;
+    return `<strong>Your switching rate was ${ratePct}%.</strong> That's well within the range ` +
+        `you'd expect from 30 real coin flips. One short sequence can't tell ` +
+        `us much about a single person's instincts; the pattern researchers describe shows up when ` +
+        `you look at many people's attempts together.`;
 }
 
 /** Optional one-sentence balance note (spec section 20). Returns '' when nothing applies. */
 function balanceNote(analysis) {
     if (analysis.heads === 15 && analysis.tails === 15) {
-        return `You also made the sequence exactly balanced: 15 heads and 15 tails. That's ` +
-            `perfectly possible for a fair coin, but a real coin does not actively correct itself ` +
-            `to stay balanced in a short sample.`;
+        return `You also landed on an exact split: 15 heads and 15 tails. That's ` +
+            `perfectly possible for a fair coin, but a real coin doesn't correct itself ` +
+            `to stay balanced over a short run like this.`;
     }
     if (Math.abs(analysis.heads - analysis.tails) >= 8) {
-        return `The heads/tails counts are uneven, but short fair-coin sequences are often uneven ` +
-            `too. Randomness does not require exact balance in every small sample.`;
+        return `Your heads and tails counts are uneven, but short fair-coin sequences are often ` +
+            `uneven too. A small batch of flips doesn't need to come out even.`;
     }
     return '';
 }
@@ -401,13 +401,13 @@ function balanceNote(analysis) {
 function longestRunNote(analysis) {
     if (analysis.longestRun <= SHORT_LONGEST_RUN && analysis.alternations >= MODERATE_ALTERNATION_MIN) {
         return `Your longest run was only <strong>${analysis.longestRun}</strong>. Avoiding long runs ` +
-            `and switching frequently are closely related. We'll examine real random streaks directly ` +
-            `in the next part.`;
+            `and switching often tend to go together. Next up, we'll look at what real random streaks ` +
+            `actually look like.`;
     }
     if (analysis.longestRun >= LONG_LONGEST_RUN) {
         return `Your sequence included a run of <strong>${analysis.longestRun}</strong>. Long runs can ` +
-            `look suspicious, but fair coins produce them more often than many people expect. That's ` +
-            `the focus of the next part.`;
+            `look suspicious, but fair coins produce them more often than most people expect. That's ` +
+            `what the next part is about.`;
     }
     return '';
 }
@@ -424,8 +424,8 @@ function resultMessage(analysis) {
 
 /** Neutral note shown ahead of the result once a repeat attempt is being analyzed (spec 25). */
 const REPEAT_ATTEMPT_PREFIX =
-    `<strong>Now you know what the analysis looks for.</strong> Try again if you want, but later ` +
-    `attempts are practice rather than a fresh test of your first intuition.<br><br>`;
+    `<strong>Now you know what the analysis looks for.</strong> Feel free to try again, but later ` +
+    `attempts are more practice than a fresh test of your first instinct.<br><br>`;
 
 function runAnalysis() {
     if (state.phase !== 'ready') return;

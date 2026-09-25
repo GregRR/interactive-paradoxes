@@ -1,5 +1,5 @@
 /**
- * Exhibit: The Monty Hall Problem (Part 2 — 100-Trial Simulator)
+ * Exhibit: The Monty Hall Problem (Part 2: 100-Trial Simulator)
  *
  * Belongs to: Group 5 (Information & Conditional Probability), same page as Part 1
  * (src/scripts/paradoxes/monty-hall-problem.js). This file is fully independent of that

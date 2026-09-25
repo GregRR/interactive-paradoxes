@@ -257,16 +257,16 @@ function renderSingleMetrics() {
 /** First-sequence / first-look-at-a-new-sequence interpretation message (spec section 19). */
 function longestRunMessage(L) {
     if (L <= 3) {
-        return `<strong>This sample is unusually low-streak.</strong> Only about ${pct(1 - probAtLeast(4))}% ` +
-            `of fair 50-flip sequences have a longest run of 3 or less. A random process can occasionally look unusually even too.`;
+        return `<strong>This sample is unusually low on streaks.</strong> Only about ${pct(1 - probAtLeast(4))}% ` +
+            `of fair 50-flip sequences top out at a run of 3 or less. A random process can occasionally look unusually even too.`;
     }
-    if (L === 4) return `<strong>This sequence's longest streak is 4.</strong> That's on the short side, but not especially surprising for 50 fair flips.`;
-    if (L === 5) return `<strong>Longest streak: 5.</strong> This is extremely ordinary for 50 fair flips; 5 is the single most common exact longest-run length.`;
-    if (L === 6) return `<strong>Longest streak: 6.</strong> That's almost exactly what we'd expect to see in a typical 50-flip sequence.`;
-    if (L === 7) return `<strong>Longest streak: 7.</strong> Longer than the typical 5&ndash;6, but still common: about ${pct(probAtLeast(7))}% of 50-flip sequences contain a run of 7 or more.`;
-    if (L === 8) return `<strong>Longest streak: 8.</strong> Noticeable, but still produced by about ${pct(probAtLeast(8))}% of fair 50-flip sequences.`;
-    if (L === 9) return `<strong>Longest streak: 9.</strong> That is less common, but about ${pct(probAtLeast(9))}% of fair 50-flip sequences reach 9 or more.`;
-    return `<strong>Longest streak: ${L}.</strong> That's relatively unusual, but still occurs in about ${pct(probAtLeast(L))}% of fair 50-flip sequences.`;
+    if (L === 4) return `<strong>This sequence's longest streak is 4.</strong> That's on the short side, but nothing unusual for 50 fair flips.`;
+    if (L === 5) return `<strong>Longest streak: 5.</strong> This is about as ordinary as it gets for 50 fair flips; 5 is the single most common longest-run length.`;
+    if (L === 6) return `<strong>Longest streak: 6.</strong> That's almost exactly what you'd expect from a typical 50-flip sequence.`;
+    if (L === 7) return `<strong>Longest streak: 7.</strong> Longer than the typical 5 or 6, but still common. About ${pct(probAtLeast(7))}% of 50-flip sequences contain a run of 7 or more.`;
+    if (L === 8) return `<strong>Longest streak: 8.</strong> Noticeable, but still shows up in about ${pct(probAtLeast(8))}% of fair 50-flip sequences.`;
+    if (L === 9) return `<strong>Longest streak: 9.</strong> That's less common, but about ${pct(probAtLeast(9))}% of fair 50-flip sequences reach 9 or more.`;
+    return `<strong>Longest streak: ${L}.</strong> That's relatively unusual, but it still turns up in about ${pct(probAtLeast(L))}% of fair 50-flip sequences.`;
 }
 
 const PREDICTION_REVEAL_NOTE =
@@ -277,7 +277,7 @@ function predictionCompareLine() {
 }
 
 const SAME_PROCESS_MESSAGE =
-    `<strong>Different sequence, same process.</strong> The streaks move around and change length, but they keep appearing because streaks are part of independent randomness.`;
+    `<strong>Different sequence, same process.</strong> The streaks move around and change length, but they keep showing up because streaks are just part of how independent randomness works.`;
 
 /** Builds the message shown right after a sequence is (re)generated. */
 function generationMessage() {
@@ -321,7 +321,7 @@ function requestNewSequence() {
 // --- Threshold control (single mode): NEVER regenerates the sequence ------
 
 const THRESHOLD_MESSAGES = {
-    3: () => `<strong>Three in a row feels streaky&mdash;but it is almost guaranteed here.</strong> About ${pct(probAtLeast(3), 3)}% of 50-flip fair-coin sequences contain at least one run of 3 or more.`,
+    3: () => `<strong>Three in a row feels streaky, but it's almost guaranteed here.</strong> About ${pct(probAtLeast(3), 3)}% of 50-flip fair-coin sequences contain at least one run of 3 or more.`,
     4: () => `<strong>Runs of 4 are still ordinary.</strong> About ${pct(probAtLeast(4))}% of 50-flip fair-coin sequences contain at least one run of 4 or more.`,
     5: () => `<strong>A run of 5 is common.</strong> About ${pct(probAtLeast(5))}% of 50-flip fair-coin sequences contain at least one run of 5 or more.`,
     6: () => `<strong>Even 6 in a row is not rare.</strong> About ${pct(probAtLeast(6))}% of 50-flip fair-coin sequences contain at least one run of 6 or more.`
@@ -342,10 +342,10 @@ document.querySelectorAll('.rs-threshold-btn:not(.rs-threshold-btn-sim)').forEac
 
 why3Btn.addEventListener('click', () => {
     setMessage(box,
-        `<strong>Why call 3 a streak?</strong> There is no universal mathematical cutoff. ` +
-        `Carlson &amp; Shu found that the third repeated outcome was pivotal in people's perception ` +
-        `that a streak had emerged. That's why this visualization starts at 3+, while letting you ` +
-        `choose a stricter threshold.`
+        `<strong>Why call 3 a streak?</strong> There's no mathematical rule that says so. ` +
+        `Researchers Carlson and Shu found that the third repeat in a row was the moment people ` +
+        `started to feel like a streak had started. That's why this exhibit starts at 3+, while ` +
+        `still letting you pick a stricter cutoff.`
     );
 });
 

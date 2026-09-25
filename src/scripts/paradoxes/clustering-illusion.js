@@ -76,7 +76,7 @@ const LETTERS = ['A', 'B', 'C'];
 const TYPE_LABEL = {
     clustered: 'Extra clustering',
     random: 'Random',
-    dispersed: 'Extra dispersion'
+    dispersed: 'Extra spreading'
 };
 
 // Thresholds for the adaptive quiz messages. Not specified numerically by the design
@@ -297,19 +297,19 @@ function renderQuizScore() {
 // and edited without touching the logic below.
 const QUIZ_MESSAGES = {
     correct:
-        `<strong>Yes—that one was generated at random.</strong> Notice that random did not mean perfectly even: small clumps and gaps appeared naturally.`,
+        `<strong>Yes, that one was made by pure chance.</strong> Notice that chance didn't mean perfectly even. Small clumps and gaps appeared naturally.`,
     wrongDispersed: (letter) =>
-        `<strong>You chose the more evenly dispersed pattern.</strong> The random one was ${letter}. Avoiding neighboring matches can make a pattern look random, but that avoidance is itself structure.`,
+        `<strong>You chose the more evenly spread pattern.</strong> The random one was ${letter}. Avoiding neighboring matches can make a pattern look random, but that avoidance is itself a kind of order.`,
     wrongClustered: (letter) =>
-        `<strong>That pattern contains extra clustering.</strong> The random one was ${letter}. Random patterns can clump, but this one was generated with an added tendency for neighbors to match.`,
+        `<strong>That pattern has extra clustering.</strong> The random one was ${letter}. Random patterns can clump, but this one was built with an added tendency for neighbors to match.`,
     repeatDispersed:
-        `<strong>You're often choosing the more evenly mixed pattern.</strong> Experiments on subjective randomness find a similar tendency: people often rate over-alternating patterns as especially random.`,
+        `<strong>You keep choosing the more evenly mixed pattern.</strong> That matches what researchers see in general: people often rate overly mixed patterns as especially random.`,
     repeatCorrect:
-        `<strong>You're picking out the random pattern consistently.</strong> Keep watching what it still does: independent randomness continues to produce visible clumps and gaps.`,
+        `<strong>You're picking out the random pattern consistently.</strong> Keep watching what it still does: pure chance keeps producing visible clumps and gaps.`,
     synthesis:
-        `<strong>Across new samples, the random pattern keeps changing—but clumps keep appearing.</strong> Randomness has no rule requiring events to spread themselves evenly.`,
+        `<strong>Across new samples, the random pattern keeps changing, but clumps keep appearing.</strong> Chance has no rule requiring events to spread themselves evenly.`,
     deepSynthesis:
-        `<strong>The key distinction is independence, not neatness.</strong> Too much clustering adds structure, but so does too much alternation.`
+        `<strong>The real test isn't neatness, it's how the pattern was made.</strong> Too much clustering adds structure, and so does too much alternation.`
 };
 
 /**
@@ -424,17 +424,17 @@ const EXPLORE_MESSAGES = {
     strongClump:
         `<strong>Extra clustering.</strong> Neighboring cells are more likely to match, so larger patches form more often.`,
     moderateClump:
-        `<strong>Some extra clustering.</strong> Neighbors match more often than they would around the independent midpoint.`,
+        `<strong>Some extra clustering.</strong> Neighbors match more often than they would in a purely random grid.`,
     independent:
-        `<strong>Independent random arrangement.</strong> There is no added rule making neighboring cells match or alternate. Notice that clumps still appear naturally.`,
+        `<strong>Pure chance arrangement.</strong> There is no added rule making neighboring cells match or alternate. Notice that clumps still appear naturally.`,
     sameProcess:
-        `<strong>Same process, different appearance.</strong> Every sample was generated the same way. Randomness describes the process—not one particular visual pattern.`,
+        `<strong>Same process, different look.</strong> Every sample was made the same way. Chance describes how the pattern was generated, not what any single pattern looks like.`,
     slightDispersion:
-        `<strong>A little extra dispersion.</strong> Neighboring cells are being encouraged to differ more often.`,
+        `<strong>A little extra spreading.</strong> Neighboring cells are being nudged to differ more often.`,
     overAlternating:
-        `<strong>More evenly mixed.</strong> Patterns around this level of alternation have received especially high "randomness" ratings in experiments—even though they alternate more than the independent condition.`,
+        `<strong>More evenly mixed.</strong> Patterns around this level of mixing have received especially high "randomness" ratings in experiments, even though they mix more than pure chance does.`,
     strongDispersion:
-        `<strong>Extra dispersion.</strong> Neighboring matches are being suppressed, producing a more checkerboard-like pattern. Avoiding clumps this strongly is itself a pattern.`
+        `<strong>Strongly spread out.</strong> Neighboring matches are being suppressed, producing a more checkerboard-like pattern. Avoiding clumps this strongly is itself a kind of order.`
 };
 
 /** The message for the current slider setting (see the ranges in the design document). */
@@ -455,13 +455,13 @@ function exploreMessage() {
 /** The label above the slider, and its spoken equivalent for assistive tech. */
 function renderSliderLabel() {
     const t = explore.sliderTarget;
-    const name = t === 50 ? ' (Independent)' : '';
+    const name = t === 50 ? ' (Pure chance)' : '';
     sliderValueEl.textContent = `${t}%${name}`;
     sliderEl.setAttribute(
         'aria-valuetext',
-        t === 50 ? '50 percent, independent'
+        t === 50 ? '50 percent, pure chance'
             : t < 50 ? `${t} percent, more clumped`
-            : `${t} percent, more dispersed`
+            : `${t} percent, more spread out`
     );
 }
 
